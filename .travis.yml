@@ -1,0 +1,14 @@
+language: node_js
+node_js:
+  - "stable"
+cache:
+  directories:
+    - node_modules
+jobs:
+  include:
+    - stage: "Sync"
+      if: branch = master
+      script:
+        - git remote add gitlab https://oauth2:$GITLAB_TOKEN@gitlab.fdmci.hva.nl/desqol/glutenserver.git
+        - git push --force gitlab --all
+        - git push --force gitlab --tags

@@ -4,12 +4,16 @@
          "es5",
          "es6"
       ],
-      "target": "es5",
+      "target": "esnext",
       "module": "commonjs",
+      "esModuleInterop": true,
       "moduleResolution": "node",
       "outDir": "./build",
       "emitDecoratorMetadata": true,
       "experimentalDecorators": true,
       "sourceMap": true
-   }
+   },
+   "exclude": [
+      "node_modules"
+   ]
 }

@@ -6,6 +6,13 @@ cache:
     - node_modules
 jobs:
   include:
+    - stage: "Lint"
+      script:
+        - npm run lint
+        - npm run lint:fix
+    - stage: "Test"
+      script:
+        - npm test
     - stage: "Sync"
       if: branch = master
       script:

@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  database:
+    build: ./database
+
+  server:
+    build: ./server
+    ports:
+      - '3000:3000'
+    links:
+      - database
+    depends_on:
+      - database

@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToMany } from 'typeorm';
 import { InfoQuestion } from './InfoQuestion';
 
 @Entity()
@@ -11,7 +11,9 @@ export class InfoCategory {
     name: string;
 
 
-    @OneToMany(type => InfoQuestion, question => question.category)
+    @ManyToMany(type => InfoQuestion, question => question.categories, {
+        eager: true,
+    })
     questions: InfoQuestion[];
     
 }

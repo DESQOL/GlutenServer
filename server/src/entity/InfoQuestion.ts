@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable } from 'typeorm';
 import { InfoCategory } from './InfoCategory';
 
 @Entity()
@@ -10,7 +10,10 @@ export class InfoQuestion {
     @Column()
     name: string;
     
-    @ManyToOne(type => InfoCategory, category => category.questions)
-    category: InfoCategory;
+    @ManyToMany(type => InfoCategory, category => category.questions, {
+        cascade: true
+    })
+    @JoinTable()
+    categories: InfoCategory[];
 
 }

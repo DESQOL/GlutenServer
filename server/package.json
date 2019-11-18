@@ -3,6 +3,8 @@
    "version": "0.0.1",
    "description": "",
    "scripts": {
+      "lint": "eslint --ext .ts src",
+      "lint:fix": "eslint --ext .ts src --fix",
       "start": "ts-node src/index.ts"
    },
    "dependencies": {
@@ -14,6 +16,9 @@
    },
    "devDependencies": {
       "@types/node": "8.0.29",
+      "@typescript-eslint/eslint-plugin": "2.7.0",
+      "@typescript-eslint/parser": "2.7.0",
+      "eslint": "6.6.0",
       "ts-node": "3.3.0",
       "typescript": "3.3.3333"
    }

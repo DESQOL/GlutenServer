@@ -1,0 +1,37 @@
+language: node_js
+
+node_js:
+  - "stable"
+
+services:
+  - mysql
+
+before_install:
+  - mysql -e 'CREATE DATABASE IF NOT EXISTS gluten;'
+
+install:
+  - cd server
+  - npm uninstall typescript --no-save
+  - npm ci
+
+cache:
+  directories:
+    - node_modules
+
+jobs:
+  include:
+    - stage: "Lint"
+      script:
+        - cd server
+        - npm run lint
+        - npm run lint:fix
+    - stage: "Test"
+      script:
+        - cd server
+        - npm test
+    - stage: "Sync"
+      if: branch = master
+      script:
+        - git remote add gitlab https://oauth2:$GITLAB_TOKEN@gitlab.fdmci.hva.nl/desqol/glutenserver.git
+        - git push --force gitlab --all
+        - git push --force gitlab --tags

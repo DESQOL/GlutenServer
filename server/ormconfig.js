@@ -1,5 +1,4 @@
-const options =
-{
+const options = {
    "type": "mysql",
    "host": "database",
    "port": 3306,
@@ -22,6 +21,11 @@ const options =
       "migrationsDir": "src/migration",
       "subscribersDir": "src/subscriber"
    }
+}
+
+if (process.env.CI) {
+   options['username'] = 'travis'
+   options['password'] = ''
 }
 
 module.exports = options

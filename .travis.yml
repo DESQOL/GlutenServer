@@ -22,12 +22,10 @@ jobs:
   include:
     - stage: "Lint"
       script:
-        - cd server
         - npm run lint
         - npm run lint:fix
     - stage: "Test"
       script:
-        - cd server
         - npm test
     - stage: "Sync"
       if: branch = master

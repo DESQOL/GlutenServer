@@ -5,7 +5,7 @@ const options = {
    "username": "test",
    "password": "test",
    "database": "gluten",
-   "synchronize": true,
+   "synchronize": false,
    "logging": false,
    "entities": [
       "src/entity/**/*.ts"

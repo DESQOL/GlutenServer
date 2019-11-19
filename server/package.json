@@ -5,6 +5,8 @@
    "scripts": {
       "lint": "eslint --ext .ts src test",
       "lint:fix": "eslint --ext .ts src test --fix",
+      "mig:gen": "ts-node ./node_modules/typeorm/cli.js migration:generate -n PostRefactoring",
+      "mig:run": "ts-node ./node_modules/typeorm/cli.js migration:run",
       "start": "ts-node src/index.ts",
       "test": "mocha -r ts-node/register test/*.ts --exit --timeout 10000"
    },

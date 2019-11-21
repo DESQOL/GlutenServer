@@ -1,0 +1,30 @@
+openapi: '3.0.0'
+
+info:
+  version: 1.0.0
+  title: Swagger Gluten Server
+  description: Gluten API in the OpenAPI 3.0 specification
+
+servers:
+  - url: /v1/
+
+paths:
+  /products:
+    description: endpoints for products
+    summary: endpoints for products
+  /recipes:
+    description: endpoints for recipes
+    summary: endpoints for recipes
+
+components:
+  schemas:
+    Error:
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string

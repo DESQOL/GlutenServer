@@ -1,11 +1,12 @@
 import 'reflect-metadata';
 import { createConnection } from 'typeorm';
-import express from 'express';
-import * as bodyParser from 'body-parser';
+import express, { NextFunction,Request, Response } from 'express';
 import YAML from 'yamljs';
 import * as swaggerUi from 'swagger-ui-express';
-import { Request, Response } from 'express';
 import { Routes } from './routes';
+import { OpenApiValidator } from 'express-openapi-validator';
+import bodyParser from 'body-parser';
+import logger from 'morgan';
 
 const port = 3000;
 
@@ -20,11 +21,23 @@ createConnection().then(async connection => {
      * Setup express app.
      */
     app.use(bodyParser.json());
+    app.use(bodyParser.text());
+    app.use(bodyParser.urlencoded());
+
+    app.use(logger('dev'));
+    app.use(express.json());
+    app.use(express.urlencoded({ extended: false }));
+
+    new OpenApiValidator({
+        apiSpec: `${__dirname}/../spec/openapi.yaml`,
+        validateRequests: true,
+        validateResponses: true,
+    }).install(app);
 
     /*
      * Setup Swagger integration.
      */
-    const swaggerDocument = YAML.load(`${__dirname}/../spec/swagger.yaml`);
+    const swaggerDocument = YAML.load(`${__dirname}/../spec/openapi.yaml`);
     app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
     /*
@@ -42,14 +55,19 @@ createConnection().then(async connection => {
         });
     });
 
-    
+    app.use((err: any, req: Request, res: Response, next: NextFunction) => {
+        res.status(err.status || 500).json({
+            message: err.message,
+            errors: err.errors,
+        });
+    });
 
-        /*
-         * Start express server.
-         */
+    /*
+     * Start express server.
+     */
     app.listen(port, () => app.emit('listening'));
-        app.on('listening', () => console.log(`Example app listening on port ${port}!`));
-    
+    app.on('listening', () => console.log(`Example app listening on port ${port}!`));
+
 }).catch(error => console.log(error));
 
 export default app;

@@ -8,6 +8,7 @@ services:
 
 before_install:
   - mysql -e 'CREATE DATABASE IF NOT EXISTS gluten;'
+  - mysql -u root --default-character-set=utf8 gluten < database/data.sql
 
 install:
   - cd server

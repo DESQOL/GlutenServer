@@ -4,6 +4,10 @@
    "description": "",
    "scripts": {
       "dev": "nodemon",
+      "docker:build": "docker-compose build database server",
+      "docker:dump": "docker exec glutenserver_database_1 mysqldump -uroot -proot gluten > ../database/data.sql && head -n -1 ../database/data.sql > ../database/data.sql.tmp && mv ../database/data.sql.tmp ../database/data.sql",
+      "docker:rebuild": "docker-compose build --no-cache database server",
+      "docker:stop": "npm run docker:dump && docker-compose down",
       "lint": "eslint --ext .ts src test",
       "lint:fix": "eslint --ext .ts src test --fix",
       "mig:gen": "ts-node ./node_modules/typeorm/cli.js migration:generate -n PostRefactoring",

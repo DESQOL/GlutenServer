@@ -1,7 +1,8 @@
 import { getRepository } from 'typeorm';
 import { NextFunction, Request, Response } from 'express';
-import { InfoCategory } from '../entity/InfoCategory';
-import { InfoQuestion } from '../entity/InfoQuestion';
+import { InfoCategory } from '../../entity/InfoCategory';
+import { InfoQuestion } from '../../entity/InfoQuestion';
+import Route from '../../types/route';
 
 export class InfoController {
 
@@ -18,7 +19,7 @@ export class InfoController {
 
 }
 
-export const Routes = [
+export const Routes: Route[] = [
     {
         method: 'get',
         route: '/info',

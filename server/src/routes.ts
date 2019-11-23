@@ -1,9 +1,7 @@
-import * as  HomeController from './controller/HomeController';
-import * as InfoController from './controller/InfoController';
-import * as UserController from './controller/UserController';
+import * as HomeController from './controller/HomeController';
+import * as ControllerV1 from './controller/v1';
 
 export const Routes = [
     ...HomeController.Routes,
-    ...InfoController.Routes,
-    ...UserController.Routes,
+    ...ControllerV1.Routes,
 ];

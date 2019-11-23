@@ -1,6 +1,7 @@
 import { getRepository } from 'typeorm';
 import { NextFunction, Request, Response } from 'express';
-import { User } from '../entity/User';
+import { User } from '../../entity/User';
+import Route from '../../types/route';
 
 export class UserController {
 
@@ -25,7 +26,7 @@ export class UserController {
 
 }
 
-export const Routes = [{
+export const Routes: Route[] = [{
     method: 'get',
     route: '/users',
     controller: UserController,

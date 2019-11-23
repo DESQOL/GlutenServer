@@ -9,6 +9,21 @@ servers:
   - url: /v1/
 
 paths:
+  /users:
+    get:
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArrayOfUsers'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   /products:
     description: endpoints for products
     summary: endpoints for products
@@ -18,6 +33,25 @@ paths:
 
 components:
   schemas:
+    ArrayOfUsers:
+      type: array
+      items:
+        $ref: '#/components/schemas/User'
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: The user ID.
+        firstname:
+          type: string
+          description: The firstname of the user.
+        lastname:
+          type: string
+          description: The lastname of the user.
+        age:
+          type: integer
+          description: The age of the user.
     Error:
       required:
         - code

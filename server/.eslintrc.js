@@ -7,9 +7,10 @@ module.exports = {
         'plugin:@typescript-eslint/recommended',
     ],
     rules: {
+        "@typescript-eslint/semi": ["error"],
         "eol-last": ["error", "always"],
-        "quotes": ["error", "single", "avoid-escape"],
         "object-curly-spacing": ["error", "always"],
-        "semi": ["error", "always"],
+        "quotes": ["error", "single", "avoid-escape"],
+        "semi": "off",
     },
 };

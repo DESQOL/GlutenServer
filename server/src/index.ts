@@ -1,12 +1,13 @@
 import 'reflect-metadata';
 import { createConnection } from 'typeorm';
-import express, { NextFunction,Request, Response } from 'express';
+import express, { NextFunction, Request, Response } from 'express';
 import YAML from 'yamljs';
 import * as swaggerUi from 'swagger-ui-express';
 import { Routes } from './routes';
 import { OpenApiValidator } from 'express-openapi-validator';
 import bodyParser from 'body-parser';
-import logger from 'morgan';
+import morgan from 'morgan';
+import { stream } from './config/winston';
 
 const port = 3000;
 
@@ -24,7 +25,7 @@ createConnection().then(async connection => {
     app.use(bodyParser.text());
     app.use(bodyParser.urlencoded());
 
-    app.use(logger('dev'));
+    app.use(morgan('dev', { stream }));
     app.use(express.json());
     app.use(express.urlencoded({ extended: false }));
 

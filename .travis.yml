@@ -12,7 +12,6 @@ before_install:
 
 install:
   - cd server
-  - npm uninstall typescript --no-save
   - npm ci
 
 cache:

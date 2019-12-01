@@ -10,7 +10,6 @@ export class InfoCategory {
     @Column()
     name: string;
 
-
     @ManyToMany(type => InfoQuestion, question => question.categories, {
         eager: true,
     })

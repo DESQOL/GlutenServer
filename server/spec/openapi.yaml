@@ -18,6 +18,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ArrayOfUsers'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
         default:
           description: Unexpected error
           content:
@@ -32,6 +34,13 @@ paths:
     summary: endpoints for recipes
 
 components:
+  responses:
+    Unauthorized:
+      description: API key is missing or invalid
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   schemas:
     ArrayOfUsers:
       type: array
@@ -53,12 +62,27 @@ components:
           type: integer
           description: The age of the user.
     Error:
-      required:
-        - code
-        - message
+      type: object
       properties:
-        code:
-          type: integer
-          format: int32
         message:
           type: string
+        errors:
+          type: array
+          items:
+            type: object
+            properties:
+              path:
+                type: string
+              message:
+                type: string
+      required:
+        - message
+        - errors
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-KEY
+
+security:
+  - ApiKeyAuth: []

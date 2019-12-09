@@ -1,5 +1,5 @@
-import userSpec from './users.spec.test';
+import v1Spec from './v1';
 
 export default () => {
-    describe('/user', userSpec);
+    describe('/v1', v1Spec);
 };

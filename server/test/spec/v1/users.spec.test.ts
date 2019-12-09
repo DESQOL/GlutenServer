@@ -5,7 +5,7 @@ import fs from 'fs';
 import appRoot from 'app-root-path';
 import { OpenApiValidator } from 'express-openapi-validate';
 
-import app from '../../src';
+import app from '../../../src';
 
 /*
  * Load the OpenAPI document.

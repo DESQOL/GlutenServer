@@ -29,7 +29,7 @@ jobs:
       script:
         - npm test
     - stage: "Sync"
-      if: branch = master
+      if: branch = master AND type != pull_request
       script:
         - git remote add gitlab https://oauth2:$GITLAB_TOKEN@gitlab.fdmci.hva.nl/desqol/glutenserver.git
         - git push --force gitlab --all

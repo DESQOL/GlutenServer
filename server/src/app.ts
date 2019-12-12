@@ -1,40 +1,39 @@
-import * as express from "express";
-import { Application } from "express";
+import * as express from 'express';
 
 class App {
-    public app: Application;
-    public port: number;
+  public app: express.Application;
+  public port: number;
 
-    constructor(port: number = 3000) {
-        this.port = port;
-        this.app = express();
+  constructor (port: number = 3000) {
+    this.port = port;
+    this.app = express();
 
-        this.middlewares();
-        this.routes();
-    }
+    this.middlewares();
+    this.routes();
+  }
 
-    public listen() {
-        this.app.listen(this.port, () => {
+  public listen () {
+    this.app.listen(this.port, () => {
             // tslint:disable-next-line
             console.log(`App listening on the http://localhost:${this.port}`);
-        });
-    }
+    });
+  }
 
-    private middlewares() {
-        const middleWares = [];
+  private middlewares () {
+    const middleWares = [];
 
-        middleWares.forEach((middleWare) => {
-            this.app.use(middleWare);
-        });
-    }
+    middleWares.forEach((middleWare) => {
+      this.app.use(middleWare);
+    });
+  }
 
-    private routes() {
-        const controllers = [];
+  private routes () {
+    const controllers = [];
 
-        controllers.forEach((controller) => {
-            this.app.use("/", controller.router);
-        });
-    }
+    controllers.forEach((controller) => {
+      this.app.use('/', controller.router);
+    });
+  }
 }
 
 export default App;

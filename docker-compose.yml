@@ -13,3 +13,12 @@ services:
       MYSQL_DATABASE: gluten
       MYSQL_USER: gluten
       MYSQL_PASSWORD: gluten
+
+  server:
+    build: ./server
+    ports:
+      - 3000:3000
+    links:
+      - database
+    depends_on:
+      - database

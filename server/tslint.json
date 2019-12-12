@@ -1,16 +1,14 @@
 {
-  "defaultSeverity": "error",
+  "defaultSeverity": "warning",
   "extends": [
-    "tslint:recommended"
+    "tslint:recommended",
+    "tslint-config-standard"
   ],
   "jsRules": {},
   "rules": {
-    "trailing-comma": [
-      false
-    ],
-    "whitespace": [
+    "semicolon": [
       true,
-      "check-module"
+      "always"
     ]
   },
   "rulesDirectory": []

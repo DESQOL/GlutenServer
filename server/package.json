@@ -4,6 +4,8 @@
     "prebuild": "tslint -c tslint.json -p tsconfig.json --fix",
     "build": "tsc -p .",
     "dev": "ts-node src/server.ts",
+    "lint": "tslint -c tslint.json -p tsconfig.json",
+    "lint:fix": "tslint -c tslint.json -p tsconfig.json --fix",
     "start": "ts-node dist/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

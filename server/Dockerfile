@@ -15,6 +15,9 @@ RUN npm install
 # Bundle app source
 COPY . .
 
+# Build app source
+RUN npm run build
+
 EXPOSE 3000
 
 CMD [ "./scripts/wait-for-it.sh", "database:3306", "--", "npm", "start" ]

@@ -13,6 +13,23 @@ security:
   - ApiKeyQueryAuth:  []
 
 paths:
+  /user/login:
+    post:
+      security: []
+      requestBody:
+        $ref: '#/components/requestBodies/Login'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '401':
+          description: Not authenticated
+        '404':
+          description: User not found
+
   /users:
     get:
       responses:
@@ -50,6 +67,24 @@ components:
       type: apiKey
       in: query
       name: api_key
+
+  # Reusable request bodies
+  requestBodies:
+    Login:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            additionalProperties: false
+            properties:
+              email:
+                type: string
+              password:
+                type: string
+            required:
+              - email
+              - password
 
   # Reusable responses, such as 401 Unauthorized or 400 Bad Request
   responses:

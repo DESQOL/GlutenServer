@@ -9,6 +9,28 @@ export class UserController {
   public all (request: Request, response: Response) {
     return this.userRepository.find();
   }
+
+  public async login (request: Request, response: Response) {
+    const { email, password } = request.body;
+
+    const user = await this.userRepository.findOne({ email });
+    if (!user) {
+      response.status(403).json({
+        message: 'Incorrect username or password.',
+      });
+      return;
+    }
+
+    const isMatch = await user.validatePassword(password);
+    if (!isMatch) {
+      response.status(403).json({
+        message: 'Incorrect username or password.',
+      });
+      return;
+    }
+
+    response.json(user);
+  }
 }
 
 export const Routes: IRoute[] = [
@@ -17,5 +39,11 @@ export const Routes: IRoute[] = [
     route: '/users',
     controller: UserController,
     action: 'all',
+  },
+  {
+    method: 'post',
+    route: '/user/login',
+    controller: UserController,
+    action: 'login',
   },
 ];

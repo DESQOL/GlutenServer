@@ -1,6 +1,7 @@
 import bcrypt from 'bcrypt';
 import { IsEmail, MinLength } from 'class-validator';
-import { Column, Entity, getRepository, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, getRepository, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import Token from './token';
 
 @Entity()
 export default class User {
@@ -23,6 +24,11 @@ export default class User {
   @Column({ select: false })
   @MinLength(8)
   public password: string;
+
+  @OneToMany(() => Token, (token) => token.user, {
+    lazy: true,
+  })
+  public tokens: Token[];
 
   public displayUnit () {
     return {

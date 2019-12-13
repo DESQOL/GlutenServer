@@ -12,7 +12,7 @@ export class RecipeController {
 
   public async one (request: Request, response: Response) {
     const { recipeId } = request.params;
-    return this.recipeRepository.findOne(recipeId)
+    return this.recipeRepository.findOne(recipeId);
   }
 }
 

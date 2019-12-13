@@ -7,10 +7,6 @@ import User from '../../entity/user';
 export class UserController {
   private userRepository = getRepository(User);
 
-  public all (request: Request, response: Response) {
-    return this.userRepository.find();
-  }
-
   public async register (request: Request, response: Response) {
     const { email, name, password } = request.body;
 
@@ -63,12 +59,6 @@ export class UserController {
 }
 
 export const Routes: IRoute[] = [
-  {
-    method: 'get',
-    route: '/users',
-    controller: UserController,
-    action: 'all',
-  },
   {
     method: 'post',
     route: '/user/login',

@@ -42,18 +42,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/User'
 
-  /users:
-    get:
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ArrayOfUsers'
-        '401':
-          $ref: "#/components/responses/UnauthorizedError"
-
 components:
   # Reusable schemas (data models)
   schemas:

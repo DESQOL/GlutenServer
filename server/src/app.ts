@@ -33,7 +33,7 @@ class App {
 
   public listen () {
     this.server = this.app.listen(this.port, () => {
-      if (process.env.NODE_ENV.toUpperCase() !== 'TEST') {
+      if (!process.env.NODE_ENV || process.env.NODE_ENV.toUpperCase() !== 'TEST') {
         console.log(`App listening on the http://localhost:${this.port}`);
       }
     });

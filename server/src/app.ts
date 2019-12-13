@@ -1,3 +1,6 @@
+// tslint:disable-next-line: no-var-requires
+require('dotenv').config();
+
 import appRoot from 'app-root-path';
 import express, { Application, NextFunction, Request, Response } from 'express';
 import { OpenApiValidator } from 'express-openapi-validator';

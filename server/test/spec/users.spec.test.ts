@@ -18,49 +18,86 @@ export default () => {
     server.close();
   });
 
-  describe('GET /users', () => {
-    const endpoint: string = '/v1/users';
-    const responses: object = {
-      200: [
-        {
-          id: 1,
-          name: 'Martijn',
-        },
-      ],
-      401: {
-        message: "'X-API-KEY' header required",
-        errors: [
-          {
-            path: '/v1/users',
-            message: "'X-API-KEY' header required",
-          },
-        ],
-      },
+  describe('POST /user/login', () => {
+    const defaultLogin = {
+      email: 'martijn.vegter@hva.nl',
+      password: '12345678',
     };
 
-    it('should return 401 if the api key is missing', async () => {
+    it('should return the displayUnit on successfull login', (done) => {
       request(app)
-        .get(endpoint)
-        .expect(401)
-        .then((res) => expect(res.body).to.deep.equal(responses['401']))
-        .catch((err) => expect(err).to.be.undefined);
+      .post('/v1/user/login')
+      .send(defaultLogin)
+      .expect(200, {
+        name: 'Martijn Vegter',
+        email: 'martijn.vegter@hva.nl',
+      }, done);
     });
 
-    it('should return 200 if header \'X-API-KEY\' is provided', async () => {
+    it('incorrect email', (done) => {
       request(app)
-        .get(endpoint)
-        .set('X-API-KEY', 'sometoken')
-        .expect(200)
-        .then((res) => expect(res.body).to.deep.equal(responses['200']))
-        .catch((err) => expect(err).to.be.undefined);
+      .post('/v1/user/login')
+      .send(Object.assign(defaultLogin, { email: '' }))
+      .expect(403, {
+        message: 'Incorrect email or password.',
+      }, done);
     });
 
-    it('should return 200 if query \'api_key\' is provided', async () => {
+    it('incorrect password', (done) => {
       request(app)
-        .get(`${endpoint}?api_key=sometoken`)
-        .expect(200)
-        .then((res) => expect(res.body).to.deep.equal(responses['200']))
-        .catch((err) => expect(err).to.be.undefined);
+      .post('/v1/user/login')
+      .send(Object.assign(defaultLogin, { password: '' }))
+      .expect(403, {
+        message: 'Incorrect email or password.',
+      }, done);
+    });
+
+    it('missing email', (done) => {
+      request(app)
+      .post('/v1/user/login')
+      .send({ password: '' })
+      .expect(400, {
+        message: "request.body should have required property 'email'",
+        errors: [
+          {
+            path: '.body.email',
+            message: "should have required property 'email'",
+            errorCode: 'required.openapi.validation',
+          },
+        ],
+      }, done);
+    });
+
+    it('missing password', (done) => {
+      request(app)
+      .post('/v1/user/login')
+      .send({ email: '' })
+      .expect(400, {
+        message: "request.body should have required property 'password'",
+        errors: [
+          {
+            path: '.body.password',
+            message: "should have required property 'password'",
+            errorCode: 'required.openapi.validation',
+          },
+        ],
+      }, done);
+    });
+
+    it('extra property', (done) => {
+      request(app)
+      .post('/v1/user/login')
+      .send(Object.assign(defaultLogin, { not: 'allowed' }))
+      .expect(400, {
+        message: 'request.body should NOT have additional properties',
+        errors: [
+          {
+            path: '.body.not',
+            message: 'should NOT have additional properties',
+            errorCode: 'additionalProperties.openapi.validation',
+          },
+        ],
+      }, done);
     });
   });
 };

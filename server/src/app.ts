@@ -1,12 +1,14 @@
 import appRoot from 'app-root-path';
 import express, { Application, NextFunction, Request, Response } from 'express';
 import { OpenApiValidator } from 'express-openapi-validator';
+import { Server } from 'http';
 
 import * as ControllerV1 from './controllers/v1';
 
 class App {
   public app: Application;
   public port: number;
+  public server: Server;
 
   constructor (port: number = 3000) {
     this.port = port;
@@ -30,10 +32,15 @@ class App {
   }
 
   public listen () {
-    this.app.listen(this.port, () => {
-        // tslint:disable-next-line:no-console
-      console.log(`App listening on the http://localhost:${this.port}`);
+    this.server = this.app.listen(this.port, () => {
+      if (process.env.NODE_ENV.toUpperCase() !== 'TEST') {
+        console.log(`App listening on the http://localhost:${this.port}`);
+      }
     });
+  }
+
+  public close () {
+    this.server.close();
   }
 
   private middlewares () {

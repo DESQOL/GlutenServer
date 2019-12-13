@@ -2,6 +2,8 @@ import appRoot from 'app-root-path';
 import express, { Application, NextFunction, Request, Response } from 'express';
 import { OpenApiValidator } from 'express-openapi-validator';
 
+import * as ControllerV1 from './controllers/v1';
+
 class App {
   public app: Application;
   public port: number;
@@ -35,18 +37,25 @@ class App {
   }
 
   private middlewares () {
-    const middleWares = [];
-
-    middleWares.forEach((middleWare) => {
+    [].forEach((middleWare) => {
       this.app.use(middleWare);
     });
   }
 
   private routes () {
-    const controllers = [];
-
-    controllers.forEach((controller) => {
-      this.app.use('/', controller.router);
+    [
+      ...ControllerV1.Routes,
+    ].forEach((route) => {
+      this.app[route.method](route.route, (req: Request, res: Response, next: NextFunction) => {
+        const result = (new (route.controller)())[route.action](req, res, next);
+        if (result instanceof Promise) {
+          result
+            .then((data) => data !== null && data !== undefined ? res.send(data) : undefined)
+            .catch((err) => next(err));
+        } else if (result !== null && result !== undefined) {
+          res.json(result);
+        }
+      });
     });
   }
 }

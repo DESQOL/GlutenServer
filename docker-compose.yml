@@ -5,6 +5,7 @@ services:
     image: mysql:5.7.28
     volumes:
       - './database/data:/var/lib/mysql'
+      - './database/dump.sql:/docker-entrypoint-initdb.d/dump.sql'
     restart: always
     ports:
       - 3306:3306

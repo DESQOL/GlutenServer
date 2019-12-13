@@ -22,6 +22,19 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ArrayOfRecipes'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+  /recipe/{recipeId}:
+    get:
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Recipe'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
   /user/login:
     post:
       security: []

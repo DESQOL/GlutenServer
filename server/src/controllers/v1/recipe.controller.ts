@@ -9,6 +9,11 @@ export class RecipeController {
   public async all (request: Request, response: Response) {
     return this.recipeRepository.find();
   }
+
+  public async one (request: Request, response: Response) {
+    const { recipeId } = request.params;
+    return this.recipeRepository.findOne(recipeId)
+  }
 }
 
 export const Routes: IRoute[] = [
@@ -17,5 +22,11 @@ export const Routes: IRoute[] = [
     route: '/recipe/all',
     controller: RecipeController,
     action: 'all',
+  },
+  {
+    method: 'get',
+    route: '/recipe/:recipeId',
+    controller: RecipeController,
+    action: 'one',
   },
 ];

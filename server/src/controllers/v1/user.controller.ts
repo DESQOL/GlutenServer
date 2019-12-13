@@ -41,7 +41,7 @@ export class UserController {
     const user = await this.userRepository.findOne({ email });
     if (!user) {
       response.status(403).json({
-        message: 'Incorrect username or password.',
+        message: 'Incorrect email or password.',
       });
       return;
     }
@@ -49,7 +49,7 @@ export class UserController {
     const isMatch = await user.validatePassword(password);
     if (!isMatch) {
       response.status(403).json({
-        message: 'Incorrect username or password.',
+        message: 'Incorrect email or password.',
       });
       return;
     }

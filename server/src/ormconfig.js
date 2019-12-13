@@ -17,4 +17,8 @@ if (process.env.CI) {
   options['password'] = '';
 }
 
+if (process.env.MYSQL_HOST) {
+  options['host'] = process.env.MYSQL_HOST;
+}
+
 module.exports = options;

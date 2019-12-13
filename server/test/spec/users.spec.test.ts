@@ -7,11 +7,11 @@ export default () => {
   let server = null;
   let app = null;
 
-  before(() => {
+  before(async () => {
     server = new App();
     app = server.app;
 
-    server.listen();
+    await server.listen();
   });
 
   after(() => {

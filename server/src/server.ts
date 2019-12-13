@@ -1,4 +1,7 @@
 import App from './app';
 
-const app = new App();
-app.listen();
+// tslint:disable-next-line: no-floating-promises
+(async () => {
+  const app = new App();
+  await app.listen();
+})();

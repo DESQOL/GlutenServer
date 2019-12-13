@@ -4,3 +4,19 @@ node_js:
 
 before_install:
   - cd server
+
+jobs:
+  include:
+    - stage: "Lint"
+      script:
+        - npm run lint
+        - npm run lint:fix
+    - stage: "Test"
+      script:
+        - npm test
+    - stage: "Sync"
+      if: branch = master AND type != pull_request
+      script:
+        - git remote add gitlab https://oauth2:$GITLAB_TOKEN@gitlab.fdmci.hva.nl/desqol/glutenserver.git
+        - git push --force gitlab --all
+        - git push --force gitlab --tags

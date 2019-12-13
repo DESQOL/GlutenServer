@@ -12,4 +12,9 @@ const options = {
   subscribers: ["src/subscriber/**/*.ts"]
 };
 
+if (process.env.CI) {
+  options['username'] = 'travis';
+  options['password'] = '';
+}
+
 module.exports = options;

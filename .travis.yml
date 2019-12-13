@@ -2,7 +2,12 @@ language: node_js
 node_js:
   - 12.13.1
 
+services:
+  - mysql
+
 before_install:
+  - mysql -e 'CREATE DATABASE IF NOT EXISTS gluten;'
+  - mysql -u root --default-character-set=utf8 gluten < database/dump.sql
   - cd server
 
 jobs:

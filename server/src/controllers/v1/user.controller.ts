@@ -1,9 +1,13 @@
 import { Request, Response } from 'express';
+import { getRepository } from 'typeorm';
 import IRoute from 'types/route';
+import User from '../../entity/user';
 
 export class UserController {
+  private userRepository = getRepository(User);
+
   public all (request: Request, response: Response) {
-    response.json([{ id: 1, name: 'Martijn' }]);
+    return this.userRepository.find();
   }
 }
 

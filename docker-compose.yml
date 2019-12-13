@@ -22,3 +22,5 @@ services:
       - database
     depends_on:
       - database
+    environment:
+      MYSQL_HOST: database

@@ -7,6 +7,11 @@ info:
 servers:
   - url: http://localhost/v1/
 
+security:
+  # Either key can be used (as in logical OR)
+  - ApiKeyAuth: []
+  - ApiKeyQueryAuth:  []
+
 paths:
   /users:
     get:
@@ -17,6 +22,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ArrayOfUsers'
+        '401':
+          $ref: "#/components/responses/UnauthorizedError"
 
 components:
   # Reusable schemas (data models)
@@ -32,3 +39,23 @@ components:
           type: integer
         name:
           type: string
+  
+  # Security scheme definitions (see Authentication)
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-KEY
+    ApiKeyQueryAuth:
+      type: apiKey
+      in: query
+      name: api_key
+
+  # Reusable responses, such as 401 Unauthorized or 400 Bad Request
+  responses:
+    UnauthorizedError:
+      description: API key is missing or invalid
+      headers:
+        WWW_Authenticate:
+          schema:
+            type: string

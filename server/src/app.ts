@@ -1,37 +1,68 @@
-import * as express from 'express';
+import appRoot from 'app-root-path';
+import express, { Application, NextFunction, Request, Response } from 'express';
+import { OpenApiValidator } from 'express-openapi-validator';
+import { Server } from 'http';
+
+import * as ControllerV1 from './controllers/v1';
 
 class App {
-  public app: express.Application;
+  public app: Application;
   public port: number;
+  public server: Server;
 
   constructor (port: number = 3000) {
     this.port = port;
     this.app = express();
 
+    new OpenApiValidator({
+      apiSpec: `${appRoot}/spec/openapi.yaml`,
+      validateRequests: true,
+      validateResponses: true,
+    }).installSync(this.app);
+
     this.middlewares();
     this.routes();
-  }
 
-  public listen () {
-    this.app.listen(this.port, () => {
-            // tslint:disable-next-line
-            console.log(`App listening on the http://localhost:${this.port}`);
+    this.app.use((err: any, req: Request, res: Response, next: NextFunction) => {
+      res.status(err.status || 500).json({
+        message: err.message,
+        errors: err.errors,
+      });
     });
   }
 
-  private middlewares () {
-    const middleWares = [];
+  public listen () {
+    this.server = this.app.listen(this.port, () => {
+      if (process.env.NODE_ENV.toUpperCase() !== 'TEST') {
+        console.log(`App listening on the http://localhost:${this.port}`);
+      }
+    });
+  }
 
-    middleWares.forEach((middleWare) => {
+  public close () {
+    this.server.close();
+  }
+
+  private middlewares () {
+    [].forEach((middleWare) => {
       this.app.use(middleWare);
     });
   }
 
   private routes () {
-    const controllers = [];
-
-    controllers.forEach((controller) => {
-      this.app.use('/', controller.router);
+    [
+      ...ControllerV1.Routes,
+    ].forEach((route) => {
+      this.app[route.method](route.route, (req: Request, res: Response, next: NextFunction) => {
+        const result = (new (route.controller)())[route.action](req, res, next);
+        if (result instanceof Promise) {
+          result
+            .then((data) => data !== null && data !== undefined ? res.send(data) : undefined)
+            .catch((err) => next(err));
+        } else if (result !== null && result !== undefined) {
+          res.json(result);
+        }
+      });
     });
   }
 }

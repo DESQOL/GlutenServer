@@ -6,9 +6,17 @@
   ],
   "jsRules": {},
   "rules": {
+    "object-literal-sort-keys": false,
     "semicolon": [
       true,
       "always"
+    ],
+    "trailing-comma": [
+      true,
+      {
+        "multiline": "always",
+        "singleline": "never"
+      }
     ]
   },
   "rulesDirectory": []

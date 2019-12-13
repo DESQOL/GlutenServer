@@ -19,6 +19,9 @@ class App {
     this.port = port;
     this.app = express();
 
+    this.app.use(express.json());
+    this.app.use(express.urlencoded({ extended: false }));
+
     new OpenApiValidator({
       apiSpec: `${appRoot}/spec/openapi.yaml`,
       validateRequests: true,

@@ -4,6 +4,12 @@ import { Column, Entity, getRepository, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export default class User {
+
+  public static async hashPassword (password: string): Promise<string> {
+    const hash = await bcrypt.genSalt();
+    return bcrypt.hash(password, hash);
+  }
+
   @PrimaryGeneratedColumn()
   public id: number;
 
@@ -17,6 +23,13 @@ export default class User {
   @Column({ select: false })
   @MinLength(8)
   public password: string;
+
+  public displayUnit () {
+    return {
+      name: this.name,
+      email: this.email,
+    };
+  }
 
   public async validatePassword (password: string): Promise<boolean> {
     const userRepository = getRepository(User);

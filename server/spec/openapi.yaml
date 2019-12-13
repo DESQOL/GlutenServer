@@ -29,6 +29,18 @@ paths:
           description: Not authenticated
         '404':
           description: User not found
+  /user/register:
+    post:
+      security: []
+      requestBody:
+        $ref: '#/components/requestBodies/Register'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
 
   /users:
     get:
@@ -83,6 +95,24 @@ components:
               password:
                 type: string
             required:
+              - email
+              - password
+    Register:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            additionalProperties: false
+            properties:
+              name:
+                type: string
+              email:
+                type: string
+              password:
+                type: string
+            required:
+              - name
               - email
               - password
 

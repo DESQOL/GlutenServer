@@ -13,6 +13,15 @@ security:
   - ApiKeyQueryAuth:  []
 
 paths:
+  /recipe/all:
+    get:
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArrayOfRecipes'
   /user/login:
     post:
       security: []
@@ -45,10 +54,55 @@ paths:
 components:
   # Reusable schemas (data models)
   schemas:
+    ArrayOfRecipes:
+      type: array
+      items:
+        $ref: '#/components/schemas/Recipe'
     ArrayOfUsers:
       type: array
       items:
         $ref: '#/components/schemas/User'
+    Product:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        recipeIngredients:
+          type: array
+          items:
+            $ref: '#/components/schemas/Ingredient'
+    Ingredient:
+      type: object
+      properties:
+        id:
+          type: integer
+        product:
+          $ref: '#/components/schemas/Product'
+        amount:
+          type: string
+        recipe:
+          $ref: '#/components/schemas/Recipe'
+    Recipe:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        description:
+          type: string
+        image:
+          type: string
+        ingredients:
+          type: array
+          items:
+            $ref: '#/components/schemas/Ingredient'
+        duration:
+          type: string
+        rating:
+          type: number
     User:
       type: object
       properties:

@@ -5,17 +5,17 @@ import { getRepository } from 'typeorm';
 
 @Controller('/v1/recipe')
 export class RecipeController {
-  private recipeRepository = getRepository(Recipe);
+    private recipeRepository = getRepository(Recipe);
 
-  @Get('/all')
-  @AdminScope()
-  public async all (request: Request, response: Response) {
-    return this.recipeRepository.find();
-  }
+    @Get('/all')
+    @AdminScope()
+    public async all (request: Request, response: Response) {
+        return this.recipeRepository.find();
+    }
 
-  @Get('/:recipeId')
-  public async one (request: Request, response: Response) {
-    const { recipeId } = request.params;
-    return this.recipeRepository.findOne(recipeId);
-  }
+    @Get('/:recipeId')
+    public async one (request: Request, response: Response) {
+        const { recipeId } = request.params;
+        return this.recipeRepository.findOne(recipeId);
+    }
 }

@@ -19,6 +19,8 @@
       "@entity/*": ["entity/index/*"],
       "@helper": ["helper/index"],
       "@helper/*": ["helper/index/*"],
+      "@middleware": ["middleware/index"],
+      "@middleware/*": ["middleware/*"],
       "@type": ["type/index"],
       "@type/*": ["type/index/*"]
     }

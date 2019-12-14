@@ -17,6 +17,7 @@ import compression from 'compression';
 
 import { RecipeController, UserController } from '@controller/v1';
 import { MiddlewareDefinition, RouteDefinition } from '@type';
+import { rateLimiter } from '@middleware';
 
 class App {
     public app: Application;
@@ -31,6 +32,7 @@ class App {
         this.app.use(compression());
         this.app.use(express.json());
         this.app.use(express.urlencoded({ extended: false }));
+        this.app.use(rateLimiter());
 
         const swaggerDocument = yaml.safeLoad(fs.readFileSync(`${appRoot}/spec/openapi.yaml`, 'utf8'));
         this.app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));

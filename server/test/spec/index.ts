@@ -1,5 +1,5 @@
 import userSpec from './users.spec.test';
 
-export default () => {
+export default (): void => {
     describe('/user', userSpec);
 };

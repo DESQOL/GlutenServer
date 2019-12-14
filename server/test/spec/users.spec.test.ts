@@ -1,9 +1,8 @@
-import { expect } from 'chai';
 import request from 'supertest';
 
 import App from './../../src/app';
 
-export default () => {
+export default (): void=> {
     let server = null;
     let app = null;
 

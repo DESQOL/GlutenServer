@@ -7,7 +7,7 @@ import { getRepository } from 'typeorm';
 const metadataKey = 'routeMiddleware';
 
 export const AdminScope = (): MethodDecorator => {
-    return (target: any, propertyKey: string): void => {
+    return (target: object, propertyKey: string): void => {
         const metadataValue = Reflect.getMetadata(metadataKey, target, propertyKey) as MiddlewareDefinition[] || [];
 
         metadataValue.push(async (request: Request, response: Response, next: NextFunction) => {

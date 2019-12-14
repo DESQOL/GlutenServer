@@ -30,7 +30,7 @@ export class User {
     })
     public tokens: Token[];
 
-    public displayUnit () {
+    public displayUnit (): object {
         return {
             name: this.name,
             email: this.email,

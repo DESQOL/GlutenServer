@@ -4,7 +4,7 @@ import { Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn
 @Entity()
 export class Token {
 
-    public static generateToken () {
+    public static generateToken (): string {
         return `${Math.random().toString(36).substr(2)}${Math.random().toString(36).substr(2)}`;
     }
 

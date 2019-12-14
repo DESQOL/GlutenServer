@@ -1,6 +1,6 @@
 import { AdminScope, Controller, Get } from '@decorator';
 import { Recipe } from '@entity';
-import { Request, Response } from 'express';
+import { Request, Response, NextFunction } from 'express';
 import { getRepository } from 'typeorm';
 
 @Controller('/v1/recipe')
@@ -9,12 +9,12 @@ export class RecipeController {
 
     @Get('/all')
     @AdminScope()
-    public async all (request: Request, response: Response) {
+    public async all (_request: Request, _response: Response, _next: NextFunction): Promise<Recipe[]> {
         return this.recipeRepository.find();
     }
 
     @Get('/:recipeId')
-    public async one (request: Request, response: Response) {
+    public async one (request: Request, _response: Response, _next: NextFunction): Promise<Recipe> {
         const { recipeId } = request.params;
         return this.recipeRepository.findOne(recipeId);
     }

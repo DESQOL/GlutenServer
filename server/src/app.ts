@@ -2,6 +2,7 @@ import 'reflect-metadata';
 
 // tslint:disable-next-line: no-var-requires
 require('dotenv').config();
+import ormconfig from './ormconfig.js';
 
 import appRoot from 'app-root-path';
 import express, { Application, NextFunction, Request, Response } from 'express';
@@ -33,7 +34,7 @@ class App {
         this.middlewares();
         this.routes();
 
-        this.app.use((err: any, req: Request, res: Response, next: NextFunction) => {
+        this.app.use((err: any, req: Request, res: Response, _next: NextFunction) => {
             res.status(err.status || 500).json({
                 message: err.message,
                 errors: err.errors,
@@ -41,8 +42,8 @@ class App {
         });
     }
 
-    public async listen () {
-        await createConnection(require('./ormconfig.js'))
+    public async listen (): Promise<void> {
+        await createConnection(ormconfig)
             .catch((err) => {
                 console.error(err);
                 process.exit();
@@ -55,17 +56,17 @@ class App {
         });
     }
 
-    public close () {
+    public close (): void {
         this.server.close();
     }
 
-    private middlewares () {
+    private middlewares (): void {
         [].forEach((middleWare) => {
             this.app.use(middleWare);
         });
     }
 
-    private routes () {
+    private routes (): void {
         [
             RecipeController,
             UserController,
@@ -79,7 +80,7 @@ class App {
                     routeMiddleware = Reflect.getMetadata('routeMiddleware', controller.prototype, route.methodName);
                 }
 
-                function routeHandler (req: Request, res: Response, next: NextFunction) {
+                function routeHandler (req: Request, res: Response, next: NextFunction): void {
                     const result = new controller()[route.methodName](req, res, next);
                     if (result instanceof Promise) {
                         result

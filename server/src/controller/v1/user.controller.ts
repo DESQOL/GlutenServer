@@ -1,7 +1,7 @@
 import { Controller, Post } from '@decorator';
 import { User } from '@entity';
 import { validate } from 'class-validator';
-import { Request, Response } from 'express';
+import { Request, Response, NextFunction } from 'express';
 import { getRepository } from 'typeorm';
 
 @Controller('/v1/user')
@@ -9,7 +9,7 @@ export class UserController {
     private userRepository = getRepository(User);
 
     @Post('/register')
-    public async register (request: Request, response: Response) {
+    public async register (request: Request, response: Response, _next: NextFunction): Promise<object> {
         const { email, name, password } = request.body;
 
         let user = await this.userRepository.findOne({ email });
@@ -38,7 +38,7 @@ export class UserController {
     }
 
     @Post('/login')
-    public async login (request: Request, response: Response) {
+    public async login (request: Request, response: Response, _next: NextFunction): Promise<object> {
         const { email, password } = request.body;
 
         const user = await this.userRepository.findOne({ email });

@@ -2,7 +2,7 @@ import { getToken } from '@helper';
 import { expect } from 'chai';
 import { Request } from 'express';
 
-export default () => {
+export default (): void => {
     // Arrange
     const baseRequest = {
         headers: {},

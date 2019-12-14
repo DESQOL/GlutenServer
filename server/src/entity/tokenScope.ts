@@ -1,4 +1,4 @@
-import { Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 import Token from './token';
 
 @Entity()
@@ -12,5 +12,8 @@ export default class TokenScope {
   })
   @JoinColumn()
   public token: Token;
+
+  @Column({ default: false })
+  public isAdmin: boolean;
 
 }

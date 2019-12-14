@@ -1,8 +1,8 @@
+import { Token } from '@entity';
 import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
-import Token from './token';
 
 @Entity()
-export default class TokenScope {
+export class TokenScope {
 
   @PrimaryGeneratedColumn()
   public id: number;

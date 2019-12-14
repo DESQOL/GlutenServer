@@ -1,10 +1,10 @@
+import { Token } from '@entity';
 import bcrypt from 'bcrypt';
 import { IsEmail, MinLength } from 'class-validator';
 import { Column, Entity, getRepository, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-import Token from './token';
 
 @Entity()
-export default class User {
+export class User {
 
   public static async hashPassword (password: string): Promise<string> {
     const hash = await bcrypt.genSalt();

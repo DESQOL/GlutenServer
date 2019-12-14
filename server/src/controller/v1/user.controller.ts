@@ -1,8 +1,8 @@
+import { Controller, Post } from '@decorator';
+import { User } from '@entity';
 import { validate } from 'class-validator';
 import { Request, Response } from 'express';
 import { getRepository } from 'typeorm';
-import { Controller, Post } from '../../decorator';
-import User from '../../entity/user';
 
 @Controller('/v1/user')
 export class UserController {

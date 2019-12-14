@@ -1,9 +1,8 @@
+import { Product, Recipe } from '@entity';
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
-import Product from './product';
-import Recipe from './recipe';
 
 @Entity()
-export default class Ingredient {
+export class Ingredient {
 
   @PrimaryGeneratedColumn()
   public id: number;

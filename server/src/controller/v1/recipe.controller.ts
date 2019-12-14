@@ -1,7 +1,7 @@
+import { AdminScope, Controller, Get } from '@decorator';
+import { Recipe } from '@entity';
 import { Request, Response } from 'express';
 import { getRepository } from 'typeorm';
-import { AdminScope, Controller, Get } from '../../decorator';
-import Recipe from '../../entity/recipe';
 
 @Controller('/v1/recipe')
 export class RecipeController {

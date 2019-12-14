@@ -15,22 +15,26 @@ services:
       MYSQL_USER: gluten
       MYSQL_PASSWORD: gluten
   
-  redis:
+  cache:
     image: redis:5.0.7
+    volumes:
+      - './database/cache:/data'
     restart: always
     ports:
       - 6379:6379
 
   server:
     build: ./server
+    volumes:
+      - './server/logs:/usr/src/app/logs'
     ports:
       - 3000:3000
     links:
       - database
-      - redis
+      - cache
     depends_on:
       - database
-      - redis
+      - cache
     environment:
       MYSQL_HOST: database
-      REDIS_HOST: redis
+      REDIS_HOST: cache

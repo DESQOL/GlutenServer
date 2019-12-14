@@ -12,9 +12,13 @@ import { createConnection } from 'typeorm';
 import swaggerUi from 'swagger-ui-express';
 import yaml from 'js-yaml';
 import fs from 'fs';
+import helmet from 'helmet';
+import compression from 'compression';
 
 import { RecipeController, UserController } from '@controller/v1';
 import { MiddlewareDefinition, RouteDefinition } from '@type';
+import { httpLogger, rateLimiter } from '@middleware';
+import { logger } from '@helper';
 
 class App {
     public app: Application;
@@ -25,8 +29,12 @@ class App {
         this.port = port;
         this.app = express();
 
+        this.app.use(httpLogger);
+        this.app.use(helmet());
+        this.app.use(compression());
         this.app.use(express.json());
         this.app.use(express.urlencoded({ extended: false }));
+        this.app.use(rateLimiter());
 
         const swaggerDocument = yaml.safeLoad(fs.readFileSync(`${appRoot}/spec/openapi.yaml`, 'utf8'));
         this.app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
@@ -51,14 +59,12 @@ class App {
     public async listen (): Promise<void> {
         await createConnection(ormconfig)
             .catch((err) => {
-                console.error(err);
+                logger.error(err);
                 process.exit();
             });
 
         this.server = this.app.listen(this.port, () => {
-            if (!process.env.NODE_ENV || process.env.NODE_ENV.toUpperCase() !== 'TEST') {
-                console.log(`App listening on the http://localhost:${this.port}`);
-            }
+            logger.info(`App listening on the http://localhost:${this.port}`);
         });
     }
 

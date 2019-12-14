@@ -1,9 +1,8 @@
+import { TokenScope, User } from '@entity';
 import { Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
-import TokenScope from './tokenScope';
-import User from './user';
 
 @Entity()
-export default class Token {
+export class Token {
 
   public static generateToken () {
     return `${Math.random().toString(36).substr(2)}${Math.random().toString(36).substr(2)}`;

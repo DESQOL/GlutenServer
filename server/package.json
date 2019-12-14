@@ -4,11 +4,11 @@
     "prebuild": "tslint -c tslint.json -p tsconfig.json --fix",
     "build": "tsc -p .",
     "postbuild": "copyfiles src/ormconfig.js dist",
-    "dev": "ts-node src/server.ts",
+    "dev": "ts-node -r tsconfig-paths/register src/server.ts",
     "lint": "tslint -c tslint.json -p tsconfig.json",
     "lint:fix": "tslint -c tslint.json -p tsconfig.json --fix",
-    "start": "ts-node dist/src/server.js",
-    "test": "cross-env NODE_ENV=test mocha -r ts-node/register test/*.ts --exit --timeout 10000"
+    "start": "ts-node -r tsconfig-paths/register dist/src/server.js",
+    "test": "cross-env NODE_ENV=test mocha -r ts-node/register -r tsconfig-paths/register test/*.ts --exit --timeout 10000"
   },
   "dependencies": {
     "app-root-path": "3.0.0",
@@ -37,6 +37,7 @@
     "cross-env": "6.0.3",
     "mocha": "6.2.2",
     "supertest": "4.0.2",
+    "tsconfig-paths": "3.9.0",
     "tslint": "5.20.1",
     "tslint-config-standard": "9.0.0"
   }

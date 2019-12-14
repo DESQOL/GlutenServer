@@ -1,6 +1,6 @@
+import { getToken } from '@helper';
 import { expect } from 'chai';
 import { Request } from 'express';
-import { getToken } from '../../src/helper';
 
 export default () => {
     // Arrange

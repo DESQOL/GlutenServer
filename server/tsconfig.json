@@ -9,7 +9,19 @@
     "experimentalDecorators": true,
     "moduleResolution": "node",
     "outDir": "./dist",
-    "baseUrl": "./src"
+    "baseUrl": "./src",
+    "paths": {
+      "@controller": ["controller/index"],
+      "@controller/*": ["controller/*"],
+      "@decorator": ["decorator/index"],
+      "@decorator/*": ["decorator/*"],
+      "@entity": ["entity/index"],
+      "@entity/*": ["entity/index/*"],
+      "@helper": ["helper/index"],
+      "@helper/*": ["helper/index/*"],
+      "@type": ["type/index"],
+      "@type/*": ["type/index/*"]
+    }
   },
   "include": ["src/**/*.ts", "test/**/*.ts"],
   "exclude": ["node_modules"]

@@ -1,12 +1,14 @@
 import { validate } from 'class-validator';
 import { Request, Response } from 'express';
-import IRoute from 'type/route';
 import { getRepository } from 'typeorm';
+import { Controller, Post } from '../../decorator';
 import User from '../../entity/user';
 
+@Controller('/v1/user')
 export class UserController {
   private userRepository = getRepository(User);
 
+  @Post('/register')
   public async register (request: Request, response: Response) {
     const { email, name, password } = request.body;
 
@@ -35,6 +37,7 @@ export class UserController {
     response.json(user.displayUnit());
   }
 
+  @Post('/login')
   public async login (request: Request, response: Response) {
     const { email, password } = request.body;
 
@@ -57,18 +60,3 @@ export class UserController {
     response.json(user.displayUnit());
   }
 }
-
-export const Routes: IRoute[] = [
-  {
-    method: 'post',
-    route: '/user/login',
-    controller: UserController,
-    action: 'login',
-  },
-  {
-    method: 'post',
-    route: '/user/register',
-    controller: UserController,
-    action: 'register',
-  },
-];

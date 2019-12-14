@@ -1,5 +1,4 @@
 import { Request, Response } from 'express';
-import IRoute from 'type/route';
 import { getRepository } from 'typeorm';
 import { AdminScope, Controller, Get } from '../../decorator';
 import Recipe from '../../entity/recipe';
@@ -20,5 +19,3 @@ export class RecipeController {
     return this.recipeRepository.findOne(recipeId);
   }
 }
-
-export const Routes: IRoute[] = [];

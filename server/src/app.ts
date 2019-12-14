@@ -9,7 +9,7 @@ import { OpenApiValidator } from 'express-openapi-validator';
 import { Server } from 'http';
 import { createConnection } from 'typeorm';
 
-import { RecipeController } from './controller/v1/recipe.controller';
+import { RecipeController, UserController } from './controller/v1';
 import { MiddlewareDefinition, RouteDefinition } from './type';
 
 class App {
@@ -68,6 +68,7 @@ class App {
   private routes () {
     [
       RecipeController,
+      UserController,
     ].forEach((controller) => {
       const prefix = Reflect.getMetadata('prefix', controller);
       const routes: RouteDefinition[] = Reflect.getMetadata('routes', controller);

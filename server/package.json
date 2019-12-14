@@ -4,8 +4,8 @@
     "build": "tsc -p .",
     "postbuild": "copyfiles src/ormconfig.js dist",
     "dev": "ts-node -r tsconfig-paths/register src/server.ts",
-    "lint": "eslint --ext .ts src test",
-    "lint:fix": "eslint --ext .ts src test --fix",
+    "lint": "eslint ./**/*.ts",
+    "lint:fix": "eslint ./**/*.ts --fix",
     "start": "ts-node -r tsconfig-paths/register dist/src/server.js",
     "test": "cross-env NODE_ENV=test mocha -r ts-node/register -r tsconfig-paths/register test/*.ts --exit --timeout 10000"
   },

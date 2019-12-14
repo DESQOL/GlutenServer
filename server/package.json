@@ -3,7 +3,7 @@
   "scripts": {
     "build": "tsc -p .",
     "postbuild": "copyfiles src/ormconfig.js dist",
-    "dev": "ts-node -r tsconfig-paths/register src/server.ts",
+    "dev": "nodemon -r tsconfig-paths/register src/server.ts",
     "lint": "eslint ./**/*.ts",
     "lint:fix": "eslint ./**/*.ts --fix",
     "start": "ts-node -r tsconfig-paths/register dist/src/server.js",
@@ -40,6 +40,7 @@
     "husky": "3.1.0",
     "lint-staged": "9.5.0",
     "mocha": "6.2.2",
+    "nodemon": "2.0.2",
     "supertest": "4.0.2",
     "tsconfig-paths": "3.9.0"
   },
@@ -53,5 +54,19 @@
       "eslint --fix",
       "git add"
     ]
+  },
+  "nodemonConfig": {
+    "watch": [
+      "spec",
+      "src"
+    ],
+    "ext": "ts yaml",
+    "ignore": [
+      "test/*"
+    ],
+    "delay": "2500",
+    "execMap": {
+      "ts": "ts-node"
+    }
   }
 }

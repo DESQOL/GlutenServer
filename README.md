@@ -1,5 +1,7 @@
 # GlutenServer
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/DESQOL/GlutenServer.svg)](https://greenkeeper.io/)
+
 ## Docker
 
 ### Build        

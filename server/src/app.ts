@@ -9,6 +9,9 @@ import express, { Application, NextFunction, Request, Response } from 'express';
 import { OpenApiValidator } from 'express-openapi-validator';
 import { Server } from 'http';
 import { createConnection } from 'typeorm';
+import swaggerUi from 'swagger-ui-express';
+import yaml from 'js-yaml';
+import fs from 'fs';
 
 import { RecipeController, UserController } from '@controller/v1';
 import { MiddlewareDefinition, RouteDefinition } from '@type';
@@ -24,6 +27,9 @@ class App {
 
         this.app.use(express.json());
         this.app.use(express.urlencoded({ extended: false }));
+
+        const swaggerDocument = yaml.safeLoad(fs.readFileSync(`${appRoot}/spec/openapi.yaml`, 'utf8'));
+        this.app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
         new OpenApiValidator({
             apiSpec: `${appRoot}/spec/openapi.yaml`,

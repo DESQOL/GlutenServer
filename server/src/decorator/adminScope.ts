@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import { MiddlewareDefinition } from './../types/middlewareDefinition';
+import { MiddlewareDefinition } from '../type/middlewareDefinition';
 
 const metadataKey: string = 'routeMiddleware';
 

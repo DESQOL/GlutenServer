@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
+import IRoute from 'type/route';
 import { getRepository } from 'typeorm';
-import IRoute from 'types/route';
 import { AdminScope, Controller, Get } from '../../decorator';
 import Recipe from '../../entity/recipe';
 

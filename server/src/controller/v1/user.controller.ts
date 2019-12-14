@@ -1,7 +1,7 @@
 import { validate } from 'class-validator';
 import { Request, Response } from 'express';
+import IRoute from 'type/route';
 import { getRepository } from 'typeorm';
-import IRoute from 'types/route';
 import User from '../../entity/user';
 
 export class UserController {

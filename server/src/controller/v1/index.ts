@@ -1,4 +1,4 @@
-import IRoute from 'types/route';
+import IRoute from 'type/route';
 
 import * as RecipeController from './recipe.controller';
 import * as UserController from './user.controller';

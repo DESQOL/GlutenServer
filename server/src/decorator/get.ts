@@ -1,4 +1,4 @@
-import { RouteDefinition } from '../types';
+import { RouteDefinition } from '../type';
 
 export const Get = (path: string): MethodDecorator => {
   // `target` equals our class, `propertyKey` equals our decorated method name

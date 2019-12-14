@@ -9,8 +9,8 @@ import { OpenApiValidator } from 'express-openapi-validator';
 import { Server } from 'http';
 import { createConnection } from 'typeorm';
 
-import { RecipeController } from './controllers/v1/recipe.controller';
-import { MiddlewareDefinition, RouteDefinition } from './types';
+import { RecipeController } from './controller/v1/recipe.controller';
+import { MiddlewareDefinition, RouteDefinition } from './type';
 
 class App {
   public app: Application;

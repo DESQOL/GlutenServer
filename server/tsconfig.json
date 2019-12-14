@@ -16,13 +16,13 @@
       "@decorator": ["decorator/index"],
       "@decorator/*": ["decorator/*"],
       "@entity": ["entity/index"],
-      "@entity/*": ["entity/index/*"],
+      "@entity/*": ["entity/*"],
       "@helper": ["helper/index"],
-      "@helper/*": ["helper/index/*"],
+      "@helper/*": ["helper/*"],
       "@middleware": ["middleware/index"],
       "@middleware/*": ["middleware/*"],
       "@type": ["type/index"],
-      "@type/*": ["type/index/*"]
+      "@type/*": ["type/*"]
     }
   },
   "include": ["src/**/*.ts", "test/**/*.ts"],

@@ -17,7 +17,8 @@ import compression from 'compression';
 
 import { RecipeController, UserController } from '@controller/v1';
 import { MiddlewareDefinition, RouteDefinition } from '@type';
-import { rateLimiter } from '@middleware';
+import { httpLogger, rateLimiter } from '@middleware';
+import { logger } from '@helper';
 
 class App {
     public app: Application;
@@ -28,6 +29,7 @@ class App {
         this.port = port;
         this.app = express();
 
+        this.app.use(httpLogger);
         this.app.use(helmet());
         this.app.use(compression());
         this.app.use(express.json());
@@ -57,14 +59,12 @@ class App {
     public async listen (): Promise<void> {
         await createConnection(ormconfig)
             .catch((err) => {
-                console.error(err);
+                logger.error(err);
                 process.exit();
             });
 
         this.server = this.app.listen(this.port, () => {
-            if (!process.env.NODE_ENV || process.env.NODE_ENV.toUpperCase() !== 'TEST') {
-                console.log(`App listening on the http://localhost:${this.port}`);
-            }
+            logger.info(`App listening on the http://localhost:${this.port}`);
         });
     }
 

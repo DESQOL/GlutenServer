@@ -25,6 +25,8 @@ services:
 
   server:
     build: ./server
+    volumes:
+      - './server/logs:/usr/src/app/logs'
     ports:
       - 3000:3000
     links:

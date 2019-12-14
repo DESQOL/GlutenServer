@@ -20,4 +20,4 @@ RUN npm run build
 
 EXPOSE 3000
 
-CMD [ "./scripts/wait-for-it.sh", "database:3306", "--", "npm", "start" ]
+CMD [ "./scripts/wait-for-it.sh", "redis:6379", "--",  "./scripts/wait-for-it.sh", "database:3306", "--", "npm", "start" ]

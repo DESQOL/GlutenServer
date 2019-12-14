@@ -1,3 +1,5 @@
+import 'reflect-metadata';
+
 // tslint:disable-next-line: no-var-requires
 require('dotenv').config();
 
@@ -5,10 +7,10 @@ import appRoot from 'app-root-path';
 import express, { Application, NextFunction, Request, Response } from 'express';
 import { OpenApiValidator } from 'express-openapi-validator';
 import { Server } from 'http';
-import 'reflect-metadata';
 import { createConnection } from 'typeorm';
 
-import * as ControllerV1 from './controllers/v1';
+import { RecipeController } from './controllers/v1/recipe.controller';
+import { MiddlewareDefinition, RouteDefinition } from './types';
 
 class App {
   public app: Application;
@@ -65,17 +67,29 @@ class App {
 
   private routes () {
     [
-      ...ControllerV1.Routes,
-    ].forEach((route) => {
-      this.app[route.method](route.route, (req: Request, res: Response, next: NextFunction) => {
-        const result = new route.controller()[route.action](req, res, next);
-        if (result instanceof Promise) {
-          result
-            .then((data) => data !== null && data !== undefined ? res.send(data) : undefined)
-            .catch((err) => next(err));
-        } else if (result !== null && result !== undefined) {
-          res.json(result);
+      RecipeController,
+    ].forEach((controller) => {
+      const prefix = Reflect.getMetadata('prefix', controller);
+      const routes: RouteDefinition[] = Reflect.getMetadata('routes', controller);
+
+      routes.forEach((route) => {
+        let routeMiddleware: MiddlewareDefinition[] = [];
+        if (Reflect.hasMetadata('routeMiddleware', controller.prototype, route.methodName)) {
+          routeMiddleware = Reflect.getMetadata('routeMiddleware', controller.prototype, route.methodName);
         }
+
+        function routeHandler (req: Request, res: Response, next: NextFunction) {
+          const result = new controller()[route.methodName](req, res);
+          if (result instanceof Promise) {
+            result
+              .then((data) => data !== null && data !== undefined ? res.send(data) : undefined)
+              .catch((err) => next(err));
+          } else if (result !== null && result !== undefined) {
+            res.json(result);
+          }
+        }
+
+        this.app[route.requestMethod](`${prefix}${route.path}`, routeMiddleware, routeHandler);
       });
     });
   }

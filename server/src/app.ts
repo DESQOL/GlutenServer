@@ -13,6 +13,7 @@ import swaggerUi from 'swagger-ui-express';
 import yaml from 'js-yaml';
 import fs from 'fs';
 import helmet from 'helmet';
+import compression from 'compression';
 
 import { RecipeController, UserController } from '@controller/v1';
 import { MiddlewareDefinition, RouteDefinition } from '@type';
@@ -27,6 +28,7 @@ class App {
         this.app = express();
 
         this.app.use(helmet());
+        this.app.use(compression());
         this.app.use(express.json());
         this.app.use(express.urlencoded({ extended: false }));
 

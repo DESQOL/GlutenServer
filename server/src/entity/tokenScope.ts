@@ -4,16 +4,16 @@ import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'ty
 @Entity()
 export class TokenScope {
 
-  @PrimaryGeneratedColumn()
-  public id: number;
+    @PrimaryGeneratedColumn()
+    public id: number;
 
-  @OneToOne(() => Token, (token) => token.scope, {
-    lazy: true,
-  })
-  @JoinColumn()
-  public token: Token;
+    @OneToOne(() => Token, (token) => token.scope, {
+        lazy: true,
+    })
+    @JoinColumn()
+    public token: Token;
 
-  @Column({ default: false })
-  public isAdmin: boolean;
+    @Column({ default: false })
+    public isAdmin: boolean;
 
 }

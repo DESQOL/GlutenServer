@@ -12,6 +12,7 @@ import { createConnection } from 'typeorm';
 import swaggerUi from 'swagger-ui-express';
 import yaml from 'js-yaml';
 import fs from 'fs';
+import helmet from 'helmet';
 
 import { RecipeController, UserController } from '@controller/v1';
 import { MiddlewareDefinition, RouteDefinition } from '@type';
@@ -25,6 +26,7 @@ class App {
         this.port = port;
         this.app = express();
 
+        this.app.use(helmet());
         this.app.use(express.json());
         this.app.use(express.urlencoded({ extended: false }));
 

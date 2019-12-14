@@ -31,6 +31,10 @@
         "@typescript-eslint/semi": [
             "error"
         ],
+        "comma-dangle": [
+            "error",
+            "only-multiline"
+        ],
         "eol-last": [
             "error",
             "always"
@@ -53,6 +57,10 @@
             "always"
         ],
         "prefer-arrow-callback": "error",
+        "quote-props": [
+            "error",
+            "as-needed"
+        ],
         "quotes": [
             "error",
             "single",

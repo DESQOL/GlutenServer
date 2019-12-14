@@ -80,7 +80,7 @@ class App {
         }
 
         function routeHandler (req: Request, res: Response, next: NextFunction) {
-          const result = new controller()[route.methodName](req, res);
+          const result = new controller()[route.methodName](req, res, next);
           if (result instanceof Promise) {
             result
               .then((data) => data !== null && data !== undefined ? res.send(data) : undefined)

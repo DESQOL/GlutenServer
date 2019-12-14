@@ -64,6 +64,42 @@ LOCK TABLES `recipe` WRITE;
 INSERT INTO `recipe` VALUES (1,NULL,'Banana bread','40 mins',4,'This is a banana bread recipe'),(2,NULL,'Chocolate cake','1h 20 mins',3,'...');
 /*!40000 ALTER TABLE `recipe` ENABLE KEYS */;
 UNLOCK TABLES;
+DROP TABLE IF EXISTS `token`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `token` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `token` varchar(255) NOT NULL,
+  `scopeId` int(11) DEFAULT NULL,
+  `userId` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `REL_9f2501b2930333ba1c2b2d55db` (`scopeId`),
+  KEY `FK_94f168faad896c0786646fa3d4a` (`userId`),
+  CONSTRAINT `FK_94f168faad896c0786646fa3d4a` FOREIGN KEY (`userId`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
+  CONSTRAINT `FK_9f2501b2930333ba1c2b2d55dbe` FOREIGN KEY (`scopeId`) REFERENCES `token_scope` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+LOCK TABLES `token` WRITE;
+/*!40000 ALTER TABLE `token` DISABLE KEYS */;
+/*!40000 ALTER TABLE `token` ENABLE KEYS */;
+UNLOCK TABLES;
+DROP TABLE IF EXISTS `token_scope`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `token_scope` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `tokenId` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `REL_9c63359d8faf8dad1acd80afb3` (`tokenId`),
+  CONSTRAINT `FK_9c63359d8faf8dad1acd80afb3a` FOREIGN KEY (`tokenId`) REFERENCES `token` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+LOCK TABLES `token_scope` WRITE;
+/*!40000 ALTER TABLE `token_scope` DISABLE KEYS */;
+/*!40000 ALTER TABLE `token_scope` ENABLE KEYS */;
+UNLOCK TABLES;
 DROP TABLE IF EXISTS `user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;

@@ -17,7 +17,7 @@ import compression from 'compression';
 
 import { RecipeController, UserController } from '@controller/v1';
 import { MiddlewareDefinition, RouteDefinition } from '@type';
-import { httpLogger, rateLimiter } from '@middleware';
+import { httpLogger, rateLimiter, validateToken } from '@middleware';
 import { logger } from '@helper';
 
 class App {
@@ -25,7 +25,7 @@ class App {
     public port: number;
     public server: Server;
 
-    constructor (port = 3000) {
+    constructor(port = 3000) {
         this.port = port;
         this.app = express();
 
@@ -56,7 +56,7 @@ class App {
         });
     }
 
-    public async listen (): Promise<void> {
+    public async listen(): Promise<void> {
         await createConnection(ormconfig)
             .catch((err) => {
                 logger.error(err);
@@ -68,31 +68,33 @@ class App {
         });
     }
 
-    public close (): void {
+    public close(): void {
         this.server.close();
     }
 
-    private middlewares (): void {
+    private middlewares(): void {
         [].forEach((middleWare) => {
             this.app.use(middleWare);
         });
     }
 
-    private routes (): void {
+    private routes(): void {
         [
             RecipeController,
             UserController,
         ].forEach((controller) => {
             const prefix = Reflect.getMetadata('prefix', controller);
+            const requireToken = Reflect.getMetadata('requireToken', controller) as boolean;
             const routes: RouteDefinition[] = Reflect.getMetadata('routes', controller);
 
             routes.forEach((route) => {
-                let routeMiddleware: MiddlewareDefinition[] = [];
-                if (Reflect.hasMetadata('routeMiddleware', controller.prototype, route.methodName)) {
-                    routeMiddleware = Reflect.getMetadata('routeMiddleware', controller.prototype, route.methodName);
+                const routeMiddleware: MiddlewareDefinition[] = requireToken ? [validateToken] : [];
+                const extraMiddleware = Reflect.getMetadata('routeMiddleware', controller.prototype, route.methodName);
+                if (extraMiddleware) {
+                    (extraMiddleware as MiddlewareDefinition[]).forEach((val) => routeMiddleware.push(val));
                 }
 
-                function routeHandler (req: Request, res: Response, next: NextFunction): void {
+                function routeHandler(req: Request, res: Response, next: NextFunction): void {
                     const result = new controller()[route.methodName](req, res, next);
                     if (result instanceof Promise) {
                         result

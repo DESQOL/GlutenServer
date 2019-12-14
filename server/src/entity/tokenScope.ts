@@ -1,19 +1,20 @@
-import { Token } from '@entity';
-import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column } from 'typeorm';
 
-@Entity()
 export class TokenScope {
 
-    @PrimaryGeneratedColumn()
-    public id: number;
+    @Column()
+    public isAdmin: boolean = false;
 
-    @OneToOne(() => Token, (token) => token.scope, {
-        lazy: true,
-    })
-    @JoinColumn()
-    public token: Token;
+    public satisfiedBy(provided: TokenScope): boolean {
+        return provided.satisfies(this);
+    }
 
-    @Column({ default: false })
-    public isAdmin: boolean;
+    public satisfies(required: TokenScope): boolean {
+        if(!this.isAdmin && (required.isAdmin !== this.isAdmin)) {
+            return false;
+        }
 
+        return true;
+    }
+    
 }

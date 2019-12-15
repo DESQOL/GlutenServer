@@ -66,20 +66,24 @@
   },
   "nyc": {
     "include": [
-      "src/**/*.ts",
-      "src/**/*.tsx"
+      "src/**/*.js",
+      "src/**/*.ts"
     ],
     "extension": [
-      ".ts",
-      ".tsx"
+      ".js",
+      ".ts"
+    ],
+    "exclude": [
+      "**/*.d.ts"
     ],
     "require": [
       "ts-node/register"
     ],
     "reporter": [
-      "text-summary",
+      "text",
       "html"
     ],
+    "all": true,
     "sourceMap": true,
     "instrument": true
   },

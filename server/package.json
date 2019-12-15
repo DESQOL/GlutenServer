@@ -107,7 +107,6 @@
     "ignore": [
       "test/*"
     ],
-    "delay": "2500",
     "execMap": {
       "ts": "ts-node"
     }

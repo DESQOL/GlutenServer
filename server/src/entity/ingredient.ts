@@ -5,13 +5,13 @@ import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 export class Ingredient {
 
     @PrimaryGeneratedColumn()
-    public id: number;
+    public id: number = 0;
 
     @ManyToOne(() => Product, (product) => product.recipeIngredients)
     public product: Product;
 
     @Column()
-    public amount: string;
+    public amount: string = '';
 
     @ManyToOne(() => Recipe, (recipe) => recipe.ingredients, {
         onDelete: 'CASCADE',

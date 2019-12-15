@@ -1,20 +1,23 @@
 import { Ingredient } from '@entity';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { MinLength, Min } from 'class-validator';
 
 @Entity()
 export class Recipe {
 
     @PrimaryGeneratedColumn()
-    public id: number;
+    @Min(1)
+    public id: number = 0;
 
     @Column()
-    public title: string;
+    @MinLength(3)
+    public title: string = '';
 
     @Column({ nullable: true })
-    public description: string;
+    public description: string = '';
 
     @Column({ nullable: true })
-    public image: string;
+    public image: string = '';
 
     @OneToMany(() => Ingredient, (ingredient) => ingredient.recipe, {
         eager: true,
@@ -22,9 +25,9 @@ export class Recipe {
     public ingredients: Ingredient[];
 
     @Column()
-    public duration: string;
+    public duration: string = '';
 
-    @Column({ default: 0 })
-    public rating: number;
+    @Column()
+    public rating: number = 0;
 
 }

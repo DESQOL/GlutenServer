@@ -98,10 +98,24 @@ class App {
                     const result = new controller()[route.methodName](req, res, next);
                     if (result instanceof Promise) {
                         result
-                            .then((data) => data !== null && data !== undefined ? res.send(data) : undefined)
-                            .catch((err) => next(err));
+                            .then((data) => {
+                                if((data as Response) !== undefined && (data as Response).finished) {
+                                    logger.debug('result is a finished Response, not doing anything');
+                                } else if (data !== null && data !== undefined) {
+                                    res.send(data);
+                                } else {
+                                    next();
+                                }
+                            })
+                            .catch((err) => {
+                                next(err);
+                            });
+                    } else if((result as Response) !== undefined && (result as Response).finished) {
+                        logger.debug('result is a finished Response, not doing anything');
                     } else if (result !== null && result !== undefined) {
                         res.json(result);
+                    } else {
+                        next();
                     }
                 }
 

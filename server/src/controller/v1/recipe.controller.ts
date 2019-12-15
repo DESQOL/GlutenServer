@@ -1,4 +1,4 @@
-import { RequiredScope, Controller, Get, RequireToken } from '@decorator';
+import { RequiredScope, Controller, Get, RequireToken, ValidateParams } from '@decorator';
 import { Recipe } from '@entity';
 import { Request, Response, NextFunction } from 'express';
 import { getRepository } from 'typeorm';
@@ -15,8 +15,17 @@ export class RecipeController {
     }
 
     @Get('/:recipeId')
-    public async one (request: Request, _response: Response, _next: NextFunction): Promise<Recipe> {
+    @ValidateParams(Recipe, { recipeId: 'id' })
+    public async one (request: Request, response: Response, _next: NextFunction): Promise<Recipe|Response> {
         const { recipeId } = request.params;
-        return this.recipeRepository.findOne(recipeId);
+
+        const recipe = await this.recipeRepository.findOne(recipeId);
+        if (!recipe) {
+            return response.status(404).json({
+                message: `Recipe with id ${recipeId} was not found.`
+            });
+        }
+
+        response.json(recipe);
     }
 }

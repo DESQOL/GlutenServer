@@ -7,8 +7,8 @@ export const DefaultScope: Partial<TokenScope> = {
 export class TokenScope {
 
     public static from(partialScope: Partial<TokenScope>): TokenScope {
-        return { 
-            ...new TokenScope(), 
+        return {
+            ...new TokenScope(),
             ...DefaultScope,
             ...partialScope
         } as TokenScope;
@@ -28,5 +28,5 @@ export class TokenScope {
 
         return true;
     }
-    
+
 }

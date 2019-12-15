@@ -24,3 +24,8 @@ $ docker-compose up --build
 $ docker-compose up --detach --build database cache
 $ cd server; npm run dev
 ```
+
+### Updated local MySQL dump file
+```bash
+$ docker exec glutenserver_database_1 mysqldump --skip-comments -uroot -proot gluten > database/dump.sql
+```

@@ -53,15 +53,15 @@ CREATE TABLE `recipe` (
   `image` varchar(255) DEFAULT NULL,
   `title` varchar(255) NOT NULL,
   `duration` varchar(255) NOT NULL,
-  `rating` int(11) NOT NULL DEFAULT '0',
   `description` varchar(255) DEFAULT NULL,
+  `rating` int(11) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 LOCK TABLES `recipe` WRITE;
 /*!40000 ALTER TABLE `recipe` DISABLE KEYS */;
-INSERT INTO `recipe` VALUES (1,NULL,'Banana bread','40 mins',4,'This is a banana bread recipe'),(2,NULL,'Chocolate cake','1h 20 mins',3,'...');
+INSERT INTO `recipe` VALUES (1,NULL,'Banana bread','40 mins','This is a banana bread recipe',3),(2,NULL,'Chocolate cake','1h 20 mins','...',4);
 /*!40000 ALTER TABLE `recipe` ENABLE KEYS */;
 UNLOCK TABLES;
 DROP TABLE IF EXISTS `token`;
@@ -70,18 +70,17 @@ DROP TABLE IF EXISTS `token`;
 CREATE TABLE `token` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `token` varchar(255) NOT NULL,
-  `scopeId` int(11) DEFAULT NULL,
   `userId` int(11) DEFAULT NULL,
+  `scopeIsadmin` tinyint(4) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `REL_9f2501b2930333ba1c2b2d55db` (`scopeId`),
   KEY `FK_94f168faad896c0786646fa3d4a` (`userId`),
-  CONSTRAINT `FK_94f168faad896c0786646fa3d4a` FOREIGN KEY (`userId`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
-  CONSTRAINT `FK_9f2501b2930333ba1c2b2d55dbe` FOREIGN KEY (`scopeId`) REFERENCES `token_scope` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  CONSTRAINT `FK_94f168faad896c0786646fa3d4a` FOREIGN KEY (`userId`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 LOCK TABLES `token` WRITE;
 /*!40000 ALTER TABLE `token` DISABLE KEYS */;
+INSERT INTO `token` VALUES (1,'user',1,0),(2,'admin',1,1);
 /*!40000 ALTER TABLE `token` ENABLE KEYS */;
 UNLOCK TABLES;
 DROP TABLE IF EXISTS `token_scope`;
@@ -90,14 +89,16 @@ DROP TABLE IF EXISTS `token_scope`;
 CREATE TABLE `token_scope` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `tokenId` int(11) DEFAULT NULL,
+  `isAdmin` tinyint(4) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `REL_9c63359d8faf8dad1acd80afb3` (`tokenId`),
   CONSTRAINT `FK_9c63359d8faf8dad1acd80afb3a` FOREIGN KEY (`tokenId`) REFERENCES `token` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 LOCK TABLES `token_scope` WRITE;
 /*!40000 ALTER TABLE `token_scope` DISABLE KEYS */;
+INSERT INTO `token_scope` VALUES (1,1,0),(2,2,1);
 /*!40000 ALTER TABLE `token_scope` ENABLE KEYS */;
 UNLOCK TABLES;
 DROP TABLE IF EXISTS `user`;

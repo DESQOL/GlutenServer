@@ -53,7 +53,7 @@ export default (): void=> {
             description: 'This is a banana bread recipe',
             image: '',
             duration: '40 mins',
-            rating: 0,
+            rating: 3,
             ingredients: [
                 {
                     id: 1,

@@ -5,10 +5,10 @@ import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 export class Product {
 
     @PrimaryGeneratedColumn()
-    public id: number;
+    public id: number = 0;
 
     @Column()
-    public name: string;
+    public name: string = '';
 
     @OneToMany(() => Ingredient, (ingredient) => ingredient.product, {
         lazy: true,

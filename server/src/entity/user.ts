@@ -12,18 +12,18 @@ export class User {
     }
 
     @PrimaryGeneratedColumn()
-    public id: number;
+    public id: number = 0;
 
     @Column()
-    public name: string;
+    public name: string = '';
 
     @Column()
     @IsEmail()
-    public email: string;
+    public email: string = '';
 
     @Column({ select: false })
     @MinLength(8)
-    public password: string;
+    public password: string = '';
 
     @OneToMany(() => Token, (token) => token.user, {
         lazy: true,

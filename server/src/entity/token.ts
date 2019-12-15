@@ -9,7 +9,7 @@ export class Token {
     }
 
     @PrimaryGeneratedColumn()
-    public id: number;
+    public id: number = 0;
 
     @ManyToOne(() => User, (user) => user.tokens, {
         eager: true,
@@ -18,7 +18,7 @@ export class Token {
     public user: User;
 
     @Column()
-    public token: string;
+    public token: string = '';
 
     @Column(() => TokenScope)
     public scope: TokenScope;

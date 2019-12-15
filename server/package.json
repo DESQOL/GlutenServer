@@ -7,7 +7,7 @@
     "lint": "eslint ./**/*.ts",
     "lint:fix": "eslint ./**/*.ts --fix",
     "start": "cross-env NODE_ENV=production ts-node -r tsconfig-paths/register dist/src/server.js",
-    "test": "cross-env NODE_ENV=test mocha -r ts-node/register -r tsconfig-paths/register test/*.ts --exit --timeout 10000"
+    "test": "cross-env NODE_ENV=test nyc mocha"
   },
   "dependencies": {
     "app-root-path": "3.0.0",
@@ -57,8 +57,29 @@
     "lint-staged": "9.5.0",
     "mocha": "6.2.2",
     "nodemon": "2.0.2",
+    "nyc": "14.1.1",
+    "source-map-support": "0.5.16",
     "supertest": "4.0.2",
     "tsconfig-paths": "3.9.0"
+  },
+  "nyc": {
+    "include": [
+      "src/**/*.ts",
+      "src/**/*.tsx"
+    ],
+    "extension": [
+      ".ts",
+      ".tsx"
+    ],
+    "require": [
+      "ts-node/register"
+    ],
+    "reporter": [
+      "text-summary",
+      "html"
+    ],
+    "sourceMap": true,
+    "instrument": true
   },
   "husky": {
     "hooks": {

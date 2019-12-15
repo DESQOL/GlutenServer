@@ -1,8 +1,10 @@
 import appRoot from 'app-root-path';
 import winston, { format } from 'winston';
 
+const { NODE_ENV } = process.env;
+
 const logger = winston.createLogger({
-    level: 'info',
+    level: !NODE_ENV ? 'debug' : 'info',
     format: format.combine(
         format.splat(),
         format.json()
@@ -18,7 +20,6 @@ const logger = winston.createLogger({
     ]
 });
 
-const { NODE_ENV } = process.env;
 if (!NODE_ENV || (NODE_ENV.toUpperCase() !== 'PRODUCTION' && NODE_ENV.toUpperCase() !== 'TEST')) {
     logger.add(new winston.transports.Console({
         format: winston.format.simple()

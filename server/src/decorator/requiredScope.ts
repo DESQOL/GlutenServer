@@ -2,12 +2,12 @@ import { NextFunction, Request, Response } from 'express';
 import { MiddlewareDefinition } from '@type';
 import { getToken, getDefaultResponse } from '@helper';
 import { getRepository } from 'typeorm';
-import { Token, TokenScope } from '@entity';
+import { Token, TokenScope, ScopeRequirement } from '@entity';
 import { validateToken } from '@middleware';
 
 const metadataKey = 'routeMiddleware';
 
-export const RequiredScope = (requiredScope: Partial<TokenScope>): MethodDecorator => {
+export const RequiredScope = (requiredScope: ScopeRequirement): MethodDecorator => {
     return (target: object, propertyKey: string): void => {
         const metadataValue = Reflect.getMetadata(metadataKey, target, propertyKey) as MiddlewareDefinition[] || [];
 

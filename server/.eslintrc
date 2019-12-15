@@ -53,6 +53,7 @@
                 "maxEOF": 1
             }
         ],
+        "no-trailing-spaces": "error",
         "object-curly-spacing": [
             "error",
             "always"

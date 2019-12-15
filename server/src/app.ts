@@ -18,7 +18,7 @@ import compression from 'compression';
 import { RecipeController, UserController } from '@controller/v1';
 import { MiddlewareDefinition, RouteDefinition } from '@type';
 import { httpLogger, rateLimiter, validateToken } from '@middleware';
-import { logger } from '@helper';
+import { logger, QueryFileLogger } from '@helper';
 
 class App {
     public app: Application;
@@ -57,11 +57,13 @@ class App {
     }
 
     public async listen(): Promise<void> {
-        await createConnection(ormconfig)
-            .catch((err) => {
-                logger.error(err);
-                process.exit();
-            });
+        await createConnection(Object.assign(ormconfig, {
+            logging: true,
+            logger: new QueryFileLogger('all'),
+        })).catch((err) => {
+            logger.error(err);
+            process.exit();
+        });
 
         this.server = this.app.listen(this.port, () => {
             logger.info(`App listening on the http://localhost:${this.port}`);

@@ -11,11 +11,11 @@ const logger = winston.createLogger({
     ),
     transports: [
         new winston.transports.File({
-            filename: `${appRoot}/logs/error.log`,
+            filename: `${appRoot}/logs/error-${new Date().toISOString().slice(0, 10)}.log`,
             level: 'error'
         }),
         new winston.transports.File({
-            filename: `${appRoot}/logs/combined.log`,
+            filename: `${appRoot}/logs/combined-${new Date().toISOString().slice(0, 10)}.log`,
         })
     ]
 });

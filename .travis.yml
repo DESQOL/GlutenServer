@@ -26,3 +26,6 @@ jobs:
         - git remote add gitlab https://oauth2:$GITLAB_TOKEN@gitlab.fdmci.hva.nl/desqol/glutenserver.git
         - git push --force gitlab --all
         - git push --force gitlab --tags
+
+after_success:
+  - npm run coverage

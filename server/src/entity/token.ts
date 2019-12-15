@@ -1,10 +1,10 @@
 import { TokenScope, User } from '@entity';
-import { Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class Token {
 
-    public static generateToken (): string {
+    public static generate (): string {
         return `${Math.random().toString(36).substr(2)}${Math.random().toString(36).substr(2)}`;
     }
 
@@ -20,11 +20,7 @@ export class Token {
     @Column()
     public token: string;
 
-    @OneToOne(() => TokenScope, (scope) => scope.token, {
-        eager: true,
-        onDelete: 'CASCADE',
-    })
-    @JoinColumn()
+    @Column(() => TokenScope)
     public scope: TokenScope;
 
 }

@@ -14,7 +14,13 @@ $ docker-compose build
 $ docker-compose up
 ```
 
-### Build & Run
+### Build & Run (production)
 ```bash
 $ docker-compose up --build
+```
+
+### Build & Run (development)
+```bash
+$ docker-compose up --detach --build database cache
+$ cd server; npm run dev
 ```

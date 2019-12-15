@@ -1,0 +1,8 @@
+--require ts-node/register
+--require tsconfig-paths/register
+--require source-map-support/register
+--exit
+--timeout 10000
+--full-trace
+--bail
+./**/*.test.ts

@@ -1,19 +1,31 @@
-import { Token } from '@entity';
-import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column } from 'typeorm';
 
-@Entity()
+export type ScopeRequirement = Partial<Pick<TokenScope, 'isAdmin'>>;
+
+export const DefaultScope: ScopeRequirement = {
+    isAdmin: false,
+};
+
 export class TokenScope {
 
-    @PrimaryGeneratedColumn()
-    public id: number;
+    public static from(partialScope: ScopeRequirement): TokenScope {
+        return Object.assign(new TokenScope(), DefaultScope, partialScope || {});
+    }
 
-    @OneToOne(() => Token, (token) => token.scope, {
-        lazy: true,
-    })
-    @JoinColumn()
-    public token: Token;
+    @Column()
+    public isAdmin: boolean = false;
 
-    @Column({ default: false })
-    public isAdmin: boolean;
+    public satisfiedBy(provided: Partial<TokenScope>): boolean {
+        return TokenScope.from(provided).satisfies(this);
+    }
+
+    private satisfies(partialRequired: TokenScope): boolean {
+        const required = TokenScope.from(partialRequired);
+        if (!this.isAdmin && (required.isAdmin !== this.isAdmin)) {
+            return false;
+        }
+
+        return true;
+    }
 
 }

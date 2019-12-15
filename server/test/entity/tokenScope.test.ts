@@ -2,6 +2,24 @@ import { expect } from 'chai';
 import { TokenScope } from '@entity';
 
 export default (): void => {
+    describe('from', () => {
+        it('should have value \'false\' as default for isAdmin', () => {
+            // Act
+            const result = TokenScope.from({});
+
+            // Assert
+            expect(result.isAdmin).to.be.false;
+        });
+
+        it('should return a full TokenScope object', () => {
+            // Act
+            const result = TokenScope.from({});
+
+            // Assert
+            expect(result).to.deep.equal(new TokenScope());
+        });
+    });
+
     describe('compareTo', () => {
         let required: TokenScope;
         let provided: TokenScope;

@@ -1,12 +1,17 @@
 import { Column } from 'typeorm';
 
+export const DefaultScope: Partial<TokenScope> = {
+    isAdmin: false,
+};
+
 export class TokenScope {
 
     public static from(partialScope: Partial<TokenScope>): TokenScope {
-        const tokenScope = new TokenScope();
-        Object.assign(tokenScope, partialScope);
-
-        return tokenScope;
+        return { 
+            ...new TokenScope(), 
+            ...DefaultScope,
+            ...partialScope
+        } as TokenScope;
     }
 
     @Column()

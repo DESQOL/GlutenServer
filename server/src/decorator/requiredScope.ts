@@ -16,7 +16,7 @@ export const RequiredScope = (requiredScope: Partial<TokenScope>): MethodDecorat
             const token = getToken(request);
             const entity = await getRepository(Token).findOne({ token });
 
-            if(!requiredScope.satisfiedBy(entity.scope)) {
+            if(!TokenScope.from(requiredScope).satisfiedBy(entity.scope)) {
                 response.status(403).json(getDefaultResponse(403, request.path));
                 return;
             }

@@ -3,7 +3,7 @@ import RedisStore from 'rate-limit-redis';
 import Redis from 'redis';
 import { RequestHandler } from 'express';
 
-export function rateLimiter(): RequestHandler {
+export function rateLimiter (): RequestHandler {
     return rateLimit({
         store: RedisStore({
             client: Redis.createClient({

@@ -6,7 +6,6 @@ import { BaseEntity } from './baseEntity';
 
 @Entity()
 export class User extends BaseEntity<User> {
-
     public static async hashPassword (password: string): Promise<string> {
         const hash = await bcrypt.genSalt();
         return bcrypt.hash(password, hash);
@@ -38,7 +37,7 @@ export class User extends BaseEntity<User> {
         };
     }
 
-    public getDefault(): User {
+    public getDefault (): User {
         const user = new User();
         user.id = 0;
         user.name = '';
@@ -55,5 +54,4 @@ export class User extends BaseEntity<User> {
 
         return bcrypt.compare(password, user.password);
     }
-
 }

@@ -5,7 +5,6 @@ import { BaseEntity } from './baseEntity';
 
 @Entity()
 export class Recipe extends BaseEntity<Recipe> {
-
     @PrimaryGeneratedColumn()
     @Min(1)
     public id: number;
@@ -31,7 +30,7 @@ export class Recipe extends BaseEntity<Recipe> {
     @Column()
     public rating: number;
 
-    getDefault(): Recipe {
+    getDefault (): Recipe {
         const recipe = new Recipe();
         recipe.id = 0;
         recipe.title = '';
@@ -43,5 +42,4 @@ export class Recipe extends BaseEntity<Recipe> {
 
         return recipe;
     }
-
 }

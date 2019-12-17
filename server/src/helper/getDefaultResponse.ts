@@ -9,7 +9,7 @@ export const DefaultMessages = {
     403: 'Token does not have the required scope.',
 };
 
-export function getDefaultResponse(key: number | string, path?: string): DefaultResponse {
+export function getDefaultResponse (key: number | string, path?: string): DefaultResponse {
     return {
         message: DefaultMessages[key] || '',
         errors: [

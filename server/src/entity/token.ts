@@ -4,7 +4,6 @@ import { BaseEntity } from './baseEntity';
 
 @Entity()
 export class Token extends BaseEntity<Token> {
-
     public static generate (): string {
         return `${Math.random().toString(36).substr(2)}${Math.random().toString(36).substr(2)}`;
     }
@@ -24,7 +23,7 @@ export class Token extends BaseEntity<Token> {
     @Column(() => TokenScope)
     public scope: TokenScope;
 
-    getDefault(): Token {
+    getDefault (): Token {
         const token = new Token();
         token.id = 0;
         token.user = null;
@@ -33,5 +32,4 @@ export class Token extends BaseEntity<Token> {
 
         return token;
     }
-
 }

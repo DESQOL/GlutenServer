@@ -3,7 +3,6 @@ import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class Product extends BaseEntity<Product> {
-
     @PrimaryGeneratedColumn()
     public id: number;
 
@@ -15,7 +14,7 @@ export class Product extends BaseEntity<Product> {
     })
     public recipeIngredients: Ingredient[];
 
-    getDefault(): Product {
+    getDefault (): Product {
         const product = new Product();
         product.id = 0;
         product.name = '';
@@ -23,5 +22,4 @@ export class Product extends BaseEntity<Product> {
 
         return product;
     }
-
 }

@@ -8,9 +8,8 @@ export const DefaultScope: ScopeRequirement = {
 };
 
 export class TokenScope extends BaseEntity<TokenScope> {
-
-    public static from(partialScope: ScopeRequirement): TokenScope {
-        if(!partialScope) {
+    public static from (partialScope: ScopeRequirement): TokenScope {
+        if (!partialScope) {
             return (new TokenScope()).getDefault();
         }
 
@@ -20,18 +19,18 @@ export class TokenScope extends BaseEntity<TokenScope> {
     @Column()
     public isAdmin: boolean;
 
-    public getDefault(): TokenScope {
+    public getDefault (): TokenScope {
         const tokenScope = new TokenScope();
         tokenScope.isAdmin = false;
 
         return tokenScope;
     }
 
-    public satisfiedBy(provided: Partial<TokenScope>): boolean {
+    public satisfiedBy (provided: Partial<TokenScope>): boolean {
         return TokenScope.from(provided).satisfies(this);
     }
 
-    private satisfies(partialRequired: TokenScope): boolean {
+    private satisfies (partialRequired: TokenScope): boolean {
         const required = TokenScope.from(partialRequired);
         if (!this.isAdmin && (required.isAdmin !== this.isAdmin)) {
             return false;
@@ -39,5 +38,4 @@ export class TokenScope extends BaseEntity<TokenScope> {
 
         return true;
     }
-
 }

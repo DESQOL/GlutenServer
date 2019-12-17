@@ -4,7 +4,6 @@ import { BaseEntity } from './baseEntity';
 
 @Entity()
 export class Ingredient extends BaseEntity<Ingredient> {
-
     @PrimaryGeneratedColumn()
     public id: number;
 
@@ -19,7 +18,7 @@ export class Ingredient extends BaseEntity<Ingredient> {
     })
     public recipe: Recipe;
 
-    getDefault(): Ingredient {
+    getDefault (): Ingredient {
         const ingredient = new Ingredient();
         ingredient.id = 0;
         ingredient.product = null;
@@ -27,5 +26,4 @@ export class Ingredient extends BaseEntity<Ingredient> {
 
         return ingredient;
     }
-
 }

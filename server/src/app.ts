@@ -12,7 +12,7 @@ import fs from 'fs';
 import helmet from 'helmet';
 import compression from 'compression';
 
-import { RecipeController, UserController } from '@controller/v1';
+import { RecipeController, UserController } from '@controller';
 import { MiddlewareDefinition, RouteDefinition } from '@type';
 import { httpLogger, rateLimiter, validateToken } from '@middleware';
 import { logger, QueryFileLogger } from '@helper';

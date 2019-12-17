@@ -25,7 +25,7 @@ export default (): void => {
 
         it('should return the displayUnit on successfull login', (done) => {
             request(app)
-                .post('/v1/user/login')
+                .post('/user/login')
                 .send(defaultLogin)
                 .expect(200, {
                     name: 'Martijn Vegter',
@@ -35,7 +35,7 @@ export default (): void => {
 
         it('incorrect email', (done) => {
             request(app)
-                .post('/v1/user/login')
+                .post('/user/login')
                 .send(Object.assign(defaultLogin, { email: '' }))
                 .expect(403, {
                     message: 'Incorrect email or password.',
@@ -44,7 +44,7 @@ export default (): void => {
 
         it('incorrect password', (done) => {
             request(app)
-                .post('/v1/user/login')
+                .post('/user/login')
                 .send(Object.assign(defaultLogin, { password: '' }))
                 .expect(403, {
                     message: 'Incorrect email or password.',
@@ -53,7 +53,7 @@ export default (): void => {
 
         it('missing email', (done) => {
             request(app)
-                .post('/v1/user/login')
+                .post('/user/login')
                 .send({ password: '' })
                 .expect(400, {
                     message: "request.body should have required property 'email'",
@@ -69,7 +69,7 @@ export default (): void => {
 
         it('missing password', (done) => {
             request(app)
-                .post('/v1/user/login')
+                .post('/user/login')
                 .send({ email: '' })
                 .expect(400, {
                     message: "request.body should have required property 'password'",
@@ -85,7 +85,7 @@ export default (): void => {
 
         it('extra property', (done) => {
             request(app)
-                .post('/v1/user/login')
+                .post('/user/login')
                 .send(Object.assign(defaultLogin, { not: 'allowed' }))
                 .expect(400, {
                     message: 'request.body should NOT have additional properties',

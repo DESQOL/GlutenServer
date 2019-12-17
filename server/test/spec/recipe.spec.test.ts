@@ -21,12 +21,12 @@ export default (): void => {
     describe('GET /all', () => {
         it('should not be accesible for users', (done) => {
             request(app)
-                .get('/v1/recipe/all?api_key=user')
+                .get('/recipe/all?api_key=user')
                 .expect(403, {
                     message: 'Token does not have the required scope.',
                     errors: [
                         {
-                            path: '/v1/recipe/all',
+                            path: '/recipe/all',
                             message: 'Token does not have the required scope.'
                         }
                     ]
@@ -35,7 +35,7 @@ export default (): void => {
 
         it('should be accesible for admins', () => {
             return request(app)
-                .get('/v1/recipe/all?api_key=admin')
+                .get('/recipe/all?api_key=admin')
                 .expect(200)
                 .then((res) => {
                     const { body } = res;
@@ -68,19 +68,19 @@ export default (): void => {
 
         it('should be accesible for users', (done) => {
             request(app)
-                .get('/v1/recipe/1?api_key=user')
+                .get('/recipe/1?api_key=user')
                 .expect(200, recipes[0], done);
         });
 
         it('should be accesible for admins', (done) => {
             request(app)
-                .get('/v1/recipe/1?api_key=admin')
+                .get('/recipe/1?api_key=admin')
                 .expect(200, recipes[0], done);
         });
 
         it('should be return 400 if id below 1 is provided', (done) => {
             request(app)
-                .get('/v1/recipe/0?api_key=admin')
+                .get('/recipe/0?api_key=admin')
                 .expect(400, {
                     message: 'The server could not understand the request due to invalid syntax.',
                     errors: [

@@ -62,12 +62,12 @@ export default (): void => {
             result = undefined;
         });
 
-        it('should return a full TokenScope object', () => {
+        it('should return the DefaultScope object if an empty object is provided', () => {
             // Act
             result = TokenScope.from({});
 
             // Assert
-            expect(result).to.deep.equal(new TokenScope());
+            expect(result).to.deep.equal(DefaultScope);
         });
 
         it('should return the DefaultScope object if null is provided', () => {

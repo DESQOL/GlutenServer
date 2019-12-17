@@ -17,9 +17,6 @@ import { MiddlewareDefinition, RouteDefinition } from '@type';
 import { httpLogger, rateLimiter, validateToken } from '@middleware';
 import { logger, QueryFileLogger } from '@helper';
 
-// tslint:disable-next-line: no-var-requires
-require('dotenv').config();
-
 class App {
     public app: Application;
     public port: number;

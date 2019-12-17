@@ -1,3 +1,4 @@
+export * from './baseEntity';
 export * from './ingredient';
 export * from './product';
 export * from './recipe';

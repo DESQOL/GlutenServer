@@ -3,9 +3,17 @@ import { TokenScope, ScopeRequirement, DefaultScope } from '@entity';
 
 export default (): void => {
     describe('Class', () => {
-        it('should have 1 property', () => {
+        it('should have 0 properties', () => {
             // Act
             const actual = Object.keys(new TokenScope()).length;
+
+            // Assert
+            expect(actual).to.equal(0);
+        });
+
+        it('getDefault() should have 1 property', () => {
+            // Act
+            const actual = Object.keys(new TokenScope().getDefault()).length;
 
             // Assert
             expect(actual).to.equal(1);
@@ -36,10 +44,10 @@ export default (): void => {
             expect(actual).to.equal(1);
         });
 
-        it('should have the same number of properties as TokenScope', () => {
+        it('should have the same number of properties as .getDefault()', () => {
             // Act
             const actual = Object.keys(DefaultScope).length;
-            const expected = Object.keys(new TokenScope()).length;
+            const expected = Object.keys(new TokenScope().getDefault()).length;
 
             // Assert
             expect(actual).to.equal(expected);
@@ -54,12 +62,12 @@ export default (): void => {
             result = undefined;
         });
 
-        it('should return a full TokenScope object', () => {
+        it('should return the DefaultScope object if an empty object is provided', () => {
             // Act
             result = TokenScope.from({});
 
             // Assert
-            expect(result).to.deep.equal(new TokenScope());
+            expect(result).to.deep.equal(DefaultScope);
         });
 
         it('should return the DefaultScope object if null is provided', () => {

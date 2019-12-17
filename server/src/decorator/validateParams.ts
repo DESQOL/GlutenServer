@@ -1,18 +1,20 @@
 import { NextFunction, Request, Response } from 'express';
 import { MiddlewareDefinition } from '@type';
 import { validate, ValidationError } from 'class-validator';
-import { DefaultMessages } from '@helper';
+import { DefaultMessages, logger } from '@helper';
+import { BaseEntity } from '@entity';
 
 const metadataKey = 'routeMiddleware';
 
-export const ValidateParams = <T, K extends keyof T>(clazz: new () => T, toValidate: { [k: string]: K }): MethodDecorator => {
+export const ValidateParams = <T extends BaseEntity<T>, K extends keyof T>(Clazz: new () => T, toValidate: { [k: string]: K }): MethodDecorator => {
     return (target: object, propertyKey: string): void => {
         const metadataValue = Reflect.getMetadata(metadataKey, target, propertyKey) as MiddlewareDefinition[] || [];
 
         metadataValue.push(async (request: Request, response: Response, next: NextFunction) => {
             const { params } = request;
 
-            const clazzInstance = new clazz();
+            const clazzInstance = new Clazz();
+            const clazzReference = clazzInstance.getDefault();
             Object.keys(params).forEach((param) => {
                 const key = toValidate[param];
                 if (!key) {
@@ -20,7 +22,7 @@ export const ValidateParams = <T, K extends keyof T>(clazz: new () => T, toValid
                 }
 
                 const paramRawValue = params[param];
-                const paramTargetType = typeof clazzInstance[key];
+                const paramTargetType = typeof clazzReference[key];
                 switch (paramTargetType) {
                     case 'number':
                         clazzInstance[key as string] = Number(paramRawValue);
@@ -37,7 +39,7 @@ export const ValidateParams = <T, K extends keyof T>(clazz: new () => T, toValid
                     validateErrors.forEach((element: ValidationError) => {
                         const prop = Object.keys(toValidate).find(key => toValidate[key] === element.property);
                         if (!prop) {
-                            // Ignoring errors received from an unlisted param key
+                            logger.debug('Ignoring errors, %o, received from an unlisted param key, %s', element, element.property);
                             return;
                         }
 

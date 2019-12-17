@@ -1,7 +1,4 @@
 import 'reflect-metadata';
-
-// tslint:disable-next-line: no-var-requires
-require('dotenv').config();
 import ormconfig from './ormconfig.js';
 
 import appRoot from 'app-root-path';
@@ -25,7 +22,7 @@ class App {
     public port: number;
     public server: Server;
 
-    constructor(port = 3000) {
+    constructor (port = 3000) {
         this.port = port;
         this.app = express();
 
@@ -56,7 +53,7 @@ class App {
         });
     }
 
-    public async listen(): Promise<void> {
+    public async listen (): Promise<void> {
         await createConnection(Object.assign(ormconfig, {
             logging: true,
             logger: new QueryFileLogger('all'),
@@ -70,38 +67,38 @@ class App {
         });
     }
 
-    public close(): void {
+    public close (): void {
         this.server.close();
     }
 
-    private middlewares(): void {
+    private middlewares (): void {
         [].forEach((middleWare) => {
             this.app.use(middleWare);
         });
     }
 
-    private routes(): void {
+    private routes (): void {
         [
             RecipeController,
             UserController,
-        ].forEach((controller) => {
-            const prefix = Reflect.getMetadata('prefix', controller);
-            const requireToken = Reflect.getMetadata('requireToken', controller) as boolean;
-            const routes: RouteDefinition[] = Reflect.getMetadata('routes', controller);
+        ].forEach((Controller) => {
+            const prefix = Reflect.getMetadata('prefix', Controller);
+            const requireToken = Reflect.getMetadata('requireToken', Controller) as boolean;
+            const routes: RouteDefinition[] = Reflect.getMetadata('routes', Controller);
 
             routes.forEach((route) => {
                 const routeMiddleware: MiddlewareDefinition[] = requireToken ? [validateToken] : [];
-                const extraMiddleware = Reflect.getMetadata('routeMiddleware', controller.prototype, route.methodName);
+                const extraMiddleware = Reflect.getMetadata('routeMiddleware', Controller.prototype, route.methodName);
                 if (extraMiddleware) {
                     (extraMiddleware as MiddlewareDefinition[]).forEach((val) => routeMiddleware.push(val));
                 }
 
-                function routeHandler(req: Request, res: Response, next: NextFunction): void {
-                    const result = new controller()[route.methodName](req, res, next);
+                function routeHandler (req: Request, res: Response, next: NextFunction): void {
+                    const result = new Controller()[route.methodName](req, res, next);
                     if (result instanceof Promise) {
                         result
                             .then((data) => {
-                                if((data as Response) !== undefined && (data as Response).finished) {
+                                if ((data as Response) !== undefined && (data as Response).finished) {
                                     logger.debug('result is a finished Response, not doing anything');
                                 } else if (data !== null && data !== undefined) {
                                     res.send(data);
@@ -112,7 +109,7 @@ class App {
                             .catch((err) => {
                                 next(err);
                             });
-                    } else if((result as Response) !== undefined && (result as Response).finished) {
+                    } else if ((result as Response) !== undefined && (result as Response).finished) {
                         logger.debug('result is a finished Response, not doing anything');
                     } else if (result !== null && result !== undefined) {
                         res.json(result);

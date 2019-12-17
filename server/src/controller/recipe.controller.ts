@@ -3,7 +3,7 @@ import { Recipe } from '@entity';
 import { Request, Response, NextFunction } from 'express';
 import { getRepository } from 'typeorm';
 
-@Controller('/v1/recipe')
+@Controller('/recipe')
 @RequireToken()
 export class RecipeController {
     private recipeRepository = getRepository(Recipe);

@@ -12,7 +12,7 @@ import fs from 'fs';
 import helmet from 'helmet';
 import compression from 'compression';
 
-import { RecipeController, UserController } from '@controller/v1';
+import { RecipeController, UserController } from '@controller';
 import { MiddlewareDefinition, RouteDefinition } from '@type';
 import { httpLogger, rateLimiter, validateToken } from '@middleware';
 import { logger, QueryFileLogger } from '@helper';
@@ -34,7 +34,7 @@ class App {
         this.app.use(rateLimiter());
 
         const swaggerDocument = yaml.safeLoad(fs.readFileSync(`${appRoot}/spec/openapi.yaml`, 'utf8'));
-        this.app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+        this.app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
         new OpenApiValidator({
             apiSpec: `${appRoot}/spec/openapi.yaml`,

@@ -4,7 +4,7 @@ import { validate } from 'class-validator';
 import { Request, Response, NextFunction } from 'express';
 import { getRepository } from 'typeorm';
 
-@Controller('/v1/user')
+@Controller('/user')
 export class UserController {
     private userRepository = getRepository(User);
 

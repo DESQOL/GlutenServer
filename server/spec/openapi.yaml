@@ -5,7 +5,32 @@ info:
   version: 0.0.1
 
 servers:
-  - url: http://localhost/v1/
+  - url: '{protocol}://desqol.hihva.nl:{port}'
+    description: Main (production) server
+    variables:
+      protocol:
+        enum:
+          - http
+          - https
+        default: http
+      port:
+        enum:
+          - '80'
+          - '3000'
+        default: '80'
+  - url: '{protocol}://localhost:{port}'
+    description: Internal staging server for testing
+    variables:
+      protocol:
+        enum:
+          - http
+          - https
+        default: http
+      port:
+        enum:
+          - '80'
+          - '3000'
+        default: '80'    
 
 security:
   # Either key can be used (as in logical OR)

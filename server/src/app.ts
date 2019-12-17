@@ -34,7 +34,7 @@ class App {
         this.app.use(rateLimiter());
 
         const swaggerDocument = yaml.safeLoad(fs.readFileSync(`${appRoot}/spec/openapi.yaml`, 'utf8'));
-        this.app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+        this.app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
         new OpenApiValidator({
             apiSpec: `${appRoot}/spec/openapi.yaml`,

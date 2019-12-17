@@ -84,20 +84,20 @@ class App {
         [
             RecipeController,
             UserController,
-        ].forEach((controller) => {
-            const prefix = Reflect.getMetadata('prefix', controller);
-            const requireToken = Reflect.getMetadata('requireToken', controller) as boolean;
-            const routes: RouteDefinition[] = Reflect.getMetadata('routes', controller);
+        ].forEach((Controller) => {
+            const prefix = Reflect.getMetadata('prefix', Controller);
+            const requireToken = Reflect.getMetadata('requireToken', Controller) as boolean;
+            const routes: RouteDefinition[] = Reflect.getMetadata('routes', Controller);
 
             routes.forEach((route) => {
                 const routeMiddleware: MiddlewareDefinition[] = requireToken ? [validateToken] : [];
-                const extraMiddleware = Reflect.getMetadata('routeMiddleware', controller.prototype, route.methodName);
+                const extraMiddleware = Reflect.getMetadata('routeMiddleware', Controller.prototype, route.methodName);
                 if (extraMiddleware) {
                     (extraMiddleware as MiddlewareDefinition[]).forEach((val) => routeMiddleware.push(val));
                 }
 
                 function routeHandler (req: Request, res: Response, next: NextFunction): void {
-                    const result = new controller()[route.methodName](req, res, next);
+                    const result = new Controller()[route.methodName](req, res, next);
                     if (result instanceof Promise) {
                         result
                             .then((data) => {

@@ -6,14 +6,14 @@ import { BaseEntity } from '@entity';
 
 const metadataKey = 'routeMiddleware';
 
-export const ValidateParams = <T extends BaseEntity<T>, K extends keyof T>(clazz: new () => T, toValidate: { [k: string]: K }): MethodDecorator => {
+export const ValidateParams = <T extends BaseEntity<T>, K extends keyof T>(Clazz: new () => T, toValidate: { [k: string]: K }): MethodDecorator => {
     return (target: object, propertyKey: string): void => {
         const metadataValue = Reflect.getMetadata(metadataKey, target, propertyKey) as MiddlewareDefinition[] || [];
 
         metadataValue.push(async (request: Request, response: Response, next: NextFunction) => {
             const { params } = request;
 
-            const clazzInstance = new clazz();
+            const clazzInstance = new Clazz();
             const clazzReference = clazzInstance.getDefault();
             Object.keys(params).forEach((param) => {
                 const key = toValidate[param];

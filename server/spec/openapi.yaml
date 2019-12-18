@@ -116,6 +116,15 @@ paths:
           description: Not authenticated
         '404':
           description: User not found
+  /user/profile:
+    get:
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
   /user/register:
     post:
       security: []

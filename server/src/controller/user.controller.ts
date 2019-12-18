@@ -1,14 +1,16 @@
-import { Controller, Post } from '@decorator';
-import { User } from '@entity';
+import { Controller, Route } from '@decorator';
+import { Token, User } from '@entity';
 import { validate } from 'class-validator';
 import { Request, Response, NextFunction } from 'express';
 import { getRepository } from 'typeorm';
+import { getToken } from '@helper';
 
 @Controller('/user')
 export class UserController {
+    private tokenRepository = getRepository(Token);
     private userRepository = getRepository(User);
 
-    @Post('/register')
+    @Route('post', '/register')
     public async register (request: Request, response: Response, _next: NextFunction): Promise<object> {
         const { email, name, password } = request.body;
 
@@ -37,7 +39,7 @@ export class UserController {
         response.json(user.displayUnit());
     }
 
-    @Post('/login')
+    @Route('post', '/login')
     public async login (request: Request, response: Response, _next: NextFunction): Promise<object> {
         const { email, password } = request.body;
 
@@ -58,5 +60,13 @@ export class UserController {
         }
 
         response.json(user.displayUnit());
+    }
+
+    @Route('get', '/profile', { tokenRequired: true })
+    public async profile (request: Request, response: Response, _next: NextFunction): Promise<void> {
+        const token = getToken(request);
+
+        const { user } = await this.tokenRepository.findOne({ token });
+        response.json(user);
     }
 }

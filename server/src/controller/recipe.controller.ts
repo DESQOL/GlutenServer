@@ -1,4 +1,4 @@
-import { RequiredScope, Controller, Get, RequireToken, ValidateClassArgs } from '@decorator';
+import { RequiredScope, Controller, RequireToken, Route, ValidateClassArgs } from '@decorator';
 import { Recipe } from '@entity';
 import { Request, Response, NextFunction } from 'express';
 import { getRepository } from 'typeorm';
@@ -10,13 +10,13 @@ import { isNumber, isNumberGreaterThanZero } from '@helper/validator';
 export class RecipeController {
     private recipeRepository = getRepository(Recipe);
 
-    @Get('/all')
+    @Route('get', '/all')
     @RequiredScope({ isAdmin: true })
     public async all (_request: Request, _response: Response, _next: NextFunction): Promise<Recipe[]> {
         return this.recipeRepository.find();
     }
 
-    @Get('/autocomplete')
+    @Route('get', '/autocomplete')
     public async autocomplete (request: Request, _response: Response, _next: NextFunction): Promise<Recipe[]> {
         const { query } = request.query;
         return this.recipeRepository
@@ -27,7 +27,7 @@ export class RecipeController {
             .getMany();
     }
 
-    @Get('/search')
+    @Route('get', '/search')
     @ValidateArgs('query', { limit: [isNumber, isNumberGreaterThanZero], offset: isNumber })
     public async search (request: Request, response: Response, _next: NextFunction): Promise<Recipe[]|Response> {
         const { limit, offset } = request.params;
@@ -46,7 +46,7 @@ export class RecipeController {
         return recipes;
     }
 
-    @Get('/:recipeId')
+    @Route('get', '/:recipeId')
     @ValidateClassArgs('params', Recipe, { recipeId: 'id' })
     public async one (request: Request, response: Response, _next: NextFunction): Promise<Recipe|Response> {
         const { recipeId } = request.params;

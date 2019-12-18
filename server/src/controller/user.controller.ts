@@ -1,11 +1,13 @@
-import { User } from '@entity';
 import { Controller, Route } from '@decorator';
+import { Token, User } from '@entity';
 import { validate } from 'class-validator';
 import { Request, Response, NextFunction } from 'express';
 import { getRepository } from 'typeorm';
+import { getToken } from '@helper';
 
 @Controller('/user')
 export class UserController {
+    private tokenRepository = getRepository(Token);
     private userRepository = getRepository(User);
 
     @Route('post', '/register')
@@ -58,5 +60,13 @@ export class UserController {
         }
 
         response.json(user.displayUnit());
+    }
+
+    @Route('get', '/profile', { tokenRequired: true })
+    public async profile (request: Request, response: Response, _next: NextFunction): Promise<void> {
+        const token = getToken(request);
+
+        const { user } = await this.tokenRepository.findOne({ token });
+        response.json(user);
     }
 }

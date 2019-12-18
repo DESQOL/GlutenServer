@@ -15,7 +15,7 @@ export class RecipeController {
     }
 
     @Get('/:recipeId')
-    @ValidateClassArgs(Recipe, { recipeId: 'id' })
+    @ValidateClassArgs('params', Recipe, { recipeId: 'id' })
     public async one (request: Request, response: Response, _next: NextFunction): Promise<Recipe|Response> {
         const { recipeId } = request.params;
 

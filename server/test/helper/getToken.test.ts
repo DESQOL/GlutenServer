@@ -23,7 +23,7 @@ export default (): void => {
 
     it('should return the token if provided via the header', () => {
     // Arrange
-        const request = Object.assign({}, baseRequest, { headers: { 'X-API-TOKEN': 'header_token' } });
+        const request = Object.assign({}, baseRequest, { headers: { 'X-API-KEY': 'header_token' } });
 
         // Act
         const token = getToken(request);

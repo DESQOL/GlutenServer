@@ -1,5 +1,5 @@
-import { Controller, Post } from '@decorator';
 import { User } from '@entity';
+import { Controller, Route } from '@decorator';
 import { validate } from 'class-validator';
 import { Request, Response, NextFunction } from 'express';
 import { getRepository } from 'typeorm';
@@ -8,7 +8,7 @@ import { getRepository } from 'typeorm';
 export class UserController {
     private userRepository = getRepository(User);
 
-    @Post('/register')
+    @Route('post', '/register')
     public async register (request: Request, response: Response, _next: NextFunction): Promise<object> {
         const { email, name, password } = request.body;
 
@@ -37,7 +37,7 @@ export class UserController {
         response.json(user.displayUnit());
     }
 
-    @Post('/login')
+    @Route('post', '/login')
     public async login (request: Request, response: Response, _next: NextFunction): Promise<object> {
         const { email, password } = request.body;
 

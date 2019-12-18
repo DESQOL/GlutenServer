@@ -1,7 +1,7 @@
 import { Request } from 'express';
 
 const keys = {
-    header: 'X-API-TOKEN',
+    header: 'X-API-KEY',
     query: 'api_key',
 };
 

@@ -17,6 +17,33 @@ export default (): void => {
         server.close();
     });
 
+    describe('GET /user/profile', () => {
+        it('should return the profile associated with the token', (done) => {
+            request(app)
+                .get('/user/profile')
+                .set('X-API-KEY', 'admin')
+                .expect(200, {
+                    id: 1,
+                    name: 'Martijn Vegter',
+                    email: 'martijn.vegter@hva.nl',
+                }, done);
+        });
+
+        it('should require a token to be provided', (done) => {
+            request(app)
+                .get('/user/profile')
+                .expect(401, {
+                    message: "'X-API-KEY' header required",
+                    errors: [
+                        {
+                            path: '/user/profile',
+                            message: "'X-API-KEY' header required"
+                        }
+                    ]
+                }, done);
+        });
+    });
+
     describe('POST /user/login', () => {
         const defaultLogin = {
             email: 'martijn.vegter@hva.nl',

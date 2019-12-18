@@ -1,4 +1,4 @@
-import { isNumber } from '@helper';
+import { isNumber, isNumberGreaterThanZero } from '@helper';
 import { expect } from 'chai';
 
 export default (): void => {
@@ -87,6 +87,52 @@ export default (): void => {
 
         it('should', () => {
             const result = isNumber('asdf0');
+
+            expect(result).to.be.false;
+        });
+    });
+
+    describe('isNumberGreaterThanZero (value: number)', () => {
+        it('should', () => {
+            const result = isNumberGreaterThanZero(-1);
+
+            expect(result).to.be.false;
+        });
+
+        it('should', () => {
+            const result = isNumberGreaterThanZero(0);
+
+            expect(result).to.be.false;
+        });
+
+        it('should', () => {
+            const result = isNumberGreaterThanZero(1);
+
+            expect(result).to.be.true;
+        });
+    });
+
+    describe('isNumberGreaterThanZero (value: string)', () => {
+        it('should', () => {
+            const result = isNumberGreaterThanZero('-1');
+
+            expect(result).to.be.false;
+        });
+
+        it('should', () => {
+            const result = isNumberGreaterThanZero('0');
+
+            expect(result).to.be.false;
+        });
+
+        it('should', () => {
+            const result = isNumberGreaterThanZero('1');
+
+            expect(result).to.be.true;
+        });
+
+        it('should', () => {
+            const result = isNumberGreaterThanZero('');
 
             expect(result).to.be.false;
         });

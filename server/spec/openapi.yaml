@@ -49,6 +49,28 @@ paths:
                 $ref: '#/components/schemas/ArrayOfRecipes'
         '401':
           $ref: '#/components/responses/UnauthorizedError'
+  /recipe/search:
+    get:
+      parameters:
+        - in: query
+          name: limit
+          required: true
+          schema:
+            type: integer
+        - in: query
+          name: offset
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArrayOfRecipes'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
   /recipe/{recipeId}:
     get:
       responses:

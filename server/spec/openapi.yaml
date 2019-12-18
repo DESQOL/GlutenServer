@@ -49,6 +49,24 @@ paths:
                 $ref: '#/components/schemas/ArrayOfRecipes'
         '401':
           $ref: '#/components/responses/UnauthorizedError'
+  /recipe/autocomplete:
+    get:
+      parameters:
+        - in: query
+          name: query
+          required: true
+          schema:
+            type: string
+            minLength: 3
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArrayOfRecipes'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
   /recipe/search:
     get:
       parameters:

@@ -16,6 +16,17 @@ export class RecipeController {
         return this.recipeRepository.find();
     }
 
+    @Get('/autocomplete')
+    public async autocomplete (request: Request, _response: Response, _next: NextFunction): Promise<Recipe[]> {
+        const { query } = request.query;
+        return this.recipeRepository
+            .createQueryBuilder('recipe')
+            .select(['recipe.id', 'recipe.title'])
+            .where('recipe.title LIKE :query', { query })
+            .limit(10)
+            .getMany();
+    }
+
     @Get('/search')
     @ValidateArgs('query', { limit: [isNumber, isNumberGreaterThanZero], offset: isNumber })
     public async search (request: Request, response: Response, _next: NextFunction): Promise<Recipe[]|Response> {

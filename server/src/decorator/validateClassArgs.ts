@@ -6,7 +6,7 @@ import { BaseEntity } from '@entity';
 
 const metadataKey = 'routeMiddleware';
 
-export const ValidateParams = <T extends BaseEntity<T>, K extends keyof T>(Clazz: new () => T, toValidate: { [k: string]: K }): MethodDecorator => {
+export const ValidateClassArgs = <T extends BaseEntity<T>, K extends keyof T>(Clazz: new () => T, toValidate: { [k: string]: K }): MethodDecorator => {
     return (target: object, propertyKey: string): void => {
         const metadataValue = Reflect.getMetadata(metadataKey, target, propertyKey) as MiddlewareDefinition[] || [];
 

@@ -1,4 +1,4 @@
-import { RequiredScope, Controller, Get, RequireToken, ValidateParams } from '@decorator';
+import { RequiredScope, Controller, Get, RequireToken, ValidateClassArgs } from '@decorator';
 import { Recipe } from '@entity';
 import { Request, Response, NextFunction } from 'express';
 import { getRepository } from 'typeorm';
@@ -15,7 +15,7 @@ export class RecipeController {
     }
 
     @Get('/:recipeId')
-    @ValidateParams(Recipe, { recipeId: 'id' })
+    @ValidateClassArgs(Recipe, { recipeId: 'id' })
     public async one (request: Request, response: Response, _next: NextFunction): Promise<Recipe|Response> {
         const { recipeId } = request.params;
 

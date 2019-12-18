@@ -7,6 +7,10 @@ export function isNumber (value: any): boolean {
         return false;
     }
 
+    if (typeof value === 'string' && value === '') {
+        return false;
+    }
+
     return !isNaN(Number(value));
 }
 

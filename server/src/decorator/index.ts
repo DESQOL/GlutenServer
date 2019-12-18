@@ -3,4 +3,4 @@ export * from './get';
 export * from './post';
 export * from './requiredScope';
 export * from './requireToken';
-export * from './validateParams';
+export * from './validateClassArgs';

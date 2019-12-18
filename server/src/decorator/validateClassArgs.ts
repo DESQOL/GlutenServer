@@ -6,22 +6,22 @@ import { BaseEntity } from '@entity';
 
 const metadataKey = 'routeMiddleware';
 
-export const ValidateParams = <T extends BaseEntity<T>, K extends keyof T>(Clazz: new () => T, toValidate: { [k: string]: K }): MethodDecorator => {
+export const ValidateClassArgs = <T extends BaseEntity<T>, K extends keyof T>(dataSource: 'body' | 'params' | 'query', Clazz: new () => T, toValidate: { [k: string]: K }): MethodDecorator => {
     return (target: object, propertyKey: string): void => {
         const metadataValue = Reflect.getMetadata(metadataKey, target, propertyKey) as MiddlewareDefinition[] || [];
 
         metadataValue.push(async (request: Request, response: Response, next: NextFunction) => {
-            const { params } = request;
+            const args = request[dataSource];
 
             const clazzInstance = new Clazz();
             const clazzReference = clazzInstance.getDefault();
-            Object.keys(params).forEach((param) => {
-                const key = toValidate[param];
+            Object.keys(args).forEach((argKey) => {
+                const key = toValidate[argKey];
                 if (!key) {
                     return;
                 }
 
-                const paramRawValue = params[param];
+                const paramRawValue = args[argKey];
                 const paramTargetType = typeof clazzReference[key];
                 switch (paramTargetType) {
                     case 'number':

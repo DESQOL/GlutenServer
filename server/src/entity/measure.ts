@@ -1,4 +1,4 @@
-import { MeasureUS, MeasureMetric, Ingredient } from '@entity';
+import { Ingredient } from '@entity';
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { BaseEntity } from './baseEntity';
 
@@ -7,11 +7,14 @@ export class Measure extends BaseEntity<Measure> {
     @PrimaryGeneratedColumn()
     public id: number;
 
-    @Column(() => MeasureUS)
-    public us: MeasureUS;
+    @Column()
+    public amount: number;
 
-    @Column(() => MeasureMetric)
-    public metric: MeasureMetric;
+    @Column()
+    public unitShort: string;
+
+    @Column()
+    public unitLong: string;
 
     @ManyToOne(() => Ingredient, ingredient => ingredient.measurements)
     public ingredient: Ingredient;
@@ -19,8 +22,6 @@ export class Measure extends BaseEntity<Measure> {
     getDefault (): Measure {
         const measure = new Measure();
         measure.id = 0;
-        measure.us = null;
-        measure.metric = null;
         measure.ingredient = null;
 
         return measure;

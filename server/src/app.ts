@@ -69,7 +69,9 @@ class App {
                 ca: fs.readFileSync(`${appRoot}/cert/chain.pem`, 'utf8'),
             }, this.app).listen(443, () => logger.info('App listening on the https://localhost:443/'));
         } else {
-            this.http = this.app.listen(80, () => logger.info('App listening on the http://localhost:80/'));
+            this.http = this.app.listen(process.env.PORT || 80, () => {
+                logger.info(`App listening on the http://localhost:${process.env.PORT || 80}/`);
+            });
         }
     }
 

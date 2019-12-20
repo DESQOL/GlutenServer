@@ -3,7 +3,7 @@ import { Recipe } from '@entity';
 import { Request, Response, NextFunction } from 'express';
 import { getRepository } from 'typeorm';
 import { ValidateArgs } from '@decorator/validateArgs';
-import { isNumber, isNumberGreaterThanZero } from '@helper/validator';
+import { isNumber, isNumberGreaterThanZero, minLength } from '@helper/validator';
 
 @Controller('/recipe')
 @RequireToken()
@@ -28,7 +28,7 @@ export class RecipeController {
     }
 
     @Route('get', '/search')
-    @ValidateArgs('query', { limit: [isNumber, isNumberGreaterThanZero], offset: isNumber })
+    @ValidateArgs('query', { limit: [isNumber, isNumberGreaterThanZero], offset: [isNumber, minLength(1)] })
     public async search (request: Request, response: Response, _next: NextFunction): Promise<Recipe[]|Response> {
         const { limit, offset } = request.params;
 

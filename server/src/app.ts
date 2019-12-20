@@ -4,13 +4,14 @@ import ormconfig from './ormconfig.js';
 import appRoot from 'app-root-path';
 import express, { Application, NextFunction, Request, Response } from 'express';
 import { OpenApiValidator } from 'express-openapi-validator';
-import { Server } from 'http';
 import { createConnection } from 'typeorm';
 import swaggerUi from 'swagger-ui-express';
 import yaml from 'js-yaml';
 import fs from 'fs';
 import helmet from 'helmet';
 import compression from 'compression';
+import http from 'http';
+import https from 'https';
 
 import { RecipeController, UserController } from '@controller';
 import { MiddlewareDefinition, RouteDefinition } from '@type';
@@ -19,11 +20,10 @@ import { logger, QueryFileLogger } from '@helper';
 
 class App {
     public app: Application;
-    public port: number;
-    public server: Server;
+    public http: http.Server;
+    public https: https.Server;
 
-    constructor (port = 3000) {
-        this.port = port;
+    constructor () {
         this.app = express();
 
         this.app.use(httpLogger);
@@ -62,13 +62,18 @@ class App {
             process.exit();
         });
 
-        this.server = this.app.listen(this.port, () => {
-            logger.info(`App listening on the http://localhost:${this.port}`);
-        });
+        this.http = this.app.listen(80, () => logger.info('App listening on the http://localhost:80/'));
+
+        this.https = https.createServer({
+            key: fs.readFileSync(`${appRoot}/cert/privkey.pem`, 'utf8'),
+            cert: fs.readFileSync(`${appRoot}/cert/cert.pem`, 'utf8'),
+            ca: fs.readFileSync(`${appRoot}/cert/chain.pem`, 'utf8'),
+        }, this.app).listen(443, () => logger.info('App listening on the https://localhost:443/'));
     }
 
     public close (): void {
-        this.server.close();
+        this.http.close();
+        this.https.close();
     }
 
     private middlewares (): void {

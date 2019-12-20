@@ -28,7 +28,7 @@ services:
     volumes:
       - './server/logs:/usr/src/app/logs'
     ports:
-      - 3000:3000
+      - 443:443
     links:
       - database
       - cache

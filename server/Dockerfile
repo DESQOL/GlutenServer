@@ -18,6 +18,6 @@ COPY . .
 # Build app source
 RUN npm run build
 
-EXPOSE 3000
+EXPOSE 443
 
 CMD [ "./scripts/wait-for-it.sh", "cache:6379", "--",  "./scripts/wait-for-it.sh", "database:3306", "--", "npm", "start" ]

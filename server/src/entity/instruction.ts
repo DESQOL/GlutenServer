@@ -1,4 +1,4 @@
-import { BaseEntity, Recipe, Ingredient, Equipment } from '@entity';
+import { BaseEntity, Recipe, InstructionStep } from '@entity';
 import { Column, Entity, OneToMany, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
@@ -7,34 +7,24 @@ export class Instruction extends BaseEntity<Instruction> {
     public id: number;
 
     @Column()
-    public number: number;
+    public name: string;
 
-    @Column()
-    public step: string;
+    @OneToMany(() => InstructionStep, instructionStep => instructionStep.instruction, {
+        eager: true
+    })
+    public instructionSteps: InstructionStep[];
 
     @ManyToOne(() => Recipe, recipe => recipe.instructions, {
         onDelete: 'CASCADE'
     })
     public recipe: Recipe;
 
-    @OneToMany(() => Ingredient, ingredient => ingredient.instruction, {
-        eager: true
-    })
-    public ingredients: Ingredient[];
-
-    @OneToMany(() => Equipment, equipment => equipment.instruction, {
-        eager: true
-    })
-    public equipment: Equipment[];
-
     getDefault (): Instruction {
         const instruction = new Instruction();
         instruction.id = 0;
-        instruction.number = 1;
-        instruction.step = '';
+        instruction.name = '';
         instruction.recipe = null;
-        instruction.ingredients = null;
-        instruction.equipment = null;
+        instruction.instructionSteps = null;
 
         return instruction;
     }

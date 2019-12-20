@@ -1,7 +1,6 @@
-import { Product, Recipe, Measure } from '@entity';
+import { Product, Recipe, Measure, IngredientMeta, IngredientMetaInformation, InstructionStep } from '@entity';
 import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { BaseEntity } from './baseEntity';
-import { Instruction } from './instruction';
 
 @Entity()
 export class Ingredient extends BaseEntity<Ingredient> {
@@ -35,19 +34,29 @@ export class Ingredient extends BaseEntity<Ingredient> {
     @Column({ nullable: true })
     public unit: string;
 
-    @ManyToOne(() => Product, product => product.recipeIngredients)
-    public product: Product;
-
     @Column()
     public source: string;
+
+    @OneToMany(() => IngredientMeta, ingredientMeta => ingredientMeta.ingredient, {
+        eager: true
+    })
+    public meta: IngredientMeta[];
+
+    @OneToMany(() => IngredientMetaInformation, ingredientMetaInformation => ingredientMetaInformation.ingredient, {
+        eager: true
+    })
+    public metaInformation: IngredientMetaInformation[];
+
+    @ManyToOne(() => Product, product => product.recipeIngredients)
+    public product: Product;
 
     @ManyToOne(() => Recipe, recipe => recipe.ingredients, {
         onDelete: 'CASCADE'
     })
     public recipe: Recipe;
 
-    @ManyToOne(() => Instruction, instruction => instruction.ingredients)
-    public instruction: Instruction;
+    @ManyToOne(() => InstructionStep, instructionStep => instructionStep.ingredients)
+    public instructionStep: InstructionStep;
 
     @OneToMany(() => Measure, measure => measure.ingredient, {
         eager: true
@@ -69,6 +78,10 @@ export class Ingredient extends BaseEntity<Ingredient> {
         ingredient.source = '';
         ingredient.product = null;
         ingredient.recipe = null;
+        ingredient.instructionStep = null;
+        ingredient.measurements = null;
+        ingredient.meta = null;
+        ingredient.metaInformation = null;
 
         return ingredient;
     }

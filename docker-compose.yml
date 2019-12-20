@@ -28,7 +28,6 @@ services:
     volumes:
       - './server/logs:/usr/src/app/logs'
     ports:
-      - 80:80
       - 443:443
     links:
       - database

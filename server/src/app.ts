@@ -16,7 +16,7 @@ import https from 'https';
 import { RecipeController, UserController } from '@controller';
 import { MiddlewareDefinition, RouteDefinition } from '@type';
 import { httpLogger, rateLimiter, validateToken } from '@middleware';
-import { logger, QueryFileLogger } from '@helper';
+import { logger, QueryFileLogger, isProduction } from '@helper';
 
 class App {
     public app: Application;
@@ -62,18 +62,25 @@ class App {
             process.exit();
         });
 
-        this.http = this.app.listen(80, () => logger.info('App listening on the http://localhost:80/'));
-
-        this.https = https.createServer({
-            key: fs.readFileSync(`${appRoot}/cert/privkey.pem`, 'utf8'),
-            cert: fs.readFileSync(`${appRoot}/cert/cert.pem`, 'utf8'),
-            ca: fs.readFileSync(`${appRoot}/cert/chain.pem`, 'utf8'),
-        }, this.app).listen(443, () => logger.info('App listening on the https://localhost:443/'));
+        if (isProduction()) {
+            this.https = https.createServer({
+                key: fs.readFileSync(`${appRoot}/cert/privkey.pem`, 'utf8'),
+                cert: fs.readFileSync(`${appRoot}/cert/cert.pem`, 'utf8'),
+                ca: fs.readFileSync(`${appRoot}/cert/chain.pem`, 'utf8'),
+            }, this.app).listen(443, () => logger.info('App listening on the https://localhost:443/'));
+        } else {
+            this.http = this.app.listen(80, () => logger.info('App listening on the http://localhost:80/'));
+        }
     }
 
     public close (): void {
-        this.http.close();
-        this.https.close();
+        if (this.http) {
+            this.http.close();
+        }
+
+        if (this.https) {
+            this.https.close();
+        }
     }
 
     private middlewares (): void {

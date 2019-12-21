@@ -1,5 +1,6 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToMany, JoinTable } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToMany, JoinTable, ManyToOne } from 'typeorm';
 import { BaseEntity, Ingredient, InstructionStepLength, Equipment } from '@entity';
+import { Instruction } from './instruction';
 
 @Entity()
 export class InstructionStep extends BaseEntity<InstructionStep> {
@@ -27,6 +28,9 @@ export class InstructionStep extends BaseEntity<InstructionStep> {
     @Column(() => InstructionStepLength)
     public length: InstructionStepLength;
 
+    @ManyToOne(() => Instruction, instruction => instruction.steps)
+    public instruction: Instruction;
+
     getDefault (): InstructionStep {
         const instruction = new InstructionStep();
         instruction.id = 0;
@@ -35,6 +39,7 @@ export class InstructionStep extends BaseEntity<InstructionStep> {
         instruction.ingredients = null;
         instruction.equipment = null;
         instruction.length = null;
+        instruction.instruction = null;
 
         return instruction;
     }

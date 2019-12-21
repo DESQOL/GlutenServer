@@ -1,5 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
-import { BaseEntity } from '@entity';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { BaseEntity, InstructionStep } from '@entity';
 
 @Entity()
 export class Instruction extends BaseEntity<Instruction> {
@@ -9,7 +9,10 @@ export class Instruction extends BaseEntity<Instruction> {
     @Column()
     public name: string;
 
-    'steps': [];
+    @OneToMany(() => InstructionStep, instructionStep => instructionStep.instruction, {
+        eager: true
+    })
+    public steps: InstructionStep[];
 
     getDefault (): Instruction {
         const instruction = new Instruction();

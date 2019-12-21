@@ -1,5 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
-import { BaseEntity, InstructionStep } from '@entity';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany, OneToOne } from 'typeorm';
+import { BaseEntity, InstructionStep, Recipe } from '@entity';
 
 @Entity()
 export class Instruction extends BaseEntity<Instruction> {
@@ -14,11 +14,15 @@ export class Instruction extends BaseEntity<Instruction> {
     })
     public steps: InstructionStep[];
 
+    @OneToOne(() => Recipe, recipe => recipe.analyzedInstructions)
+    public recipe: Recipe;
+
     getDefault (): Instruction {
         const instruction = new Instruction();
         instruction.id = 0;
         instruction.name = '';
         instruction.steps = null;
+        instruction.recipe = null;
 
         return instruction;
     }

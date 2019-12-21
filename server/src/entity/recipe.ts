@@ -1,5 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
-import { BaseEntity, Ingredient } from '@entity';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany, OneToOne, JoinColumn } from 'typeorm';
+import { BaseEntity, Ingredient, Instruction } from '@entity';
 
 @Entity()
 export class Recipe extends BaseEntity<Recipe> {
@@ -113,7 +113,11 @@ export class Recipe extends BaseEntity<Recipe> {
     @Column({ type: 'longtext' })
     public instructions: string;
 
-    'analyzedInstructions': [];
+    @OneToOne(() => Instruction, instruction => instruction.recipe, {
+        eager: true
+    })
+    @JoinColumn()
+    public analyzedInstructions: Instruction;
 
     getDefault (): Recipe {
         const recipe = new Recipe();

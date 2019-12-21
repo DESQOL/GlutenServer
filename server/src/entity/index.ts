@@ -1,4 +1,5 @@
 export * from './baseEntity';
+export * from './equipment';
 export * from './ingredient';
 export * from './instruction';
 export * from './instructionStep';

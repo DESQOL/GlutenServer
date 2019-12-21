@@ -49,11 +49,11 @@ export class TokenScope extends BaseEntity<TokenScope> {
         }
 
         if (required.recipe) {
-            if (required.recipe.read && !this.recipe.read) {
+            if (required.recipe.write && !this.recipe.write) {
                 return false;
             }
 
-            if (required.recipe.write && !this.recipe.write) {
+            if (required.recipe.read && !this.recipe.read && !this.recipe.write) {
                 return false;
             }
         }

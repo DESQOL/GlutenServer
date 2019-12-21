@@ -30,7 +30,7 @@ export class RecipeController {
     }
 
     @Route('get', '/search')
-    @ValidateArgs('query', { limit: [isNumber, isNumberGreaterThanZero], offset: [isNumber, minLength(1)] })
+    @ValidateArgs('query', { limit: [isNumber, isNumberGreaterThanZero], offset: isNumber })
     public async search (request: Request, response: Response, _next: NextFunction): Promise<Recipe[]|Response> {
         const { limit, offset } = request.params;
 

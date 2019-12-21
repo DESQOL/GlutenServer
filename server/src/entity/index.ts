@@ -1,5 +1,6 @@
 export * from './baseEntity';
 export * from './ingredient';
+export * from './instruction';
 export * from './measure';
 export * from './measures';
 export * from './recipe';

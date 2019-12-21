@@ -1,5 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
-import { BaseEntity } from '@entity';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { BaseEntity, Ingredient } from '@entity';
 
 @Entity()
 export class Recipe extends BaseEntity<Recipe> {
@@ -72,7 +72,10 @@ export class Recipe extends BaseEntity<Recipe> {
     @Column()
     public pricePerServing: number;
 
-    'extendedIngredients': [];
+    @OneToMany(() => Ingredient, ingredient => ingredient.recipe, {
+        eager: true
+    })
+    public extendedIngredients: Ingredient[];
 
     @PrimaryGeneratedColumn()
     public id: number;

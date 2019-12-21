@@ -17,12 +17,14 @@ export class RecipeController {
     }
 
     @Route('get', '/autocomplete')
+    @RequiredScope({ recipe: { read: true } })
+    @ValidateArgs('query', { query: minLength(1) })
     public async autocomplete (request: Request, _response: Response, _next: NextFunction): Promise<Recipe[]> {
         const { query } = request.query;
         return this.recipeRepository
             .createQueryBuilder('recipe')
             .select(['recipe.id', 'recipe.title'])
-            .where('recipe.title LIKE :query', { query })
+            .where('recipe.title LIKE CONCAT(\'%\', :query, \'%\')', { query })
             .limit(10)
             .getMany();
     }

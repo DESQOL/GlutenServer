@@ -48,7 +48,7 @@ export const ValidateArgs = (dataSource: 'body' | 'params' | 'query', toValidate
                         if (typeof validatorResponse === 'boolean' && !validatorResponse) {
                             errors.push({
                                 path: `.${dataSource}.${argKey}`,
-                                message: `Invalid value suplied for ${argKey}.`,
+                                message: `Invalid value suplied for .${dataSource}.${argKey}.`,
                             });
                         }
 

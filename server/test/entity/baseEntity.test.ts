@@ -4,7 +4,7 @@ import { expect } from 'chai';
 
 export default (): void => {
     Object.keys(Entities).forEach((entityKey) => {
-        if (entityKey === 'BaseEntity' || entityKey === 'DefaultScope') {
+        if (['BaseEntity', 'DefaultScope'].includes(entityKey)) {
             logger.info('Ignored entity %s in auto-generated tests', entityKey);
             return;
         }
@@ -29,7 +29,7 @@ export default (): void => {
                 const obj = new Entities[entityKey]().getDefault();
 
                 expect(obj).to.not.deep.equal({});
-                if (entityKey !== 'TokenScope' && entityKey !== 'TokenScopeRecipe') {
+                if (!['TokenScope', 'TokenScopeRecipe'].includes(entityKey)) {
                     expect(obj.id).to.be.a('number');
                 } else {
                     expect(obj.id).to.be.undefined;

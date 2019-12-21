@@ -1,5 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
-import { BaseEntity, InstructionStepLength } from '@entity';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToMany, JoinTable } from 'typeorm';
+import { BaseEntity, Ingredient, InstructionStepLength } from '@entity';
 
 @Entity()
 export class InstructionStep extends BaseEntity<InstructionStep> {
@@ -12,7 +12,11 @@ export class InstructionStep extends BaseEntity<InstructionStep> {
     @Column()
     public step: string;
 
-    'ingredients': [];
+    @ManyToMany(() => Ingredient, {
+        eager: true
+    })
+    @JoinTable()
+    public ingredients: Ingredient[];
 
     'equipment': [];
 

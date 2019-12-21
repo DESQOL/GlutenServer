@@ -1,5 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn, ManyToOne } from 'typeorm';
-import { BaseEntity, Measures, Recipe } from '@entity';
+import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn, ManyToOne, ManyToMany } from 'typeorm';
+import { BaseEntity, Measures, Recipe, InstructionStep } from '@entity';
 
 @Entity()
 export class Ingredient extends BaseEntity<Ingredient> {
@@ -46,6 +46,9 @@ export class Ingredient extends BaseEntity<Ingredient> {
     @ManyToOne(() => Recipe, recipe => recipe.extendedIngredients)
     public recipe: Recipe;
 
+    @ManyToMany(() => InstructionStep)
+    public instructionSteps: InstructionStep[];
+
     public getDefault (): Ingredient {
         const ingredient = new Ingredient();
         ingredient.id = 0;
@@ -62,6 +65,7 @@ export class Ingredient extends BaseEntity<Ingredient> {
         ingredient.metaInformation = null;
         ingredient.measures = null;
         ingredient.recipe = null;
+        ingredient.instructionSteps = null;
 
         return ingredient;
     }

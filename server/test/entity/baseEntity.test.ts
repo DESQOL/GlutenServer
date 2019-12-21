@@ -29,7 +29,7 @@ export default (): void => {
                 const obj = new Entities[entityKey]().getDefault();
 
                 expect(obj).to.not.deep.equal({});
-                if (entityKey !== 'TokenScope') {
+                if (entityKey !== 'TokenScope' && entityKey !== 'TokenScopeRecipe') {
                     expect(obj.id).to.be.a('number');
                 } else {
                     expect(obj.id).to.be.undefined;

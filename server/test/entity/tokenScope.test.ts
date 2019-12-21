@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { TokenScope, DefaultScope } from '@entity';
+import { TokenScope, DefaultScope, TokenScopeRecipe } from '@entity';
 import { ScopeRequirement } from '@type';
 
 export default (): void => {
@@ -12,12 +12,12 @@ export default (): void => {
             expect(actual).to.equal(0);
         });
 
-        it('getDefault() should have 1 property', () => {
+        it('getDefault() should have 2 properties', () => {
             // Act
             const actual = Object.keys(new TokenScope().getDefault()).length;
 
             // Assert
-            expect(actual).to.equal(1);
+            expect(actual).to.equal(2);
         });
     });
 
@@ -37,12 +37,12 @@ export default (): void => {
             expect(result.isAdmin).to.be.false;
         });
 
-        it('should have 1 property', () => {
+        it('should have 2 properties', () => {
             // Act
             const actual = Object.keys(DefaultScope).length;
 
             // Assert
-            expect(actual).to.equal(1);
+            expect(actual).to.equal(2);
         });
 
         it('should have the same number of properties as .getDefault()', () => {
@@ -91,6 +91,10 @@ export default (): void => {
             // Arrange
             const reference = new TokenScope();
             reference.isAdmin = true;
+
+            reference.recipe = new TokenScopeRecipe();
+            reference.recipe.read = true;
+            reference.recipe.write = true;
 
             // Act
             result = TokenScope.from(reference);

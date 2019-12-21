@@ -13,7 +13,7 @@ export const DefaultScope: ScopeRequirement = {
 export class TokenScope extends BaseEntity<TokenScope> {
     public static from (partialScope: ScopeRequirement): TokenScope {
         if (!partialScope) {
-            return (new TokenScope()).getDefault();
+            return TokenScope.from(DefaultScope);
         }
 
         return Object.assign(new TokenScope(), DefaultScope, partialScope || {});

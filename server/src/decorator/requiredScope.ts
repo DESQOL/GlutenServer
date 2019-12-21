@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from 'express';
-import { MiddlewareDefinition } from '@type';
+import { MiddlewareDefinition, ScopeRequirement } from '@type';
 import { getToken, getDefaultResponse } from '@helper';
 import { getRepository } from 'typeorm';
-import { Token, TokenScope, ScopeRequirement } from '@entity';
+import { Token, TokenScope } from '@entity';
 import { validateToken } from '@middleware';
 
 const metadataKey = 'routeMiddleware';

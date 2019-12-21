@@ -1,5 +1,6 @@
 import { expect } from 'chai';
-import { TokenScope, ScopeRequirement, DefaultScope } from '@entity';
+import { TokenScope, DefaultScope } from '@entity';
+import { ScopeRequirement } from '@type';
 
 export default (): void => {
     describe('Class', () => {

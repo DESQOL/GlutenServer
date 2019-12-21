@@ -1,7 +1,6 @@
 import { Column } from 'typeorm';
 import { BaseEntity } from './baseEntity';
-
-export type ScopeRequirement = Partial<Pick<TokenScope, 'isAdmin'>>;
+import { ScopeRequirement } from '@type';
 
 export const DefaultScope: ScopeRequirement = {
     isAdmin: false,

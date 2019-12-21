@@ -1,5 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
-import { BaseEntity } from '@entity';
+import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn } from 'typeorm';
+import { BaseEntity, Measures } from '@entity';
 
 @Entity()
 export class Ingredient extends BaseEntity<Ingredient> {
@@ -39,7 +39,9 @@ export class Ingredient extends BaseEntity<Ingredient> {
     @Column('simple-json')
     public metaInformation: string[];
 
-    'measures': {};
+    @OneToOne(() => Measures, measures => measures.ingredient)
+    @JoinColumn()
+    public measures: Measures;
 
     public getDefault (): Ingredient {
         const ingredient = new Ingredient();

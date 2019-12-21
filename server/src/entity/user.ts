@@ -30,13 +30,6 @@ export class User extends BaseEntity<User> {
     })
     public tokens: Token[];
 
-    public displayUnit (): object {
-        return {
-            name: this.name,
-            email: this.email,
-        };
-    }
-
     public getDefault (): User {
         const user = new User();
         user.id = 0;

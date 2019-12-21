@@ -36,7 +36,7 @@ export class UserController {
         }
 
         user = await this.userRepository.save(user);
-        response.json(user.displayUnit());
+        response.json(user);
     }
 
     @Route('post', '/login')
@@ -58,7 +58,7 @@ export class UserController {
             });
         }
 
-        response.json(user.displayUnit());
+        response.json(user);
     }
 
     @Route('get', '/profile', { tokenRequired: true })

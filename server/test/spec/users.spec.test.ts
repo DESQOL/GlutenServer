@@ -50,11 +50,12 @@ export default (): void => {
             password: '12345678',
         };
 
-        it('should return the displayUnit on successfull login', (done) => {
+        it('should return the user object on successfull login', (done) => {
             request(app)
                 .post('/user/login')
                 .send(defaultLogin)
                 .expect(200, {
+                    id: 1,
                     name: 'Martijn Vegter',
                     email: 'martijn.vegter@hva.nl',
                 }, done);

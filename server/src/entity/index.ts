@@ -2,6 +2,7 @@ export * from './baseEntity';
 export * from './ingredient';
 export * from './instruction';
 export * from './instructionStep';
+export * from './instructionStepLength';
 export * from './measure';
 export * from './measures';
 export * from './recipe';

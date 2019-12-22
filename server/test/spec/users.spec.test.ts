@@ -13,8 +13,8 @@ export default (): void => {
         await server.listen();
     });
 
-    after(() => {
-        server.close();
+    after(async () => {
+        await server.close();
     });
 
     describe('GET /user/profile', () => {

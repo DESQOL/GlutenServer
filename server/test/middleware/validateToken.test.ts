@@ -13,8 +13,8 @@ export default (): void => {
         await server.listen();
     });
 
-    after(() => {
-        server.close();
+    after(async () => {
+        await server.close();
     });
 
     it('should return 401 if no token was provided', (done) => {

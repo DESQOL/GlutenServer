@@ -1,4 +1,4 @@
-import { Column, Entity, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { BaseEntity, InstructionStep, Recipe } from '@entity';
 
 @Entity()
@@ -14,7 +14,7 @@ export class Instruction extends BaseEntity<Instruction> {
     })
     public steps: InstructionStep[];
 
-    @OneToOne(() => Recipe, recipe => recipe.analyzedInstructions)
+    @ManyToOne(() => Recipe, recipe => recipe.analyzedInstructions)
     public recipe: Recipe;
 
     getDefault (): Instruction {

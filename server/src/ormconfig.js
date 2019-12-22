@@ -9,7 +9,7 @@ const options = {
     database: 'gluten',
     synchronize: false,
     logging: false,
-    entities: ['src/entity/**/*.ts'],
+    entities: ['src/entity/index.ts'],
     migrations: ['src/migration/**/*.ts'],
     subscribers: ['src/subscriber/**/*.ts'],
     cache: {
@@ -19,6 +19,9 @@ const options = {
             port: 6379
         },
         duration: 1 * 1000
+    },
+    cli: {
+        migrationsDir: 'src/migration'
     }
 };
 

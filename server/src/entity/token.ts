@@ -1,6 +1,5 @@
-import { TokenScope, User } from '@entity';
+import { TokenScope, User, BaseEntity } from '@entity';
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
-import { BaseEntity } from './baseEntity';
 
 @Entity()
 export class Token extends BaseEntity<Token> {

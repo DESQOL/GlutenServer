@@ -1,8 +1,7 @@
-import { Token } from '@entity';
+import { Token, BaseEntity } from '@entity';
 import bcrypt from 'bcrypt';
 import { IsEmail, MinLength } from 'class-validator';
 import { Column, Entity, getRepository, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { BaseEntity } from './baseEntity';
 
 @Entity()
 export class User extends BaseEntity<User> {

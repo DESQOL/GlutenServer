@@ -1,4 +1,4 @@
-import { TokenScope, User, BaseEntity } from '@entity';
+import { BaseEntity, TokenScope, User } from '@entity';
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()

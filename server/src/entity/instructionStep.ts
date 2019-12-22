@@ -1,5 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToMany, JoinTable, ManyToOne } from 'typeorm';
-import { BaseEntity, Ingredient, InstructionStepLength, Equipment, Instruction } from '@entity';
+import { Column, Entity, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { BaseEntity, Equipment, Ingredient, Instruction, InstructionStepLength } from '@entity';
 
 @Entity()
 export class InstructionStep extends BaseEntity<InstructionStep> {

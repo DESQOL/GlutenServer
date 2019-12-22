@@ -1,5 +1,5 @@
-import { NextFunction, Response, Request } from 'express';
-import { getToken, getDefaultResponse } from '@helper';
+import { NextFunction, Request, Response } from 'express';
+import { getDefaultResponse, getToken } from '@helper';
 import { getRepository } from 'typeorm';
 import { Token } from '@entity';
 

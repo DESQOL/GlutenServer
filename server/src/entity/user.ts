@@ -1,4 +1,4 @@
-import { Token, BaseEntity } from '@entity';
+import { BaseEntity, Token } from '@entity';
 import bcrypt from 'bcrypt';
 import { IsEmail, MinLength } from 'class-validator';
 import { Column, Entity, getRepository, OneToMany, PrimaryGeneratedColumn } from 'typeorm';

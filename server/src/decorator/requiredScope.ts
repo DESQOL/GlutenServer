@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import { MiddlewareDefinition, ScopeRequirement } from '@type';
-import { getToken, getDefaultResponse } from '@helper';
+import { getDefaultResponse, getToken } from '@helper';
 import { getRepository } from 'typeorm';
 import { Token, TokenScope } from '@entity';
 import { validateToken } from '@middleware';

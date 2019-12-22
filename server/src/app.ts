@@ -4,7 +4,7 @@ import ormconfig from './ormconfig.js';
 import appRoot from 'app-root-path';
 import express, { Application, NextFunction, Request, Response } from 'express';
 import { OpenApiValidator } from 'express-openapi-validator';
-import { createConnection } from 'typeorm';
+import { Connection, createConnection } from 'typeorm';
 import swaggerUi from 'swagger-ui-express';
 import yaml from 'js-yaml';
 import fs from 'fs';
@@ -22,6 +22,7 @@ class App {
     public app: Application;
     public http: http.Server;
     public https: https.Server;
+    public connection: Connection;
 
     constructor () {
         this.app = express();
@@ -57,7 +58,9 @@ class App {
         await createConnection(Object.assign(ormconfig, {
             logging: true,
             logger: new QueryFileLogger('all'),
-        })).catch((err) => {
+        })).then((connection) => {
+            this.connection = connection;
+        }).catch((err) => {
             logger.error(err);
             process.exit();
         });
@@ -75,13 +78,17 @@ class App {
         }
     }
 
-    public close (): void {
+    public async close (): Promise<void> {
         if (this.http) {
-            this.http.close();
+            this.http.close((err) => logger.info(`Closed https server${err ? `, received error: ${err}.` : '.'}`));
         }
 
         if (this.https) {
-            this.https.close();
+            this.https.close((err) => logger.info(`Closed https server${err ? `, received error: ${err}.` : '.'}`));
+        }
+
+        if (this.connection) {
+            await this.connection.close();
         }
     }
 

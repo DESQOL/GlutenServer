@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany, OneToOne, JoinColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { BaseEntity, Ingredient, Instruction } from '@entity';
 
 @Entity()
@@ -113,11 +113,10 @@ export class Recipe extends BaseEntity<Recipe> {
     @Column({ type: 'longtext' })
     public instructions: string;
 
-    @OneToOne(() => Instruction, instruction => instruction.recipe, {
+    @OneToMany(() => Instruction, instruction => instruction.recipe, {
         eager: true
     })
-    @JoinColumn()
-    public analyzedInstructions: Instruction;
+    public analyzedInstructions: Instruction[];
 
     getDefault (): Recipe {
         const recipe = new Recipe();

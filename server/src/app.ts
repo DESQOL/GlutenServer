@@ -16,7 +16,7 @@ import https from 'https';
 import { RecipeController, UserController } from '@controller';
 import { MiddlewareDefinition, RouteDefinition } from '@type';
 import { httpLogger, rateLimiter, validateToken } from '@middleware';
-import { logger, QueryFileLogger, isProduction } from '@helper';
+import { isProduction, logger, QueryFileLogger } from '@helper';
 
 class App {
     public app: Application;

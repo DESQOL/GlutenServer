@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { TokenScope, DefaultScope, TokenScopeRecipe } from '@entity';
+import { DefaultScope, TokenScope, TokenScopeRecipe } from '@entity';
 import { ScopeRequirement } from '@type';
 
 export default (): void => {

@@ -1,9 +1,9 @@
 import { Controller, Route, ValidateClassArgs } from '@decorator';
 import { Token, User } from '@entity';
 import { validate } from 'class-validator';
-import { Request, Response, NextFunction } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { getRepository } from 'typeorm';
-import { getToken, DefaultMessages } from '@helper';
+import { DefaultMessages, getToken } from '@helper';
 
 @Controller('/user')
 export class UserController {

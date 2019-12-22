@@ -1,8 +1,7 @@
-import { RequiredScope, Controller, RequireToken, Route, ValidateClassArgs } from '@decorator';
+import { Controller, RequiredScope, RequireToken, Route, ValidateArgs, ValidateClassArgs } from '@decorator';
 import { Recipe } from '@entity';
-import { Request, Response, NextFunction } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { getRepository } from 'typeorm';
-import { ValidateArgs } from '@decorator/validateArgs';
 import { isNumber, isNumberGreaterThanZero, minLength } from '@helper/validator';
 
 @Controller('/recipe')

@@ -2,6 +2,27 @@
 
 [![Greenkeeper badge](https://badges.greenkeeper.io/DESQOL/GlutenServer.svg)](https://greenkeeper.io/)
 
+## TypeORM
+All commands, for TypeORM, are written for usage in a development enviremont, to use these commands in production prefix them with the following:
+```bash
+$ docker-compose exec glutenserver_server_1 ...
+```
+
+### Generate migration
+```bash
+$ npm run typeorm -- migration:generate -n PostRefactoring
+```
+
+### Apply migration
+```bash
+$ npm run typeorm -- migration:run
+```
+
+### Undo migration
+```bash
+$ npm run typeorm -- migration:revert
+```
+
 ## Docker
 
 ### Build        

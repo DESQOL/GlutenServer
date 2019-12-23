@@ -5,7 +5,7 @@
 ## TypeORM
 All commands, for TypeORM, are written for usage in a development enviremont, to use these commands in production prefix them with the following:
 ```bash
-$ docker-compose exec glutenserver_server_1 ...
+$ docker-compose exec server ...
 ```
 
 ### Generate migration
@@ -48,5 +48,5 @@ $ cd server; npm run dev
 
 ### Updated local MySQL dump file
 ```bash
-$ docker exec glutenserver_database_1 mysqldump --skip-comments -uroot -proot gluten > database/dump.sql
+$ docker-compose exec database mysqldump --skip-comments -uroot -proot gluten > database/dump.sql
 ```

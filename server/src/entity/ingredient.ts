@@ -30,13 +30,13 @@ export class Ingredient extends BaseEntity<Ingredient> {
     @Column()
     public amount: number;
 
-    @Column()
+    @Column({ nullable: true })
     public unit: string;
 
-    @Column('simple-json')
+    @Column({ type: 'simple-json', nullable: true })
     public meta: string[];
 
-    @Column('simple-json')
+    @Column({ type: 'simple-json', nullable: true })
     public metaInformation: string[];
 
     @OneToOne(() => Measures, measures => measures.ingredient)

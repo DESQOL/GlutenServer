@@ -7,8 +7,9 @@ services:
   - redis-server
 
 before_install:
-  - mysql -e 'CREATE DATABASE IF NOT EXISTS gluten;'
-  - mysql -u root --default-character-set=utf8 gluten < database/dump.sql
+  - mysql -e 'CREATE DATABASE gluten CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;'
+  - mysql -u root gluten < database/init.sql
+  - mysql -u root gluten < database/test.sql
   - cd server
 
 jobs:

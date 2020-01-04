@@ -46,8 +46,13 @@ $ docker-compose up --detach --build database cache
 $ cd server; npm run dev
 ```
 
-### Updated local MySQL dump file
+### Updated local MySQL init file
 ```bash
 $ docker-compose exec -T database mysqldump -uroot -proot --no-data --skip-comments --databases gluten > database/init.sql
 $ docker-compose exec -T database mysqldump -uroot -proot --no-create-info --skip-comments gluten migrations >> database/init.sql
+```
+
+### Updated local MySQL test file
+```bash
+$ docker-compose exec -T database mysqldump -uroot -proot --no-create-info --skip-comments gluten --ignore-table=gluten.migrations > database/test.sql
 ```

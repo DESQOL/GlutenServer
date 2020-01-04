@@ -95,19 +95,19 @@ export class Recipe extends BaseEntity<Recipe> {
     @Column()
     public imageType: string;
 
-    @Column('simple-json')
+    @Column({ type: 'simple-json', nullable: true })
     public cuisines: string[];
 
-    @Column('simple-json')
+    @Column({ type: 'simple-json', nullable: true })
     public dishTypes: string[];
 
     @Column('simple-json')
     public diets: string[];
 
-    @Column('simple-json')
+    @Column({ type: 'simple-json', nullable: true })
     public occasions: string[];
 
-    @Column('simple-json')
+    @Column({ type: 'simple-json', nullable: true })
     public winePairing: {};
 
     @Column({ type: 'longtext' })

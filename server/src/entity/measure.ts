@@ -5,10 +5,10 @@ export class Measure extends BaseEntity<Measure> {
     @Column()
     public amount: number;
 
-    @Column()
+    @Column({ nullable: true })
     public unitShort: string;
 
-    @Column()
+    @Column({ nullable: true })
     public unitLong: string;
 
     getDefault (): Measure {

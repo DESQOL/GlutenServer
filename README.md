@@ -49,4 +49,5 @@ $ cd server; npm run dev
 ### Updated local MySQL dump file
 ```bash
 $ docker-compose exec -T database mysqldump -uroot -proot --no-data --skip-comments --databases gluten > database/init.sql
+$ docker-compose exec -T database mysqldump -uroot -proot --no-create-info --skip-comments gluten migrations >> database/init.sql
 ```

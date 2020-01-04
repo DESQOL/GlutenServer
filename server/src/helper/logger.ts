@@ -19,7 +19,12 @@ const logger = winston.createLogger({
     ]
 });
 
-if (isNotProduction() && isNotTest()) {
+if (isProduction()) {
+    logger.add(new winston.transports.Console({
+        format: winston.format.simple(),
+        level: 'error'
+    }));
+} else if (isNotProduction() && isNotTest()) {
     logger.add(new winston.transports.Console({
         format: winston.format.simple()
     }));

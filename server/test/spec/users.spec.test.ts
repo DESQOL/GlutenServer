@@ -47,7 +47,7 @@ export default (): void => {
     describe('POST /user/login', () => {
         const defaultLogin = {
             email: 'martijn.vegter@hva.nl',
-            password: '12345678',
+            password: '123456789',
         };
 
         it('should return the user object on successfull login', (done) => {
@@ -64,25 +64,37 @@ export default (): void => {
         it('incorrect email', (done) => {
             request(app)
                 .post('/user/login')
-                .send(Object.assign(defaultLogin, { email: '' }))
-                .expect(403, {
-                    message: 'Incorrect email or password.',
+                .send(Object.assign({}, defaultLogin, { email: '' }))
+                .expect(400, {
+                    message: 'The server could not understand the request due to invalid syntax.',
+                    errors: [
+                        {
+                            message: 'email must be an email',
+                            path: '.params.email',
+                        },
+                    ],
                 }, done);
         });
 
         it('incorrect password', (done) => {
             request(app)
                 .post('/user/login')
-                .send(Object.assign(defaultLogin, { password: '' }))
-                .expect(403, {
-                    message: 'Incorrect email or password.',
+                .send(Object.assign({}, defaultLogin, { password: '' }))
+                .expect(400, {
+                    message: 'The server could not understand the request due to invalid syntax.',
+                    errors: [
+                        {
+                            message: 'password must be longer than or equal to 8 characters',
+                            path: '.params.password',
+                        },
+                    ],
                 }, done);
         });
 
         it('missing email', (done) => {
             request(app)
                 .post('/user/login')
-                .send({ password: '' })
+                .send({ password: defaultLogin.password })
                 .expect(400, {
                     message: "request.body should have required property 'email'",
                     errors: [
@@ -98,7 +110,7 @@ export default (): void => {
         it('missing password', (done) => {
             request(app)
                 .post('/user/login')
-                .send({ email: '' })
+                .send({ email: defaultLogin.email })
                 .expect(400, {
                     message: "request.body should have required property 'password'",
                     errors: [
@@ -114,7 +126,7 @@ export default (): void => {
         it('extra property', (done) => {
             request(app)
                 .post('/user/login')
-                .send(Object.assign(defaultLogin, { not: 'allowed' }))
+                .send(Object.assign({}, defaultLogin, { not: 'allowed' }))
                 .expect(400, {
                     message: 'request.body should NOT have additional properties',
                     errors: [

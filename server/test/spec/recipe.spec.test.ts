@@ -21,7 +21,7 @@ export default (): void => {
     describe('GET /all', () => {
         it('should not be accesible for users', (done) => {
             request(app)
-                .get('/recipe/all?api_key=user')
+                .get('/recipe/all?api_key=read')
                 .expect(403, {
                     message: 'Token does not have the required scope.',
                     errors: [
@@ -41,41 +41,26 @@ export default (): void => {
                     const { body } = res;
 
                     expect(body).to.be.an('array');
-                    expect(body).to.have.length(2);
+                    expect(body).to.have.length(0);
                 });
         });
     });
 
     describe('GET /:recipeId', () => {
-        const recipes = [{
-            id: 1,
-            title: 'Banana bread',
-            description: 'This is a banana bread recipe',
-            image: '',
-            duration: '40 mins',
-            rating: 3,
-            ingredients: [
-                {
-                    id: 1,
-                    amount: '1 1/2 cups'
-                },
-                {
-                    id: 2,
-                    amount: '1 tbsp'
-                }
-            ]
-        }];
-
         it('should be accesible for users', (done) => {
             request(app)
-                .get('/recipe/1?api_key=user')
-                .expect(200, recipes[0], done);
+                .get('/recipe/1?api_key=read')
+                .expect(404, {
+                    message: 'Recipe with id 1 was not found.'
+                }, done);
         });
 
         it('should be accesible for admins', (done) => {
             request(app)
                 .get('/recipe/1?api_key=admin')
-                .expect(200, recipes[0], done);
+                .expect(404, {
+                    message: 'Recipe with id 1 was not found.'
+                }, done);
         });
 
         it('should be return 400 if id below 1 is provided', (done) => {

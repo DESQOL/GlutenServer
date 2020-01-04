@@ -1,5 +1,6 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { BaseEntity, Ingredient, Instruction } from '@entity';
+import { Min } from 'class-validator';
 
 @Entity()
 export class Recipe extends BaseEntity<Recipe> {
@@ -78,6 +79,7 @@ export class Recipe extends BaseEntity<Recipe> {
     public extendedIngredients: Ingredient[];
 
     @PrimaryGeneratedColumn()
+    @Min(1)
     public id: number;
 
     @Column()

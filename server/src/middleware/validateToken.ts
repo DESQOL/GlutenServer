@@ -12,7 +12,7 @@ export async function validateToken (request: Request, response: Response, next:
 
     const entity = await getRepository(Token).findOne({
         where: { token },
-        cache: 60 * 1000,
+        cache: 1 * 60 * 1000,
     });
     if (!entity) {
         response.status(401).json(getDefaultResponse(401, request.path));

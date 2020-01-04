@@ -21,6 +21,7 @@ RUN npm run build
 EXPOSE 443
 
 # Set the, unprivileged, user to use when running this image
-USER node
+# USER node
+USER root
 
 CMD [ "./scripts/wait-for-it.sh", "cache:6379", "--",  "./scripts/wait-for-it.sh", "database:3306", "--", "npm", "start" ]

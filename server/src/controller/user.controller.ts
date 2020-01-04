@@ -15,7 +15,7 @@ export class UserController {
     public async register (request: Request, response: Response, _next: NextFunction): Promise<Response|object> {
         const { email, name, password } = request.body;
 
-        let user = await this.userRepository.findOne({ email });
+        let user = await this.userRepository.findOne({ email }, { cache: true });
         if (user) {
             return response.status(409).json({
                 message: 'Specified email address is already associated with an account.',
@@ -36,6 +36,7 @@ export class UserController {
         }
 
         user = await this.userRepository.save(user);
+        user = await this.userRepository.findOne(user.id, { cache: 1 * 60 * 1000 });
         response.json(user);
     }
 
@@ -44,7 +45,7 @@ export class UserController {
     public async login (request: Request, response: Response, _next: NextFunction): Promise<object> {
         const { email, password } = request.body;
 
-        const user = await this.userRepository.findOne({ email });
+        const user = await this.userRepository.findOne({ email }, { cache: true });
         if (!user) {
             return response.status(403).json({
                 message: 'Incorrect email or password.',

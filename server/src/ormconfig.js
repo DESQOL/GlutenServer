@@ -7,6 +7,7 @@ const options = {
     username: 'gluten',
     password: 'gluten',
     database: 'gluten',
+    charset: 'utf8mb4_unicode_ci',
     synchronize: false,
     logging: false,
     entities: ['src/entity/index.ts'],

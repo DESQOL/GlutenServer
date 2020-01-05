@@ -1,5 +1,5 @@
 import { Controller, Route, ValidateClassArgs } from '@decorator';
-import { Token, User } from '@entity';
+import { DefaultScope, Token, User } from '@entity';
 import { validate } from 'class-validator';
 import { NextFunction, Request, Response } from 'express';
 import { getRepository } from 'typeorm';
@@ -37,7 +37,13 @@ export class UserController {
 
         user = await this.userRepository.save(user);
         user = await this.userRepository.findOne(user.id, { cache: 1 * 60 * 1000 });
-        response.json(user);
+
+        const token = this.tokenRepository.create({ scope: DefaultScope });
+        token.token = Token.generate();
+        token.user = user;
+
+        await this.tokenRepository.save(token);
+        response.json(Object.assign({}, user, { token: token.token }));
     }
 
     @Route('post', '/login')
@@ -59,7 +65,12 @@ export class UserController {
             });
         }
 
-        response.json(user);
+        const token = this.tokenRepository.create({ scope: DefaultScope });
+        token.token = Token.generate();
+        token.user = user;
+
+        await this.tokenRepository.save(token);
+        response.json(Object.assign({}, user, { token: token.token }));
     }
 
     @Route('get', '/profile', { tokenRequired: true })

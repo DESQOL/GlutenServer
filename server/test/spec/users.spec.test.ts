@@ -1,6 +1,7 @@
 import request from 'supertest';
 
 import App from './../../src/app';
+import { expect } from 'chai';
 
 export default (): void => {
     let server = null;
@@ -54,6 +55,13 @@ export default (): void => {
             request(app)
                 .post('/user/login')
                 .send(defaultLogin)
+                .expect((res) => {
+                    expect(res.body).to.have.ownProperty('token');
+                    expect(res.body.token).to.be.a('string');
+
+                    // Cleanup
+                    delete res.body.token;
+                })
                 .expect(200, {
                     id: 1,
                     name: 'Martijn Vegter',

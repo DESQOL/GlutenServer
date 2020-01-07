@@ -50,6 +50,11 @@ LOCK TABLES `recipe` WRITE;
 /*!40000 ALTER TABLE `recipe` ENABLE KEYS */;
 UNLOCK TABLES;
 
+LOCK TABLES `recipe_comment` WRITE;
+/*!40000 ALTER TABLE `recipe_comment` DISABLE KEYS */;
+/*!40000 ALTER TABLE `recipe_comment` ENABLE KEYS */;
+UNLOCK TABLES;
+
 LOCK TABLES `token` WRITE;
 /*!40000 ALTER TABLE `token` DISABLE KEYS */;
 INSERT INTO `token` VALUES (1,'read',1,0,1,0),(2,'write',1,0,0,1),(3,'admin',1,1,0,0);

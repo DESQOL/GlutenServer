@@ -1,7 +1,7 @@
-import { BaseEntity, Token } from '@entity';
+import { BaseEntity, Recipe, Token } from '@entity';
 import bcrypt from 'bcrypt';
 import { IsEmail, MinLength } from 'class-validator';
-import { Column, Entity, getRepository, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, getRepository, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class User extends BaseEntity<User> {
@@ -29,6 +29,12 @@ export class User extends BaseEntity<User> {
     })
     public tokens: Token[];
 
+    @ManyToMany(() => Recipe, {
+        eager: true,
+    })
+    @JoinTable()
+    public favoriteRecipes: Recipe[];
+
     public getDefault (): User {
         const user = new User();
         user.id = 0;
@@ -36,6 +42,7 @@ export class User extends BaseEntity<User> {
         user.email = '';
         user.password = '';
         user.tokens = null;
+        user.favoriteRecipes = null;
 
         return user;
     }

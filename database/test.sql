@@ -61,6 +61,11 @@ LOCK TABLES `user` WRITE;
 INSERT INTO `user` VALUES (1,'Martijn Vegter','martijn.vegter@hva.nl','$2b$10$MZFnEZgJv6SBm3my54OD3eSKf56i1WGQg3wf.Z2WRmn5Zg20xe.x6');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
+
+LOCK TABLES `user_favorite_recipes_recipe` WRITE;
+/*!40000 ALTER TABLE `user_favorite_recipes_recipe` DISABLE KEYS */;
+/*!40000 ALTER TABLE `user_favorite_recipes_recipe` ENABLE KEYS */;
+UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;

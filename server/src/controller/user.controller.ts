@@ -1,5 +1,5 @@
 import { Controller, Route, ValidateClassArgs } from '@decorator';
-import { DefaultScope, Token, User } from '@entity';
+import { DefaultScope, Recipe, Token, User } from '@entity';
 import { validate } from 'class-validator';
 import { NextFunction, Request, Response } from 'express';
 import { getRepository } from 'typeorm';
@@ -7,6 +7,7 @@ import { DefaultMessages, getToken } from '@helper';
 
 @Controller('/user')
 export class UserController {
+    private recipeRepository = getRepository(Recipe);
     private tokenRepository = getRepository(Token);
     private userRepository = getRepository(User);
 
@@ -79,5 +80,59 @@ export class UserController {
 
         const { user } = await this.tokenRepository.findOne({ token });
         response.json(user);
+    }
+
+    @Route('get', '/favorites', { tokenRequired: true })
+    public async getFavorites (request: Request, response: Response, _next: NextFunction): Promise<void> {
+        const token = getToken(request);
+        const { user } = await this.tokenRepository.findOne({ token }, { cache: true });
+
+        response.json(user.favoriteRecipes || []);
+    }
+
+    @Route('put', '/favorites', { tokenRequired: true })
+    public async addFavorites (request: Request, response: Response, _next: NextFunction): Promise<Response|void> {
+        const token = getToken(request);
+        const { user } = await this.tokenRepository.findOne({ token });
+
+        const { recipeId } = request.body;
+        const recipe = await this.recipeRepository.findOne(recipeId, { cache: true });
+        if (!recipe) {
+            return response.status(404).json({
+                message: 'No recipe found matching the specified id.'
+            });
+        }
+
+        if (!user.favoriteRecipes) {
+            user.favoriteRecipes = [];
+        }
+
+        user.favoriteRecipes.push(recipe);
+        await this.userRepository.save(user);
+
+        response.json(user.favoriteRecipes || []);
+    }
+
+    @Route('delete', '/favorites', { tokenRequired: true })
+    public async removeFavorite (request: Request, response: Response, _next: NextFunction): Promise<Response|void> {
+        const token = getToken(request);
+        const { user } = await this.tokenRepository.findOne({ token });
+
+        const { recipeId } = request.body;
+        const recipe = await this.recipeRepository.findOne(recipeId, { cache: true });
+        if (!recipe) {
+            return response.status(404).json({
+                message: 'No recipe found matching the specified id.'
+            });
+        }
+
+        if (!user.favoriteRecipes) {
+            user.favoriteRecipes = [];
+        }
+
+        user.favoriteRecipes = user.favoriteRecipes.filter((recipe) => recipe.id !== recipeId);
+        await this.userRepository.save(user);
+
+        response.json(user.favoriteRecipes || []);
     }
 }

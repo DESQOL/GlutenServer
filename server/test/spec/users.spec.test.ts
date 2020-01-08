@@ -23,6 +23,13 @@ export default (): void => {
             request(app)
                 .get('/user/profile')
                 .set('X-API-KEY', 'admin')
+                .expect((res) => {
+                    expect(res.body).to.have.ownProperty('favoriteRecipes');
+                    expect(res.body.favoriteRecipes).to.be.a('array');
+
+                    // Cleanup
+                    delete res.body.favoriteRecipes;
+                })
                 .expect(200, {
                     id: 1,
                     name: 'Martijn Vegter',

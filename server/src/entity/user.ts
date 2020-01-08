@@ -56,7 +56,7 @@ export class User extends BaseEntity<User> {
 
     public async validatePassword (password: string): Promise<boolean> {
         const userRepository = getRepository(User);
-        const user = await userRepository.findOne(this.id, { select: ['password'] });
+        const user = await userRepository.findOne(this.id, { select: ['id', 'password'] });
 
         return bcrypt.compare(password, user.password);
     }

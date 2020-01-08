@@ -63,6 +63,13 @@ export default (): void => {
                 .post('/user/login')
                 .send(defaultLogin)
                 .expect((res) => {
+                    expect(res.body).to.have.ownProperty('favoriteRecipes');
+                    expect(res.body.favoriteRecipes).to.be.a('array');
+
+                    // Cleanup
+                    delete res.body.favoriteRecipes;
+                })
+                .expect((res) => {
                     expect(res.body).to.have.ownProperty('token');
                     expect(res.body.token).to.be.a('string');
 

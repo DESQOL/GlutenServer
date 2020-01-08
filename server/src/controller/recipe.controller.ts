@@ -1,13 +1,16 @@
 import { Controller, RequiredScope, RequireToken, Route, ValidateArgs, ValidateClassArgs } from '@decorator';
-import { Recipe } from '@entity';
+import { Recipe, RecipeComment, Token } from '@entity';
 import { NextFunction, Request, Response } from 'express';
 import { getRepository } from 'typeorm';
 import { isNumber, isNumberGreaterThanZero, minLength } from '@helper/validator';
+import { getToken } from '@helper';
 
 @Controller('/recipe')
 @RequireToken()
 export class RecipeController {
+    private commentRepository = getRepository(RecipeComment);
     private recipeRepository = getRepository(Recipe);
+    private tokenRepository = getRepository(Token);
 
     @Route('get', '/all')
     @RequiredScope({ isAdmin: true })
@@ -45,6 +48,54 @@ export class RecipeController {
         }
 
         return recipes;
+    }
+
+    @Route('get', '/:recipeId/comments')
+    @ValidateClassArgs('params', Recipe, { recipeId: 'id' })
+    public async comments (request: Request, response: Response, _next: NextFunction): Promise<Response> {
+        const { recipeId } = request.params;
+
+        const recipe = await this.recipeRepository.findOne(recipeId, { cache: true });
+        if (!recipe) {
+            return response.status(404).json({
+                message: `Recipe with id ${recipeId} was not found.`
+            });
+        }
+
+        const comments = await this.commentRepository.find({ where: { recipe }, cache: true });
+        response.json(comments);
+    }
+
+    @Route('post', '/:recipeId/comments')
+    @ValidateClassArgs('params', Recipe, { recipeId: 'id' })
+    public async addComment (request: Request, response: Response, _next: NextFunction): Promise<Response> {
+        const { recipeId } = request.params;
+        const { comment } = request.body;
+
+        const recipe = await this.recipeRepository.findOne(recipeId, { cache: true });
+        if (!recipe) {
+            return response.status(404).json({
+                message: `Recipe with id ${recipeId} was not found.`
+            });
+        }
+
+        const token = getToken(request);
+        const { user } = await this.tokenRepository.findOne({ token }, { cache: true });
+
+        let recipeComment = await this.commentRepository.findOne({ where: { user } });
+        if (recipeComment) {
+            return response.status(400).json({
+                message: `User has alread posted a comment on recipe with id ${recipeId}`
+            });
+        }
+
+        recipeComment = new RecipeComment();
+        recipeComment.comment = comment;
+        recipeComment.recipe = recipe;
+        recipeComment.user = user;
+
+        recipeComment = await this.commentRepository.save(recipeComment);
+        response.json(recipeComment);
     }
 
     @Route('get', '/:recipeId')

@@ -1,5 +1,5 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { BaseEntity, Ingredient, Instruction } from '@entity';
+import { BaseEntity, Ingredient, Instruction, RecipeComment } from '@entity';
 import { Min } from 'class-validator';
 
 @Entity()
@@ -120,6 +120,11 @@ export class Recipe extends BaseEntity<Recipe> {
     })
     public analyzedInstructions: Instruction[];
 
+    @OneToMany(() => RecipeComment, (recipeComment) => recipeComment.recipe, {
+        lazy: true,
+    })
+    public comments: RecipeComment[];
+
     getDefault (): Recipe {
         const recipe = new Recipe();
         recipe.vegetarian = false;
@@ -159,6 +164,7 @@ export class Recipe extends BaseEntity<Recipe> {
         recipe.winePairing = null;
         recipe.instructions = '';
         recipe.analyzedInstructions = null;
+        recipe.comments = null;
 
         return recipe;
     }

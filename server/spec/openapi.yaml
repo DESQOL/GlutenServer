@@ -65,6 +65,19 @@ paths:
                 $ref: '#/components/schemas/ArrayOfRecipes'
         '401':
           $ref: '#/components/responses/UnauthorizedError'
+  /recipe/{recipeId}/comments:
+    get:
+      responses:
+        '200':
+          description: OK
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+    post:
+      responses:
+        '200':
+          description: OK
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
   /recipe/{recipeId}:
     get:
       responses:
@@ -74,6 +87,25 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Recipe'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+  /user/favorites:
+    get:
+      responses:
+        '200':
+          description: OK
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+    put:
+      responses:
+        '200':
+          description: OK
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+    delete:
+      responses:
+        '200':
+          description: OK
         '401':
           $ref: '#/components/responses/UnauthorizedError'
   /user/login:

@@ -7,6 +7,7 @@ export * from './instructionStepLength';
 export * from './measure';
 export * from './measures';
 export * from './recipe';
+export * from './recipeComment';
 export * from './token';
 export * from './tokenScope';
 export * from './tokenScopeRecipe';

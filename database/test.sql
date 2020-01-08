@@ -50,6 +50,11 @@ LOCK TABLES `recipe` WRITE;
 /*!40000 ALTER TABLE `recipe` ENABLE KEYS */;
 UNLOCK TABLES;
 
+LOCK TABLES `recipe_comment` WRITE;
+/*!40000 ALTER TABLE `recipe_comment` DISABLE KEYS */;
+/*!40000 ALTER TABLE `recipe_comment` ENABLE KEYS */;
+UNLOCK TABLES;
+
 LOCK TABLES `token` WRITE;
 /*!40000 ALTER TABLE `token` DISABLE KEYS */;
 INSERT INTO `token` VALUES (1,'read',1,0,1,0),(2,'write',1,0,0,1),(3,'admin',1,1,0,0);
@@ -60,6 +65,11 @@ LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
 INSERT INTO `user` VALUES (1,'Martijn Vegter','martijn.vegter@hva.nl','$2b$10$MZFnEZgJv6SBm3my54OD3eSKf56i1WGQg3wf.Z2WRmn5Zg20xe.x6');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
+UNLOCK TABLES;
+
+LOCK TABLES `user_favorite_recipes_recipe` WRITE;
+/*!40000 ALTER TABLE `user_favorite_recipes_recipe` DISABLE KEYS */;
+/*!40000 ALTER TABLE `user_favorite_recipes_recipe` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 

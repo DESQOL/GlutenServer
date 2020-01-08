@@ -9,7 +9,7 @@ export class InstructionStep extends BaseEntity<InstructionStep> {
     @Column()
     public number: number;
 
-    @Column()
+    @Column('longtext')
     public step: string;
 
     @ManyToMany(() => Ingredient, {
@@ -24,7 +24,7 @@ export class InstructionStep extends BaseEntity<InstructionStep> {
     @JoinTable()
     public equipment: Equipment[];
 
-    @Column(() => InstructionStepLength)
+    @Column(() => InstructionStepLength, { prefix: 'length_' })
     public length: InstructionStepLength;
 
     @ManyToOne(() => Instruction, instruction => instruction.steps)

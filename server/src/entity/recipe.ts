@@ -43,10 +43,10 @@ export class Recipe extends BaseEntity<Recipe> {
     @Column()
     public whole30: boolean;
 
-    @Column()
+    @Column({ default: 0 })
     public preparationMinutes: number;
 
-    @Column()
+    @Column({ default: 0 })
     public cookingMinutes: number;
 
     @Column()
@@ -64,10 +64,10 @@ export class Recipe extends BaseEntity<Recipe> {
     @Column()
     public healthScore: number;
 
-    @Column()
+    @Column({ nullable: true })
     public creditsText: string;
 
-    @Column()
+    @Column({ nullable: true })
     public sourceName: string;
 
     @Column()
@@ -91,10 +91,10 @@ export class Recipe extends BaseEntity<Recipe> {
     @Column()
     public servings: number;
 
-    @Column()
+    @Column({ default: '' })
     public image: string;
 
-    @Column()
+    @Column({ default: '' })
     public imageType: string;
 
     @Column({ type: 'simple-json', nullable: true })
@@ -112,7 +112,7 @@ export class Recipe extends BaseEntity<Recipe> {
     @Column({ type: 'simple-json', nullable: true })
     public winePairing: {};
 
-    @Column({ type: 'longtext' })
+    @Column({ type: 'longtext', nullable: true })
     public instructions: string;
 
     @OneToMany(() => Instruction, instruction => instruction.recipe, {

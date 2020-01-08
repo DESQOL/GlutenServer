@@ -6,28 +6,28 @@ export class Ingredient extends BaseEntity<Ingredient> {
     @PrimaryGeneratedColumn()
     public id: number;
 
-    @Column()
+    @Column({ nullable: true })
     public aisle: string;
 
     @Column()
     public image: string;
 
-    @Column()
+    @Column({ nullable: true })
     public consitency: string;
 
     @Column()
     public name: string;
 
-    @Column()
+    @Column({ nullable: true })
     public original: string;
 
-    @Column()
+    @Column({ nullable: true })
     public originalString: string;
 
-    @Column()
+    @Column({ nullable: true })
     public originalName: string;
 
-    @Column()
+    @Column({ nullable: true })
     public amount: number;
 
     @Column({ nullable: true })

@@ -2,10 +2,10 @@ import { Column } from 'typeorm';
 import { BaseEntity } from '@entity';
 
 export class InstructionStepLength extends BaseEntity<InstructionStepLength> {
-    @Column()
+    @Column({ default: 0 })
     public number: number;
 
-    @Column()
+    @Column({ default: '' })
     public unit: string;
 
     getDefault (): InstructionStepLength {

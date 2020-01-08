@@ -28,14 +28,14 @@ DROP TABLE IF EXISTS `ingredient`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `ingredient` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `aisle` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `aisle` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `image` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `consitency` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `consitency` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `original` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `originalString` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `originalName` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `amount` int(11) NOT NULL,
+  `original` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `originalString` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `originalName` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `amount` int(11) DEFAULT NULL,
   `unit` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `meta` text COLLATE utf8mb4_unicode_ci,
   `metaInformation` text COLLATE utf8mb4_unicode_ci,
@@ -53,8 +53,8 @@ DROP TABLE IF EXISTS `instruction`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `instruction` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `recipeId` int(11) DEFAULT NULL,
+  `name` longtext COLLATE utf8mb4_unicode_ci,
   PRIMARY KEY (`id`),
   KEY `FK_8ac131565357b5fb601d5728ab0` (`recipeId`),
   CONSTRAINT `FK_8ac131565357b5fb601d5728ab0` FOREIGN KEY (`recipeId`) REFERENCES `recipe` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
@@ -66,10 +66,10 @@ DROP TABLE IF EXISTS `instruction_step`;
 CREATE TABLE `instruction_step` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `number` int(11) NOT NULL,
-  `step` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `instructionId` int(11) DEFAULT NULL,
-  `lengthNumber` int(11) NOT NULL,
-  `lengthUnit` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `length_Number` int(11) NOT NULL DEFAULT '0',
+  `length_Unit` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `step` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`),
   KEY `FK_b70ee76b3b9ed952d136bda33cf` (`instructionId`),
   CONSTRAINT `FK_b70ee76b3b9ed952d136bda33cf` FOREIGN KEY (`instructionId`) REFERENCES `instruction` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
@@ -123,7 +123,7 @@ CREATE TABLE `migrations` (
   `timestamp` bigint(20) NOT NULL,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `recipe`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -142,28 +142,28 @@ CREATE TABLE `recipe` (
   `lowFodmap` tinyint(4) NOT NULL,
   `ketogenic` tinyint(4) NOT NULL,
   `whole30` tinyint(4) NOT NULL,
-  `preparationMinutes` int(11) NOT NULL,
-  `cookingMinutes` int(11) NOT NULL,
+  `preparationMinutes` int(11) NOT NULL DEFAULT '0',
+  `cookingMinutes` int(11) NOT NULL DEFAULT '0',
   `sourceUrl` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `spoonacularSourceUrl` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `aggregateLikes` int(11) NOT NULL,
   `spoonacularScore` int(11) NOT NULL,
   `healthScore` int(11) NOT NULL,
-  `creditsText` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `sourceName` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `creditsText` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `sourceName` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `pricePerServing` int(11) NOT NULL,
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `readyInMinutes` int(11) NOT NULL,
   `servings` int(11) NOT NULL,
-  `image` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `imageType` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `image` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `imageType` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `cuisines` text COLLATE utf8mb4_unicode_ci,
   `dishTypes` text COLLATE utf8mb4_unicode_ci,
   `diets` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `occasions` text COLLATE utf8mb4_unicode_ci,
   `winePairing` text COLLATE utf8mb4_unicode_ci,
-  `instructions` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `instructions` longtext COLLATE utf8mb4_unicode_ci,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -245,7 +245,7 @@ CREATE TABLE `user_favorite_recipes_recipe` (
 
 LOCK TABLES `migrations` WRITE;
 /*!40000 ALTER TABLE `migrations` DISABLE KEYS */;
-INSERT INTO `migrations` VALUES (1,1578135453620,'PostRefactoring1578135453620'),(2,1578418407059,'PostRefactoring1578418407059'),(3,1578420246824,'PostRefactoring1578420246824');
+INSERT INTO `migrations` VALUES (1,1578135453620,'PostRefactoring1578135453620'),(2,1578418407059,'PostRefactoring1578418407059'),(3,1578420246824,'PostRefactoring1578420246824'),(4,1578504955218,'PostRefactoring1578504955218');
 /*!40000 ALTER TABLE `migrations` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;

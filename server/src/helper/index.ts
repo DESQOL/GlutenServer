@@ -5,3 +5,4 @@ export * from './isProduction';
 export * from './isTest';
 export * from './logger';
 export * from './queryFileLogger';
+export * from './spoonacularLoader';

@@ -6,7 +6,7 @@ export class Instruction extends BaseEntity<Instruction> {
     @PrimaryGeneratedColumn()
     public id: number;
 
-    @Column()
+    @Column({ type: 'longtext', nullable: true })
     public name: string;
 
     @OneToMany(() => InstructionStep, instructionStep => instructionStep.instruction, {

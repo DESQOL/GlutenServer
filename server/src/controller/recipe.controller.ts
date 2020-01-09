@@ -14,8 +14,12 @@ export class RecipeController {
 
     @Route('get', '/all')
     @RequiredScope({ isAdmin: true })
-    public async all (_request: Request, _response: Response, _next: NextFunction): Promise<Recipe[]> {
-        return this.recipeRepository.find({ cache: true });
+    public async all (_request: Request, response: Response, _next: NextFunction): Promise<Response|void> {
+        const [recipes, total] = await this.recipeRepository.findAndCount({
+            select: ['id', 'title', 'image', 'imageType'],
+            cache: 5 * 60 * 1000
+        });
+        response.json({ count: recipes.length, total, recipes });
     }
 
     @Route('get', '/autocomplete')
@@ -34,10 +38,10 @@ export class RecipeController {
 
     @Route('get', '/search')
     @ValidateArgs('query', { limit: [isNumber, isNumberGreaterThanZero], offset: isNumber })
-    public async search (request: Request, response: Response, _next: NextFunction): Promise<Recipe[]|Response> {
-        const { limit, offset } = request.params;
+    public async search (request: Request, response: Response, _next: NextFunction): Promise<Response|void> {
+        const { limit, offset } = request.query;
 
-        const recipes = await this.recipeRepository.find({
+        const [recipes, total] = await this.recipeRepository.findAndCount({
             skip: Number(offset),
             take: Number(limit),
             cache: 5 * 60 * 1000
@@ -48,7 +52,7 @@ export class RecipeController {
             });
         }
 
-        return recipes;
+        response.json({ count: recipes.length, total, recipes });
     }
 
     @Route('get', '/:recipeId/comments')

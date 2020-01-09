@@ -124,6 +124,8 @@ class App {
                                     logger.debug('result is a finished Response, not doing anything');
                                 } else if (data !== null && data !== undefined) {
                                     res.send(data);
+                                } else if (res.finished) {
+                                    logger.debug('result is a finished Response, not doing anything');
                                 } else {
                                     next();
                                 }

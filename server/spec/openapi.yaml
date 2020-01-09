@@ -22,7 +22,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ArrayOfRecipes'
+                type: object
+                properties:
+                  count:
+                    type: integer
+                  total:
+                    type: integer
+                  recipes:
+                    $ref: '#/components/schemas/ArrayOfRecipes'
         '401':
           $ref: '#/components/responses/UnauthorizedError'
   /recipe/autocomplete:
@@ -62,7 +69,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ArrayOfRecipes'
+                type: object
+                properties:
+                  count:
+                    type: integer
+                  total:
+                    type: integer
+                  recipes:
+                    $ref: '#/components/schemas/ArrayOfRecipes'
         '401':
           $ref: '#/components/responses/UnauthorizedError'
   /recipe/{recipeId}/comments:

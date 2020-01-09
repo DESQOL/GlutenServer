@@ -82,6 +82,19 @@ export class UserController {
         response.json(user);
     }
 
+    @Route('patch', '/profile', { tokenRequired: true })
+    @ValidateClassArgs('body', User, { name: 'name' })
+    public async updateProfile (request: Request, response: Response, _next: NextFunction): Promise<void> {
+        const { name } = request.body;
+
+        const token = getToken(request);
+        let { user } = await this.tokenRepository.findOne({ token }, { cache: true });
+        user.name = name;
+
+        user = await this.userRepository.save(user);
+        response.json(user);
+    }
+
     @Route('get', '/favorites', { tokenRequired: true })
     public async getFavorites (request: Request, response: Response, _next: NextFunction): Promise<void> {
         const token = getToken(request);

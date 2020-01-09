@@ -1,7 +1,7 @@
 import { MiddlewareDefinition, RouteDefinition, RouteOptions } from '@type';
 import { validateToken } from '@middleware';
 
-export const Route = (requestMethod: 'delete' | 'get' | 'post' | 'put', path: string, options?: Partial<RouteOptions>): MethodDecorator => {
+export const Route = (requestMethod: 'delete' | 'get' | 'patch' | 'post' | 'put', path: string, options?: Partial<RouteOptions>): MethodDecorator => {
     return (target: object, propertyKey: string): void => {
         /*
          * Add this route (method) to the controller (class)

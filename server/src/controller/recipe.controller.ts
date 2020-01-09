@@ -73,9 +73,10 @@ export class RecipeController {
 
     @Route('post', '/:recipeId/comments')
     @ValidateClassArgs('params', Recipe, { recipeId: 'id' })
+    @ValidateClassArgs('body', RecipeComment, { comment: 'comment', rating: 'rating' })
     public async addComment (request: Request, response: Response, _next: NextFunction): Promise<Response> {
         const { recipeId } = request.params;
-        const { comment } = request.body;
+        const { comment, rating } = request.body;
 
         const recipe = await this.recipeRepository.findOne(recipeId, { cache: true });
         if (!recipe) {
@@ -96,6 +97,7 @@ export class RecipeController {
 
         recipeComment = new RecipeComment();
         recipeComment.comment = comment;
+        recipeComment.rating = rating;
         recipeComment.recipe = recipe;
         recipeComment.user = user;
 

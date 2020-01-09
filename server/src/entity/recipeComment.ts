@@ -1,5 +1,6 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { BaseEntity, Recipe, User } from '@entity';
+import { Max, Min } from 'class-validator';
 
 @Entity()
 export class RecipeComment extends BaseEntity<RecipeComment> {
@@ -12,6 +13,11 @@ export class RecipeComment extends BaseEntity<RecipeComment> {
     @ManyToOne(() => User, (user) => user.comments)
     public user: User;
 
+    @Column({ default: 0 })
+    @Min(0)
+    @Max(5)
+    public rating: number;
+
     @Column('longtext')
     public comment: string;
 
@@ -20,6 +26,7 @@ export class RecipeComment extends BaseEntity<RecipeComment> {
         comment.id = 0;
         comment.recipe = null;
         comment.user = null;
+        comment.rating = 0;
         comment.comment = '';
 
         return comment;

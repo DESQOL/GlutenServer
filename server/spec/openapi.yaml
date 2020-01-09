@@ -87,6 +87,21 @@ paths:
         '401':
           $ref: '#/components/responses/UnauthorizedError'
     post:
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              properties:
+                comment:
+                  type: string
+                rating:
+                  type: integer
+              required:
+                - comment
+                - rating
       responses:
         '200':
           description: OK

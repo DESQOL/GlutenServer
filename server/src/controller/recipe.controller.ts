@@ -15,7 +15,7 @@ export class RecipeController {
     @Route('get', '/all')
     @RequiredScope({ isAdmin: true })
     public async all (_request: Request, _response: Response, _next: NextFunction): Promise<Recipe[]> {
-        return this.recipeRepository.find();
+        return this.recipeRepository.find({ cache: true });
     }
 
     @Route('get', '/autocomplete')
@@ -27,6 +27,7 @@ export class RecipeController {
             .createQueryBuilder('recipe')
             .select(['recipe.id', 'recipe.title'])
             .where('recipe.title LIKE CONCAT(\'%\', :query, \'%\')', { query })
+            .cache(true)
             .limit(10)
             .getMany();
     }
@@ -103,7 +104,7 @@ export class RecipeController {
     public async one (request: Request, response: Response, _next: NextFunction): Promise<Recipe|Response> {
         const { recipeId } = request.params;
 
-        const recipe = await this.recipeRepository.findOne(recipeId);
+        const recipe = await this.recipeRepository.findOne(recipeId, { cache: true });
         if (!recipe) {
             return response.status(404).json({
                 message: `Recipe with id ${recipeId} was not found.`

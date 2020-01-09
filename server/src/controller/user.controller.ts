@@ -78,7 +78,7 @@ export class UserController {
     public async profile (request: Request, response: Response, _next: NextFunction): Promise<void> {
         const token = getToken(request);
 
-        const { user } = await this.tokenRepository.findOne({ token });
+        const { user } = await this.tokenRepository.findOne({ token }, { cache: true });
         response.json(user);
     }
 

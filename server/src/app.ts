@@ -47,6 +47,7 @@ class App {
         this.routes();
 
         this.app.use((err: any, req: Request, res: Response, _next: NextFunction) => {
+            logger.error({ status: err.status, data: err });
             res.status(err.status || 500).json({
                 message: err.message,
                 errors: err.errors,

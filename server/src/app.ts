@@ -34,6 +34,8 @@ class App {
         this.app.use(express.urlencoded({ extended: false }));
         this.app.use(rateLimiter());
 
+        this.app.set('json spaces', 4);
+
         const swaggerDocument = yaml.safeLoad(fs.readFileSync(`${appRoot}/spec/openapi.yaml`, 'utf8'));
         this.app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 

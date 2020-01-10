@@ -10,7 +10,9 @@ export class RecipeComment extends BaseEntity<RecipeComment> {
     @ManyToOne(() => Recipe, (recipe) => recipe.comments)
     public recipe: Recipe;
 
-    @ManyToOne(() => User, (user) => user.comments)
+    @ManyToOne(() => User, (user) => user.comments, {
+        eager: true
+    })
     public user: User;
 
     @Column({ default: 0 })

@@ -60,7 +60,7 @@ export class RecipeController {
     public async comments (request: Request, response: Response, _next: NextFunction): Promise<Response> {
         const { recipeId } = request.params;
 
-        const recipe = await this.recipeRepository.findOne(recipeId, { cache: true });
+        const recipe = await this.recipeRepository.findOne(recipeId, { select: ['id', 'title'], cache: true });
         if (!recipe) {
             return response.status(404).json({
                 message: `Recipe with id ${recipeId} was not found.`
@@ -68,7 +68,7 @@ export class RecipeController {
         }
 
         const comments = await this.commentRepository.find({ where: { recipe }, cache: true });
-        response.json(comments);
+        response.json({ recipe, comments });
     }
 
     @Route('post', '/:recipeId/comments')

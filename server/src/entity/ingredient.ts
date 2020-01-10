@@ -39,7 +39,9 @@ export class Ingredient extends BaseEntity<Ingredient> {
     @Column({ type: 'simple-json', nullable: true })
     public metaInformation: string[];
 
-    @OneToOne(() => Measures, measures => measures.ingredient)
+    @OneToOne(() => Measures, measures => measures.ingredient, {
+        eager: true,
+    })
     @JoinColumn()
     public measures: Measures;
 

@@ -84,6 +84,19 @@ paths:
       responses:
         '200':
           description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    rating:
+                      type: integer
+                    comment:
+                      type: string
         '401':
           $ref: '#/components/responses/UnauthorizedError'
     post:

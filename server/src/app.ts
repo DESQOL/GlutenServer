@@ -15,7 +15,7 @@ import http from 'http';
 import { RecipeController, UserController } from '@controller';
 import { MiddlewareDefinition, RouteDefinition } from '@type';
 import { httpLogger, rateLimiter, validateToken } from '@middleware';
-import { isProduction, logger, QueryFileLogger } from '@helper';
+import { logger, QueryFileLogger } from '@helper';
 
 class App {
     public app: Application;
@@ -106,23 +106,17 @@ class App {
                 function routeHandler (req: Request, res: Response, next: NextFunction): void {
                     const result = new Controller()[route.methodName](req, res, next);
                     if (result instanceof Promise) {
-                        result
-                            .then((data) => {
-                                if ((data as Response) !== undefined && (data as Response).finished) {
-                                    logger.debug('result is a finished Response, not doing anything');
-                                } else if (data !== null && data !== undefined) {
-                                    res.send(data);
-                                } else if (res.finished) {
-                                    logger.debug('result is a finished Response, not doing anything');
-                                } else {
-                                    next();
-                                }
-                            })
-                            .catch((err) => {
-                                next(err);
-                            });
-                    } else if ((result as Response) !== undefined && (result as Response).finished) {
-                        logger.debug('result is a finished Response, not doing anything');
+                        result.then((data) => {
+                            if (((data as Response) !== undefined && (data as Response).headersSent) || res.headersSent) {
+                                logger.debug('result has already send its headers, not doing anything');
+                            } else if (data !== null && data !== undefined) {
+                                res.send(data);
+                            } else {
+                                next();
+                            }
+                        }).catch(next);
+                    } else if (((result as Response) !== undefined && (result as Response).headersSent) || res.headersSent) {
+                        logger.debug('result has already send its headers, not doing anything');
                     } else if (result !== null && result !== undefined) {
                         res.json(result);
                     } else {

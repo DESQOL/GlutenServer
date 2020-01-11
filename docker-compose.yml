@@ -2,6 +2,7 @@ version: '3.7'
 
 services:
   nginx:
+    container_name: nginx
     build:
       context: ./nginx
       dockerfile: Dockerfile

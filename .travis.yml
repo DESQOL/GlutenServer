@@ -2,31 +2,15 @@ language: node_js
 node_js:
   - 12.13.1
 
-services:
-  - mysql
-  - redis-server
-
-before_install:
-  - mysql -e 'CREATE DATABASE gluten CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;'
-  - mysql -u root gluten < database/init.sql
-  - mysql -u root gluten < database/test.sql
-  - cd server
-
 jobs:
   include:
     - stage: "Lint"
       script:
         - npm run lint
         - npm run lint:fix
-    - stage: "Test"
-      script:
-        - npm test
     - stage: "Sync"
       if: branch = develop AND type != pull_request
       script:
         - git remote add gitlab https://oauth2:$GITLAB_TOKEN@gitlab.fdmci.hva.nl/desqol/glutenserver.git
         - git push --force gitlab --all
         - git push --force gitlab --tags
-
-after_success:
-  - npm run coverage

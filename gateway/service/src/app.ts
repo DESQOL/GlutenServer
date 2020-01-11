@@ -96,6 +96,16 @@ class App {
     }
 
     private routes (): void {
+        function controllerHandler (data: any, _request: Request, response: Response, next: NextFunction): void {
+            if (((data as Response) !== undefined && (data as Response).headersSent) || response.headersSent) {
+                logger.debug('result has already send its headers, not doing anything');
+            } else if (data !== null && data !== undefined) {
+                response.send(data);
+            } else {
+                next();
+            }
+        }
+
         [
             RecipeController,
             UserController,
@@ -111,24 +121,12 @@ class App {
                     (extraMiddleware as MiddlewareDefinition[]).forEach((val) => routeMiddleware.push(val));
                 }
 
-                function routeHandler (req: Request, res: Response, next: NextFunction): void {
-                    const result = new Controller()[route.methodName](req, res, next);
+                function routeHandler (request: Request, response: Response, next: NextFunction): void {
+                    const result = new Controller()[route.methodName](request, response, next);
                     if (result instanceof Promise) {
-                        result.then((data) => {
-                            if (((data as Response) !== undefined && (data as Response).headersSent) || res.headersSent) {
-                                logger.debug('result has already send its headers, not doing anything');
-                            } else if (data !== null && data !== undefined) {
-                                res.send(data);
-                            } else {
-                                next();
-                            }
-                        }).catch(next);
-                    } else if (((result as Response) !== undefined && (result as Response).headersSent) || res.headersSent) {
-                        logger.debug('result has already send its headers, not doing anything');
-                    } else if (result !== null && result !== undefined) {
-                        res.json(result);
+                        result.then((data) => controllerHandler(data, request, response, next)).catch(next);
                     } else {
-                        next();
+                        controllerHandler(result, request, response, next);
                     }
                 }
 

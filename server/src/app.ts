@@ -15,7 +15,7 @@ import http from 'http';
 import { RecipeController, UserController } from '@controller';
 import { MiddlewareDefinition, RouteDefinition } from '@type';
 import { httpLogger, rateLimiter, validateToken } from '@middleware';
-import { isProduction, logger, QueryFileLogger } from '@helper';
+import { logger, QueryFileLogger } from '@helper';
 
 class App {
     public app: Application;

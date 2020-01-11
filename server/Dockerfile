@@ -18,7 +18,7 @@ COPY . .
 # Build app source
 RUN npm run build
 
-EXPOSE 443
+EXPOSE 80
 
 # Set the, unprivileged, user to use when running this image
 # USER node

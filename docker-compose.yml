@@ -7,8 +7,8 @@ services:
       - './database/data:/var/lib/mysql'
       - './database/init.sql:/docker-entrypoint-initdb.d/init.sql'
     restart: always
-    ports:
-      - 3306:3306
+    networks:
+      - gateway-service
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: gluten
@@ -20,15 +20,16 @@ services:
     volumes:
       - './database/cache:/data'
     restart: always
-    ports:
-      - 6379:6379
+    networks:
+      - gateway-service
 
   server:
     build: ./server
     volumes:
       - './server/logs:/usr/src/app/logs'
-    ports:
-      - 443:443
+    networks:
+      - services
+      - gateway-service
     links:
       - database
       - cache
@@ -38,3 +39,7 @@ services:
     environment:
       MYSQL_HOST: database
       REDIS_HOST: cache
+
+networks:
+  services: {}
+  gateway-service: {}

@@ -14,12 +14,14 @@ services:
       - 443:443
     networks:
       - services
+    depends_on:
+      - gateway-service
 
   gateway-database:
     image: mysql:5.7.28
     volumes:
-      - './database/data:/var/lib/mysql'
-      - './database/init.sql:/docker-entrypoint-initdb.d/init.sql'
+      - './gateway/database/data:/var/lib/mysql'
+      - './gateway/database/init.sql:/docker-entrypoint-initdb.d/init.sql'
     restart: always
     networks:
       - gateway-service
@@ -32,15 +34,15 @@ services:
   gateway-cache:
     image: redis:5.0.7
     volumes:
-      - './database/cache:/data'
+      - './gateway/cache:/data'
     restart: always
     networks:
       - gateway-service
 
   gateway-service:
-    build: ./server
+    build: ./gateway/service
     volumes:
-      - './server/logs:/usr/src/app/logs'
+      - './gateway/service/logs:/usr/src/app/logs'
     networks:
       - services
       - gateway-service

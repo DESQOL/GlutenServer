@@ -1,40 +1,59 @@
 version: '3.7'
 
 services:
-  database:
+  nginx:
+    container_name: nginx
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+      target: production
+    volumes:
+      - /etc/letsencrypt:/etc/letsencrypt
+    ports:
+      - 80:80
+      - 443:443
+    networks:
+      - services
+
+  gateway-database:
     image: mysql:5.7.28
     volumes:
       - './database/data:/var/lib/mysql'
       - './database/init.sql:/docker-entrypoint-initdb.d/init.sql'
     restart: always
-    ports:
-      - 3306:3306
+    networks:
+      - gateway-service
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: gluten
       MYSQL_USER: gluten
       MYSQL_PASSWORD: gluten
   
-  cache:
+  gateway-cache:
     image: redis:5.0.7
     volumes:
       - './database/cache:/data'
     restart: always
-    ports:
-      - 6379:6379
+    networks:
+      - gateway-service
 
-  server:
+  gateway-service:
     build: ./server
     volumes:
       - './server/logs:/usr/src/app/logs'
-    ports:
-      - 443:443
+    networks:
+      - services
+      - gateway-service
     links:
-      - database
-      - cache
+      - gateway-database:database
+      - gateway-cache:cache
     depends_on:
-      - database
-      - cache
+      - gateway-database
+      - gateway-cache
     environment:
       MYSQL_HOST: database
       REDIS_HOST: cache
+
+networks:
+  services: {}
+  gateway-service: {}

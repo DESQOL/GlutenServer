@@ -1,0 +1,15 @@
+FROM nginx:1.17.7 as base
+
+# Expose the HTTP and HTTPS port
+EXPOSE 80 443
+
+# Include '-g daemon off;' in the CMD in order for nginx to stay in the foreground
+CMD [ "nginx", "-g", "daemon off;" ]
+
+# Configure nginx with the development configuration
+FROM base as development
+COPY nginx.dev.conf /etc/nginx/nginx.conf
+
+# Configure nginx with the production configuration
+FROM base as production
+COPY nginx.conf /etc/nginx/nginx.conf

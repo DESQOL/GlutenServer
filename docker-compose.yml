@@ -1,7 +1,7 @@
 version: '3.7'
 
 services:
-  database:
+  gateway-database:
     image: mysql:5.7.28
     volumes:
       - './database/data:/var/lib/mysql'
@@ -15,7 +15,7 @@ services:
       MYSQL_USER: gluten
       MYSQL_PASSWORD: gluten
   
-  cache:
+  gateway-cache:
     image: redis:5.0.7
     volumes:
       - './database/cache:/data'
@@ -23,7 +23,7 @@ services:
     networks:
       - gateway-service
 
-  server:
+  gateway-service:
     build: ./server
     volumes:
       - './server/logs:/usr/src/app/logs'
@@ -31,11 +31,11 @@ services:
       - services
       - gateway-service
     links:
-      - database
-      - cache
+      - gateway-database:database
+      - gateway-cache:cache
     depends_on:
-      - database
-      - cache
+      - gateway-database
+      - gateway-cache
     environment:
       MYSQL_HOST: database
       REDIS_HOST: cache

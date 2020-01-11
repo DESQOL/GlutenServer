@@ -11,7 +11,6 @@ import fs from 'fs';
 import helmet from 'helmet';
 import compression from 'compression';
 import http from 'http';
-import https from 'https';
 
 import { RecipeController, UserController } from '@controller';
 import { MiddlewareDefinition, RouteDefinition } from '@type';
@@ -21,7 +20,6 @@ import { isProduction, logger, QueryFileLogger } from '@helper';
 class App {
     public app: Application;
     public http: http.Server;
-    public https: https.Server;
     public connection: Connection;
 
     constructor () {
@@ -68,26 +66,14 @@ class App {
             process.exit();
         });
 
-        if (isProduction()) {
-            this.https = https.createServer({
-                key: fs.readFileSync(`${appRoot}/cert/privkey.pem`, 'utf8'),
-                cert: fs.readFileSync(`${appRoot}/cert/cert.pem`, 'utf8'),
-                ca: fs.readFileSync(`${appRoot}/cert/chain.pem`, 'utf8'),
-            }, this.app).listen(443, () => logger.info('App listening on the https://localhost:443/'));
-        } else {
-            this.http = this.app.listen(process.env.PORT || 80, () => {
-                logger.info(`App listening on the http://localhost:${process.env.PORT || 80}/`);
-            });
-        }
+        this.http = this.app.listen(process.env.PORT || 80, () => {
+            logger.info(`App listening on the http://localhost:${process.env.PORT || 80}/`);
+        });
     }
 
     public async close (): Promise<void> {
         if (this.http) {
             this.http.close((err) => logger.info(`Closed https server${err ? `, received error: ${err}.` : '.'}`));
-        }
-
-        if (this.https) {
-            this.https.close((err) => logger.info(`Closed https server${err ? `, received error: ${err}.` : '.'}`));
         }
 
         if (this.connection) {

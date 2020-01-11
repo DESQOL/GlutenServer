@@ -2,6 +2,18 @@
 
 [![Greenkeeper badge](https://badges.greenkeeper.io/DESQOL/GlutenServer.svg)](https://greenkeeper.io/)
 
+## Setup
+**Filename**: *docker-compose.override.yml*
+```docker
+version: '3.7'
+
+services:
+  nginx:
+    build:
+      target: development
+    volumes: []
+```
+
 ## TypeORM
 All commands, for TypeORM, are written for usage in a development enviremont, to use these commands in production prefix them with the following:
 ```bash

@@ -53,6 +53,9 @@ class App {
                 errors: err.errors,
             });
         });
+
+        process.on('SIGTERM', this.shutDown);
+        process.on('SIGINT', this.shutDown);
     }
 
     public async listen (): Promise<void> {
@@ -79,6 +82,11 @@ class App {
         if (this.connection) {
             await this.connection.close();
         }
+    }
+
+    private async shutDown () {
+        await this.close();
+        process.exit();
     }
 
     private middlewares (): void {

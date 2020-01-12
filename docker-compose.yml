@@ -8,7 +8,8 @@ services:
       dockerfile: Dockerfile
       target: production
     volumes:
-      - /etc/letsencrypt:/etc/letsencrypt
+      - './scripts:/opt'
+      - '/etc/letsencrypt:/etc/letsencrypt'
     ports:
       - 80:80
       - 443:443

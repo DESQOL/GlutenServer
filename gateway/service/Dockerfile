@@ -24,4 +24,4 @@ EXPOSE 80
 # USER node
 USER root
 
-CMD [ "./scripts/wait-for-it.sh", "cache:6379", "--",  "./scripts/wait-for-it.sh", "database:3306", "--", "npm", "start" ]
+CMD [ "/opt/wait-for-it.sh", "cache:6379", "--",  "/opt/wait-for-it.sh", "database:3306", "--", "npm", "start" ]

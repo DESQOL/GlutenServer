@@ -42,6 +42,7 @@ services:
   gateway-service:
     build: ./gateway/service
     volumes:
+      - './scripts:/opt'
       - './gateway/service/logs:/usr/src/app/logs'
     networks:
       - services

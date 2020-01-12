@@ -13,7 +13,7 @@ before_install:
   - docker-compose ps
 
 script:
-  - docker-compose exec gateway-service npm test
+  - docker-compose run --rm gateway-service npm test
 
 after_script:
   - docker-compose rm --stop --force -v

@@ -1,7 +1,5 @@
 import request from 'supertest';
-
 import App from './../../src/app';
-import { expect } from 'chai';
 
 export default (): void => {
     let server = null;
@@ -33,16 +31,14 @@ export default (): void => {
                 }, done);
         });
 
-        it('should be accesible for admins', () => {
-            return request(app)
+        it('should be accesible for admins', (done) => {
+            request(app)
                 .get('/recipe/all?api_key=admin')
-                .expect(200)
-                .then((res) => {
-                    const { body } = res;
-
-                    expect(body).to.be.an('array');
-                    expect(body).to.have.length(0);
-                });
+                .expect(200, {
+                    count: 0,
+                    total: 0,
+                    recipes: [],
+                }, done);
         });
     });
 

@@ -1,18 +1,43 @@
+sudo: required
+
 language: node_js
 node_js:
   - 12.13.1
 
-before_install:
-  - cd server
-
 jobs:
   include:
-    - stage: "Lint"
+    - stage: "Tests"
+      before_install:
+        - cd gateway/service
+      install:
+        - npm ci
       script:
         - npm run lint
         - npm run lint:fix
-    - stage: "Sync"
-      if: branch = develop AND type != pull_request
+
+    - stage: test
+      services:
+        - docker
+      before_install:
+        - docker-compose build --no-cache
+        - docker-compose up --detach
+        - docker-compose ps
+      install:
+        - docker-compose run --rm gateway-service ./scripts/wait-for-it.sh database:3306
+        - docker-compose exec -T gateway-database mysql -h0.0.0.0 -uroot -proot gluten < gateway/database/test.sql
+      script:
+        - >
+          docker-compose run --rm
+          -e CI=true
+          -e TRAVIS=true
+          -e TRAVIS_JOB_ID="${TRAVIS_JOB_ID}"
+          -e TRAVIS_REPO_SLUG="${TRAVIS_REPO_SLUG}"
+          -e TRAVIS_BRANCH="${TRAVIS_BRANCH}"
+          gateway-service bash -c "npm test && npm run coverage"
+      after_script:
+        - docker-compose rm --stop --force -v
+
+    - stage: sync
       script:
         - git remote add gitlab https://oauth2:$GITLAB_TOKEN@gitlab.fdmci.hva.nl/desqol/glutenserver.git
         - git push --force gitlab --all

@@ -1,19 +1,21 @@
+sudo: required
+
 language: node_js
 node_js:
   - 12.13.1
 
-before_install:
-  - cd server
+services:
+  - docker
 
-jobs:
-  include:
-    - stage: "Lint"
-      script:
-        - npm run lint
-        - npm run lint:fix
-    - stage: "Sync"
-      if: branch = develop AND type != pull_request
-      script:
-        - git remote add gitlab https://oauth2:$GITLAB_TOKEN@gitlab.fdmci.hva.nl/desqol/glutenserver.git
-        - git push --force gitlab --all
-        - git push --force gitlab --tags
+before_install:
+  - docker-compose build --no-cache
+  - docker-compose up --detach
+  - docker-compose ps
+
+script:
+  - docker-compose exec gateway-service npm test
+
+after_script:
+  - docker-compose down
+  - docker stop $(docker ps -a -q)
+  - docker rm $(docker ps -a -q)

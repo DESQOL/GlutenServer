@@ -16,6 +16,4 @@ script:
   - docker-compose exec gateway-service npm test
 
 after_script:
-  - docker-compose down
-  - docker stop $(docker ps -a -q)
-  - docker rm $(docker ps -a -q)
+  - docker-compose rm --stop --force -v

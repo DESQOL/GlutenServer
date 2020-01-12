@@ -4,7 +4,7 @@ FROM nginx:1.17.7 as base
 EXPOSE 80 443
 
 # Include '-g daemon off;' in the CMD in order for nginx to stay in the foreground
-CMD [ "nginx", "-g", "daemon off;" ]
+CMD [ "/opt/wait-for-it.sh", "-t", "0", "gateway-service:80", "--", "nginx", "-g", "daemon off;" ]
 
 # Configure nginx with the development configuration
 FROM base as development

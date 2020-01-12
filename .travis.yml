@@ -13,6 +13,10 @@ before_install:
   - docker-compose ps
 
 script:
+  # Wait for database and configure it
+  - docker-compose run --rm gateway-service ./scripts/wait-for-it.sh database:3306
+  - docker-compose exec -T gateway-database mysql -h0.0.0.0 -uroot -proot gluten < gateway/database/test.sql
+  # Run tests
   - docker-compose run --rm gateway-service npm test
 
 after_script:

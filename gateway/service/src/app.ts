@@ -66,7 +66,7 @@ class App {
             this.connection = connection;
         }).catch((err) => {
             logger.error(err);
-            process.exit();
+            process.exit(1);
         });
 
         this.http = this.app.listen(process.env.PORT || 80, () => {

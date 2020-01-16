@@ -1,6 +1,6 @@
 import appRoot from 'app-root-path';
 import winston, { format } from 'winston';
-import { isNotProduction, isNotTest, isProduction } from '@helper';
+import { isNotProduction, isNotTest, isProduction, isTest } from '@helper';
 
 const logger = winston.createLogger({
     level: isProduction() ? 'info' : 'debug',
@@ -19,7 +19,7 @@ const logger = winston.createLogger({
     ]
 });
 
-if (isProduction()) {
+if (isProduction() || isTest()) {
     logger.add(new winston.transports.Console({
         format: winston.format.simple(),
         level: 'error'

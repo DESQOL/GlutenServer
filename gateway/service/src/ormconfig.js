@@ -26,11 +26,6 @@ const options = {
     }
 };
 
-if (process.env.CI) {
-    options.username = 'travis';
-    options.password = '';
-}
-
 if (process.env.MYSQL_HOST) {
     options.host = process.env.MYSQL_HOST;
 }

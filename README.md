@@ -1,6 +1,7 @@
 # GlutenServer
-
-[![Greenkeeper badge](https://badges.greenkeeper.io/DESQOL/GlutenServer.svg)](https://greenkeeper.io/)
+[![Travis (.com) branch](https://img.shields.io/travis/com/DESQOL/GlutenServer/develop?label=Travis-CI&style=flat-square)](https://travis-ci.com/DESQOL/GlutenServer)
+[![Coveralls github branch](https://img.shields.io/coveralls/github/DESQOL/GlutenServer/master?style=flat-square)](https://coveralls.io/github/DESQOL/GlutenServer)
+[![Greenkeeper badge](https://badges.greenkeeper.io/DESQOL/GlutenServer.svg?style=flat-square)](https://greenkeeper.io/)
 
 ## Setup
 **Filename**: *docker-compose.override.yml*

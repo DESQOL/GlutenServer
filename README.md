@@ -20,7 +20,7 @@ services:
 ## TypeORM
 All commands, for TypeORM, are written for usage in a development enviremont, to use these commands in production prefix them with the following:
 ```bash
-$ docker-compose exec server ...
+$ docker-compose exec gateway-service ...
 ```
 
 ### Generate migration
@@ -57,17 +57,17 @@ $ docker-compose up --build
 
 ### Build & Run (development)
 ```bash
-$ docker-compose up --detach --build database cache
+$ docker-compose up --detach --build gateway-database gateway-cache
 $ cd server; npm run dev
 ```
 
 ### Updated local MySQL init file
 ```bash
-$ docker-compose exec -T database mysqldump -uroot -proot --no-data --skip-comments --databases gluten > database/init.sql
-$ docker-compose exec -T database mysqldump -uroot -proot --no-create-info --skip-comments gluten migrations >> database/init.sql
+$ docker-compose exec -T gateway-database mysqldump -uroot -proot --no-data --skip-comments --databases gluten > gateway/database/init.sql
+$ docker-compose exec -T gateway-database mysqldump -uroot -proot --no-create-info --skip-comments gluten migrations >> gateway/database/init.sql
 ```
 
 ### Updated local MySQL test file
 ```bash
-$ docker-compose exec -T database mysqldump -uroot -proot --no-create-info --skip-comments gluten --ignore-table=gluten.migrations > database/test.sql
+$ docker-compose exec -T gateway-database mysqldump -uroot -proot --no-create-info --skip-comments gluten --ignore-table=gluten.migrations > gateway/database/test.sql
 ```

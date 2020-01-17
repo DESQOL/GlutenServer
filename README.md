@@ -5,13 +5,16 @@
 ## Setup
 **Filename**: *docker-compose.override.yml*
 ```docker
-version: '3.7'
+version: '3.7' # Must match the version specified in docker-compose.yml
 
 services:
   nginx:
-    build:
+    build: # This results in using the development stage which disables HTTPS
       target: development
-    volumes: []
+
+  gateway-database:
+    ports: # Allow access to the gateway-database, usefull for debugging in development
+      - 3306:3306
 ```
 
 ## TypeORM

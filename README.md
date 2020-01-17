@@ -12,6 +12,10 @@ services:
     build: # This results in using the development stage which disables HTTPS
       target: development
 
+  gateway-cache:
+    ports: # Allow access to the gateway-cache, usefull for debugging in development
+        - 6379:6379
+
   gateway-database:
     ports: # Allow access to the gateway-database, usefull for debugging in development
       - 3306:3306

@@ -39,6 +39,6 @@ jobs:
 
     - stage: sync
       script:
-        - git remote add gitlab https://oauth2:$GITLAB_TOKEN@gitlab.fdmci.hva.nl/desqol/glutenserver.git
+        - git remote add gitlab https://oauth2:$GITLAB_TOKEN@gitlab.fdmci.hva.nl/IoT/sept-jan-20192020/gluten/glutenserver.git
         - git push --force gitlab --all
         - git push --force gitlab --tags

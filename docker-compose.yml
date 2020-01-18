@@ -26,9 +26,8 @@ services:
       - '/var/run/docker.sock:/var/run/docker.sock'
       - './portainer/data:/data'
     restart: always
-    ports:
-      - 8000:8000
-      - 9000:9000
+    networks:
+      - services
 
   gateway-database:
     image: mysql:5.7.28

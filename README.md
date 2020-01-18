@@ -3,6 +3,12 @@
 [![Coveralls github branch](https://img.shields.io/coveralls/github/DESQOL/GlutenServer/master?style=flat-square)](https://coveralls.io/github/DESQOL/GlutenServer)
 [![Greenkeeper badge](https://badges.greenkeeper.io/DESQOL/GlutenServer.svg?style=flat-square)](https://greenkeeper.io/)
 
+## Links
+- [Swagger UI](https://desqol.hihva.nl/api-docs/)
+  > Swagger UI is a collection of HTML, Javascript, and CSS assets that dynamically generate beautiful documentation from a Swagger-compliant API.
+- [Portainer](https://desqol.hihva.nl/portainer/)
+  > Portainer is a lightweight management UI which allows you to easily manage your Docker host or Swarm cluster.
+
 ## Setup
 **Filename**: *docker-compose.override.yml*
 ```docker
@@ -20,6 +26,10 @@ services:
   gateway-database:
     ports: # Allow access to the gateway-database, usefull for debugging in development
       - 3306:3306
+
+  gateway-service:
+    environment: # Set NODE_ENV to development to output all logs to the Docker console
+      NODE_ENV: development
 ```
 
 ## TypeORM

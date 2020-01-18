@@ -2,6 +2,7 @@ version: '3.7'
 
 services:
   nginx:
+    container_name: nginx
     build:
       context: ./nginx
       dockerfile: Dockerfile
@@ -16,6 +17,17 @@ services:
       - services
     depends_on:
       - gateway-service
+
+  portainer:
+    image: portainer/portainer:1.23.0
+    command: -H unix:///var/run/docker.sock
+    container_name: portainer
+    volumes:
+      - '/var/run/docker.sock:/var/run/docker.sock'
+      - './portainer/data:/data'
+    restart: always
+    networks:
+      - services
 
   gateway-database:
     image: mysql:5.7.28
@@ -55,6 +67,7 @@ services:
       - gateway-cache
     environment:
       MYSQL_HOST: database
+      NODE_ENV: production
       REDIS_HOST: cache
 
 networks:

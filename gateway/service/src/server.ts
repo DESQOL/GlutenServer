@@ -1,7 +1,7 @@
 import cluster from 'cluster';
 import os from 'os';
 
-import { isProduction } from '@helper';
+import { isProduction, logger } from '@helper';
 import App from './app';
 
 async function startApp (): Promise<void> {
@@ -11,20 +11,27 @@ async function startApp (): Promise<void> {
 
 if (isProduction()) {
     if (cluster.isMaster) {
-        console.log(`Master ${process.pid} is running`);
+        logger.info(`Master ${process.pid} is running`);
 
-        // Fork workers.
+        // Fork workers
         for (let i = 0; i < os.cpus().length; i++) {
             cluster.fork();
         }
 
-        cluster.on('exit', (worker: cluster.Worker, _code: number, _signal: string) => {
-            console.log(`worker ${worker.process.pid} died`);
+        cluster.on('exit', (worker: cluster.Worker, code: number, _signal: string) => {
+            if (code === 0) {
+                // We assume that code '0' is a clean exit, for example a graceful shutdown
+                logger.info(`Worker ${worker.process.pid} exited with code ${code}`);
+                return;
+            }
+
+            // Worked died, start a new worker
+            logger.warn(`Worker ${worker.process.pid} died with code ${code}`);
             cluster.fork();
         });
     } else {
-        console.log(`Worker ${process.pid} started`);
-        (startApp());
+        logger.info(`Worker ${process.pid} started`);
+        (startApp().then(() => logger.info(`Worker ${process.pid} ready`)));
     }
 } else {
     (startApp());

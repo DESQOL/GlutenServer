@@ -67,6 +67,7 @@ services:
       - gateway-cache
     environment:
       MYSQL_HOST: database
+      NODE_ENV: production
       REDIS_HOST: cache
 
 networks:

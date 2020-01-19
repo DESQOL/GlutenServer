@@ -1,2 +1,15 @@
+#
+# ---- Docker ----
+.dockerignore
+Dockerfile
+
+#
+# ---- Node ----
+.nyc_output
+coverage
+dist
 node_modules
-npm-debug.log
+
+#
+# ---- Application ----
+logs

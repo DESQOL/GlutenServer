@@ -55,7 +55,7 @@ $ npm run typeorm -- migration:revert
 
 ## Docker
 
-### Build        
+### Build
 ```bash
 $ docker-compose build
 ```
@@ -68,6 +68,11 @@ $ docker-compose up
 ### Build & Run (production)
 ```bash
 $ docker-compose up --build
+```
+
+### Scale a service (production)
+```bash
+$ docker-compose up --scale gateway-service=X
 ```
 
 ### Build & Run (development)

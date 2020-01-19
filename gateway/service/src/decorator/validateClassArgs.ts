@@ -8,8 +8,10 @@ const metadataKey = 'routeMiddleware';
 
 export const ValidateClassArgs = <T extends BaseEntity<T>, K extends keyof T>(dataSource: 'body' | 'params' | 'query', Clazz: new () => T, toValidate: { [k: string]: K }): MethodDecorator => {
     return (target: object, propertyKey: string): void => {
+        // Get the custom middleware array on the class or initialize it.
         const metadataValue = Reflect.getMetadata(metadataKey, target, propertyKey) as MiddlewareDefinition[] || [];
 
+        // Add our middleware to the custom middleware array on the class.
         metadataValue.push(async (request: Request, response: Response, next: NextFunction) => {
             const args = request[dataSource];
 
@@ -21,6 +23,10 @@ export const ValidateClassArgs = <T extends BaseEntity<T>, K extends keyof T>(da
                     return;
                 }
 
+                /*
+                 * Get the target type from the reference instance as an
+                 * uninitialized field does not have a type yet.
+                 */
                 const paramRawValue = args[argKey];
                 const paramTargetType = typeof clazzReference[key];
                 switch (paramTargetType) {
@@ -62,6 +68,7 @@ export const ValidateClassArgs = <T extends BaseEntity<T>, K extends keyof T>(da
                 }).catch((err) => next(err));
         });
 
+        // Override the existing custom middleware array with the modified version.
         Reflect.defineMetadata(metadataKey, metadataValue, target, propertyKey);
     };
 };

@@ -21,7 +21,7 @@ jobs:
         - docker-compose up --detach
         - docker-compose ps
       install:
-        - docker-compose run --rm gateway-service /opt/wait-for-it.sh database:3306
+        - docker-compose run --rm gateway-service /opt/wait-for-it.sh -t 0 database:3306
         - docker-compose exec -T gateway-database mysql -h0.0.0.0 -uroot -proot gluten < gateway/database/test.sql
       script:
         - >

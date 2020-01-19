@@ -1,6 +1,8 @@
 version: '3.7'
 
 services:
+  # When NGINX proxies a request, it sends the request to a specified proxied
+  # server (or container), fetches the response, and sends it back to the client.
   nginx:
     container_name: nginx
     build:
@@ -8,16 +10,23 @@ services:
       dockerfile: Dockerfile
       target: production
     volumes:
+      # Mounts the 'scripts' folder inside the host on '/opt'.
       - './scripts:/opt'
+      # Mounts the 'letsencrypt' folder inside the host, required for SSL certificates.
       - '/etc/letsencrypt:/etc/letsencrypt'
     ports:
+      # Expose the HTTP port to the host
       - 80:80
+      # Expose the HTTPS port to the host
       - 443:443
     networks:
       - services
     depends_on:
+      # First start the gateway-service container before the NGINX container.
       - gateway-service
 
+  # Portainer allows you to manage your Docker resources: containers, images,
+  # volumes, networks and more from a web interface.
   portainer:
     image: portainer/portainer:1.23.0
     command: -H unix:///var/run/docker.sock
@@ -32,10 +41,13 @@ services:
   gateway-database:
     image: mysql:5.7.28
     volumes:
+      # Store the MySQL server data outside the container (thus on the host).
       - './gateway/database/data:/var/lib/mysql'
+      # Will load the init.sql file on a fresh MySQL server instance.
       - './gateway/database/init.sql:/docker-entrypoint-initdb.d/init.sql'
     restart: always
     networks:
+      # Make this service discoverable on the 'services' network.
       - gateway-service
     environment:
       MYSQL_ROOT_PASSWORD: root
@@ -46,6 +58,7 @@ services:
   gateway-cache:
     image: redis:5.0.7
     volumes:
+      # Store the Redis store data outside the container (thus on the host).
       - './gateway/cache:/data'
     restart: always
     networks:
@@ -54,22 +67,30 @@ services:
   gateway-service:
     build: ./gateway/service
     volumes:
+      # Mounts the 'scripts' folder inside the host on '/opt'.
       - './scripts:/opt'
+      # Store the logs outside the container (thus on the host).
       - './gateway/service/logs:/usr/src/app/logs'
     networks:
+      # Make this service discoverable on the 'services' network.
       - services
+      # Get access to the database and cache.
       - gateway-service
     links:
-      - gateway-database:database
+      # This allows the access to the gateway-cache using hostname 'cache'.
       - gateway-cache:cache
+      # This allows the access to the gateway-cache using hostname 'database'.
+      - gateway-database:database
     depends_on:
-      - gateway-database
       - gateway-cache
+      - gateway-database
     environment:
       MYSQL_HOST: database
       NODE_ENV: production
       REDIS_HOST: cache
 
 networks:
+  # Network that links all services with NGINX.
   services: {}
+  # Dedicated network to seperate the dependencies of the gateway-service.
   gateway-service: {}

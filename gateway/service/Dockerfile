@@ -1,27 +1,38 @@
-FROM node:12.13.1
+#
+# ---- Base ----
+FROM node:12.13.1 as base
 
-# Create app directory
 WORKDIR /usr/src/app
 
-# Install app dependencies
-# A wildcard is used to ensure both package.json AND package-lock.json are copied
-# where available (npm@5+)
+
+#
+# ---- Dependency ----
+FROM base as dependencies
+
+# Copy package.json and package-lock.json to the container.
 COPY package*.json ./
 
-RUN npm ci
-# If you are building your code for production
-# RUN npm ci --only=production
+# Installs modules from package-lock.json, this ensures reproducible build.
+RUN npm --silent ci
 
-# Bundle app source
+
+#
+# ---- Build ----
+FROM dependencies as build
+
+# Copy all files, except those ignored by .dockerignore, to the container.
 COPY . .
 
-# Build app source
-RUN npm run build
+# Build the source.
+RUN npm --silent run build
 
+
+#
+# ---- Release ----
+FROM build as release
+
+# Expose the HTTP port to the Docker instance (not the host!).
 EXPOSE 80
 
-# Set the, unprivileged, user to use when running this image
-# USER node
-USER root
-
-CMD [ "/opt/wait-for-it.sh", "cache:6379", "--",  "/opt/wait-for-it.sh", "database:3306", "--", "npm", "start" ]
+# Wait for both the cache and database to be up before starting.
+CMD [ "/opt/wait-for-it.sh", "-t", "0", "cache:6379", "--",  "/opt/wait-for-it.sh", "-t", "0", "database:3306", "--", "npm", "start" ]

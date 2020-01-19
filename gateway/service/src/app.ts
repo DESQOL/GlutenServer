@@ -32,11 +32,14 @@ class App {
         this.app.use(express.urlencoded({ extended: false }));
         this.app.use(rateLimiter());
 
+        // Pretty format any JSON response with 4 spaces indentation.
         this.app.set('json spaces', 4);
 
+        // Read the OpenAPI spec and register Swagger UI.
         const swaggerDocument = yaml.safeLoad(fs.readFileSync(`${appRoot}/spec/openapi.yaml`, 'utf8'));
         this.app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
+        // Read the OpenAPI spec and install the auto-validator middleware.
         new OpenApiValidator({
             apiSpec: `${appRoot}/spec/openapi.yaml`,
             validateRequests: true,
@@ -46,7 +49,8 @@ class App {
         this.middlewares();
         this.routes();
 
-        this.app.use((err: any, req: Request, res: Response, _next: NextFunction) => {
+        // Catch any errors or unhandled/unfinished requests.
+        this.app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
             logger.error({ status: err.status, data: err });
             res.status(err.status || 500).json({
                 message: err.message,
@@ -54,6 +58,7 @@ class App {
             });
         });
 
+        // Graceful shutdown listeners
         process.on('SIGTERM', this.shutDown);
         process.on('SIGINT', this.shutDown);
     }
@@ -69,11 +74,17 @@ class App {
             process.exit(1);
         });
 
+        // Start HTTP server on port 80 (or the environment variable for PORT)
         this.http = this.app.listen(process.env.PORT || 80, () => {
             logger.info(`App listening on the http://localhost:${process.env.PORT || 80}/`);
         });
     }
 
+    /**
+     * Closes the server connections, this won't restart the worker. First closes
+     * the HTTP server to bounce any incoming requests, than closes the database
+     * connection.
+     */
     public async close (): Promise<void> {
         if (this.http) {
             this.http.close((err) => logger.info(`Closed https server${err ? `, received error: ${err}.` : '.'}`));
@@ -111,7 +122,11 @@ class App {
             UserController,
         ].forEach((Controller) => {
             const prefix = Reflect.getMetadata('prefix', Controller);
+
+            // Gets the controller option 'requireToken'.
             const requireToken = Reflect.getMetadata('requireToken', Controller) as boolean;
+
+            // Gets all routes registered through the decorator.
             const routes: RouteDefinition[] = Reflect.getMetadata('routes', Controller);
 
             routes.forEach((route) => {
@@ -130,6 +145,7 @@ class App {
                     }
                 }
 
+                // Register the route (including handler and middleware) in Express.
                 this.app[route.requestMethod](`${prefix}${route.path}`, routeMiddleware, routeHandler);
             });
         });
